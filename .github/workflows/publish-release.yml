@@ -177,11 +177,11 @@ jobs:
           mkdir -p "$DIST_REPO_DIR"
           cd "$DIST_REPO_DIR"
 
-          # Clone the distribution repository
-          git clone --depth 1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git . 2>&1 || {
+          # Clone the distribution repository using Personal Access Token
+          git clone --depth 1 https://x-access-token:${{ secrets.RELEASE_REPO_TOKEN }}@github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git . 2>&1 || {
             echo "Distribution repository does not exist yet"
             git init
-            git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git
+            git remote add origin https://x-access-token:${{ secrets.RELEASE_REPO_TOKEN }}@github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git
           }
 
           # Clean old files (except .git)
@@ -247,4 +247,4 @@ jobs:
           git push -u origin main --force
           git push -u origin "v${VERSION}" || true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_REPO_TOKEN: ${{ secrets.RELEASE_REPO_TOKEN }}
