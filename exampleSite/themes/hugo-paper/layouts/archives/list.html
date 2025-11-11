@@ -1,0 +1,56 @@
+{{ define "main" }}
+<!-- Page Header -->
+<div class="mb-12">
+  <h1 class="text-4xl md:text-5xl font-bold mb-4">Archives</h1>
+  <p class="text-lg text-muted">Browse all articles by date</p>
+</div>
+
+<!-- Filter by Category -->
+{{ $categories := where .Site.Taxonomies.categories "Count" ">=" 0 }}
+{{ if $categories }}
+<div class="mb-8">
+  <div class="flex flex-wrap gap-2">
+    <a
+      href="/archives/"
+      class="px-4 py-2 rounded-full text-sm font-medium bg-primary text-white hover:bg-accent transition-colors"
+    >
+      All
+    </a>
+    {{ range $categories }}
+    <a
+      href="{{ .Page.RelPermalink }}"
+      class="px-4 py-2 rounded-full text-sm font-medium bg-muted hover:bg-primary hover:text-white transition-colors"
+    >
+      {{ .Page.Title }} ({{ .Count }})
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
+
+<!-- Articles by Date -->
+{{ $posts := where .Site.RegularPages "Type" "post" }}
+{{ if gt (len $posts) 0 }}
+<div class="space-y-8">
+  {{ range $posts.GroupByDate "2006" }}
+  <section>
+    <h2 class="text-2xl font-bold mb-4 pb-2 border-b border-primary">
+      {{ .Key }}
+    </h2>
+    <div class="space-y-4">
+      {{ range .Pages }}
+      {{ partial "post-list-item.html" . }}
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+</div>
+{{ else }}
+<div class="py-12 text-center">
+  <p class="text-muted text-lg">No articles found.</p>
+</div>
+{{ end }}
+
+<!-- Pagination -->
+{{ template "_internal/pagination.html" . }}
+{{ end }}

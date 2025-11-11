@@ -1,0 +1,54 @@
+name = "Hugo Paper"
+license = "MIT"
+licenselink = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/blob/main/LICENSE"
+description = "A minimal, responsive Hugo theme inspired by Astro Paper with interactive features, full SEO optimization, and accessibility support"
+homepage = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+demosite = "https://hugo-paper-demo.vercel.app"
+repo = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+
+tags = [
+  "blog",
+  "minimal",
+  "responsive",
+  "tailwind",
+  "typescript",
+  "interactive",
+  "dark-mode",
+  "seo",
+  "search",
+  "accessibility"
+]
+
+features = [
+  "Responsive Design",
+  "Dark Mode",
+  "Comments (Giscus)",
+  "Search Functionality",
+  "Reading Progress Indicator",
+  "Code Copy Button",
+  "Article Sharing (5 platforms)",
+  "Keyboard Shortcuts",
+  "SEO Optimized (Schema.org)",
+  "Open Graph Support",
+  "Accessibility (WCAG 2.1 AA)",
+  "Interactive Features",
+  "Lazy Loading",
+  "Performance Optimized"
+]
+
+min_version = "0.120.0"
+hugo_version = "0.120+"
+
+[author]
+  name = "OurAIHub"
+  homepage = "https://github.com/ouraihub"
+  repo = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+
+[original]
+  name = "Astro Paper"
+  homepage = "https://astro-paper-example.vercel.app"
+  repo = "https://github.com/satnaing/astro-paper"
+
+[module]
+  [[module.imports]]
+    path = "github.com/ouraihub-hugo-themes/hugo-theme-paper"

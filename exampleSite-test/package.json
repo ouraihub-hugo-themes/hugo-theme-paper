@@ -1,0 +1,65 @@
+{
+  "name": "hugo-paper",
+  "version": "1.0.0-final",
+  "description": "A minimal, responsive Hugo theme inspired by Astro Paper with interactive features, full SEO optimization, and comprehensive testing",
+  "type": "module",
+  "scripts": {
+    "dev": "hugo server --logLevel debug --disableFastRender",
+    "build": "hugo --minify --gc",
+    "preview": "hugo server --watch=false",
+    "lint:css": "stylelint 'assets/**/*.css'",
+    "lint:ts": "eslint 'assets/ts/**/*.ts'",
+    "format": "prettier --write 'assets/**/*.{ts,css,html}'",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/ui": "^2.0.0",
+    "@vue/test-utils": "^2.4.0",
+    "autoprefixer": "^10.4.16",
+    "esbuild": "^0.23.0",
+    "eslint": "^9.0.0",
+    "happy-dom": "^12.10.0",
+    "husky": "^9.0.0",
+    "jsdom": "^23.0.0",
+    "lint-staged": "^15.2.0",
+    "postcss": "^8.4.32",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.0.0",
+    "prettier": "^3.1.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0",
+    "typescript": "^5.8.0",
+    "vite": "^5.0.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ouraihub-hugo-themes/hugo-paper.git"
+  },
+  "keywords": [
+    "hugo",
+    "theme",
+    "blog",
+    "tailwind",
+    "typescript"
+  ],
+  "author": "OurAIHub",
+  "license": "MIT"
+}

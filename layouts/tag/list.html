@@ -1,0 +1,60 @@
+{{ define "main" }}
+<!-- Tag Header -->
+<div class="mb-12">
+  <h1 class="text-4xl md:text-5xl font-bold mb-4">
+    Tag: <span class="gradient-text">#{{ .Title }}</span>
+  </h1>
+  <p class="text-lg text-muted">
+    {{ .Pages | len }} articles with this tag
+  </p>
+</div>
+
+<!-- Articles with Tag -->
+{{ if .Pages }}
+<div class="space-y-4 mb-12">
+  {{ range .Pages }}
+  {{ partial "post-list-item.html" . }}
+  {{ end }}
+</div>
+{{ else }}
+<div class="py-12 text-center">
+  <p class="text-muted text-lg">No articles found with this tag.</p>
+</div>
+{{ end }}
+
+<!-- Related Tags -->
+{{ $relatedTags := where .Site.Taxonomies.tags "Page.Title" "!=" .Title }}
+{{ if gt (len $relatedTags) 0 }}
+<section class="mt-12 pt-12 border-t border-border">
+  <h3 class="text-2xl font-bold mb-6">Related Tags</h3>
+  <div class="flex flex-wrap gap-2">
+    {{ range first 20 $relatedTags }}
+    <a
+      href="{{ .Page.RelPermalink }}"
+      class="px-3 py-1 rounded-full text-sm bg-secondary/10 text-secondary hover:bg-secondary hover:text-white transition-colors duration-200"
+    >
+      #{{ .Page.Title }} ({{ .Count }})
+    </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+
+<!-- All Tags Cloud -->
+<section class="mt-12 pt-12 border-t border-border">
+  <h3 class="text-2xl font-bold mb-6">All Tags</h3>
+  <div class="flex flex-wrap gap-2">
+    {{ range .Site.Taxonomies.tags }}
+    <a
+      href="{{ .Page.RelPermalink }}"
+      class="px-3 py-1 rounded-full text-sm bg-muted/20 hover:bg-primary hover:text-white transition-colors duration-200"
+    >
+      #{{ .Page.Title }}
+    </a>
+    {{ end }}
+  </div>
+</section>
+
+<!-- Pagination -->
+{{ template "_internal/pagination.html" . }}
+{{ end }}

@@ -1,0 +1,56 @@
+<!-- 阅读进度指示器 -->
+
+<div id="reading-progress-bar" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent z-50" style="width: 0%; opacity: 0; transition: opacity 0.3s ease;"></div>
+
+<script>
+  /**
+   * 阅读进度指示器
+   * 显示当前页面滚动进度
+   */
+  class ReadingProgressBar {
+    constructor() {
+      this.bar = document.getElementById('reading-progress-bar');
+      if (this.bar) {
+        this.init();
+      }
+    }
+
+    init() {
+      window.addEventListener('scroll', () => this.updateProgress(), { passive: true });
+      window.addEventListener('load', () => this.updateProgress());
+
+      // 初始化进度
+      this.updateProgress();
+    }
+
+    updateProgress() {
+      // 计算滚动百分比
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+      // 更新进度条
+      this.bar.style.width = scrollPercent + '%';
+
+      // 当有内容时显示进度条
+      this.bar.style.opacity = scrollPercent > 0.5 ? '1' : '0.3';
+
+      // 页面底部时完全显示
+      if (scrollPercent >= 99) {
+        this.bar.style.opacity = '1';
+      }
+    }
+  }
+
+  new ReadingProgressBar();
+</script>
+
+<style>
+  #reading-progress-bar {
+    background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  }
+
+  :root[data-theme="dark"] #reading-progress-bar {
+    background: linear-gradient(to right, #0ea5e9, #f43f5e);
+  }
+</style>

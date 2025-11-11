@@ -1,0 +1,111 @@
+<!-- 复制代码按钮脚本 -->
+
+<script>
+  /**
+   * 代码块复制功能管理器
+   * 为所有代码块添加复制按钮
+   */
+  class CodeCopyManager {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      // 等待DOM加载完成
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => this.setupCodeBlocks());
+      } else {
+        this.setupCodeBlocks();
+      }
+    }
+
+    setupCodeBlocks() {
+      const codeBlocks = document.querySelectorAll('pre code, pre');
+
+      codeBlocks.forEach((block) => {
+        // 跳过已经处理过的
+        if (block.parentElement.querySelector('.copy-button')) {
+          return;
+        }
+
+        const wrapper = block.tagName === 'CODE' ? block.parentElement : block;
+
+        // 创建容器
+        const container = document.createElement('div');
+        container.className = 'code-block-wrapper relative';
+
+        // 插入容器
+        wrapper.parentNode.insertBefore(container, wrapper);
+        container.appendChild(wrapper);
+
+        // 创建复制按钮
+        const button = this.createCopyButton(block);
+        container.appendChild(button);
+
+        // 绑定事件
+        button.addEventListener('click', () => this.copyCode(block, button));
+      });
+    }
+
+    createCopyButton(codeBlock) {
+      const button = document.createElement('button');
+      button.className = 'copy-button absolute top-2 right-2 p-2 rounded bg-gray-700 hover:bg-gray-600 text-white text-sm transition-all duration-200 opacity-0 hover:opacity-100 group-hover:opacity-100';
+      button.innerHTML = `
+        <svg class="w-4 h-4 inline-block" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M8 3a1 1 0 011-1h2a1 1 0 011 1v1h2V3a3 3 0 00-3-3H9a3 3 0 00-3 3v1H4a1 1 0 000 2h.089l.891 8.901A2 2 0 0010.751 17h.498a2 2 0 001.971-1.609l.891-8.901H20a1 1 0 000-2h-3V3a1 1 0 011-1h2a1 1 0 011 1v1h2V3a3 3 0 00-3-3h-2a3 3 0 00-3 3v1H8V3z"/>
+        </svg>
+        <span class="ml-1 copy-text">Copy</span>
+      `;
+      button.title = 'Copy code to clipboard';
+      button.type = 'button';
+      return button;
+    }
+
+    copyCode(codeBlock, button) {
+      const code = codeBlock.textContent;
+      const textSpan = button.querySelector('.copy-text');
+
+      // 复制到剪贴板
+      navigator.clipboard.writeText(code).then(() => {
+        // 显示成功反馈
+        const originalText = textSpan.textContent;
+        textSpan.textContent = 'Copied!';
+        button.classList.add('bg-green-600', 'hover:bg-green-500');
+        button.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+
+        // 2秒后恢复
+        setTimeout(() => {
+          textSpan.textContent = originalText;
+          button.classList.remove('bg-green-600', 'hover:bg-green-500');
+          button.classList.add('bg-gray-700', 'hover:bg-gray-600');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy code:', err);
+        textSpan.textContent = 'Failed!';
+      });
+    }
+  }
+
+  // 初始化复制功能
+  new CodeCopyManager();
+</script>
+
+<style>
+  .code-block-wrapper {
+    position: relative;
+  }
+
+  .code-block-wrapper:hover .copy-button {
+    opacity: 1;
+  }
+
+  .copy-button {
+    z-index: 10;
+    backdrop-filter: blur(4px);
+  }
+
+  pre {
+    position: relative;
+    @apply group;
+  }
+</style>

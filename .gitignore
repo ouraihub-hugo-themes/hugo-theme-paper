@@ -1,0 +1,34 @@
+# Hugo
+/public
+/resources/_gen
+.hugo_build.lock
+
+# Example Site
+exampleSite/public
+exampleSite/resources/_gen
+
+# Node
+node_modules
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+exampleSite/node_modules
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.env
+.env.local
+*.log
+
+# Build
+dist
+.cache
+exampleSite/.cache

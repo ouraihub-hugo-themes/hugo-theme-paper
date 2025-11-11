@@ -1,0 +1,95 @@
+[build]
+  command = "pnpm build"
+  publish = "public"
+
+[build.environment]
+  HUGO_VERSION = "0.120.0"
+  NODE_VERSION = "18.17.0"
+
+[context.production]
+  command = "pnpm build"
+  environment = { HUGO_ENV = "production" }
+
+[context.deploy-preview]
+  command = "pnpm build"
+
+[context.branch-deploy]
+  command = "pnpm build"
+
+# Headers for caching and security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# HTML files - Short cache
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# CSS and JS files - Long cache with immutable flag
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Images - Long cache
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Fonts - Long cache with CORS
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
+# RSS Feed
+[[headers]]
+  for = "/index.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=7200"
+    Content-Type = "application/rss+xml"
+
+# Sitemap
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=7200"
+
+# Robots.txt
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=7200"
+
+# Redirects for RSS feeds
+[[redirects]]
+  from = "/rss"
+  to = "/index.xml"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/feed"
+  to = "/index.xml"
+  status = 301
+  force = false
+
+# Pretty URLs
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
