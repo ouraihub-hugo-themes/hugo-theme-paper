@@ -64,8 +64,8 @@
     {{ end }}
 
     <!-- CSS -->
-    {{ $css := resources.Get "css/main.css" | postCSS }}
-    <link rel="stylesheet" href="{{ $css.RelPermalink }}" />
+    <!-- Pre-built by Tailwind CLI, no PostCSS processing needed -->
+    <link rel="stylesheet" href="/css/main.css" />
 
     <!-- Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
