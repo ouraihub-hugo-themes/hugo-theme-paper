@@ -21,7 +21,13 @@
   </h3>
 
   <p class="text-muted text-sm mb-4 truncate-2">
-    {{ .Summary }}
+    {{ if .Description }}
+      {{ .Description }}
+    {{ else if .Summary }}
+      {{ .Summary }}
+    {{ else }}
+      {{ truncate 150 .Content }}
+    {{ end }}
   </p>
 
   <div class="flex items-center justify-between text-xs text-muted pt-4 border-t border-border">

@@ -43,7 +43,8 @@
   </div>
   <div class="grid grid-cols-1 gap-6">
     {{ range first (.Site.Params.home.recentPostCount | default 5) $recent }} {{
-    partial "post-list-item.html" . }} {{ end }}
+    if ne .File.BaseFileName "_index" }} {{ partial "post-list-item.html" . }}
+    {{ end }} {{ end }}
   </div>
 </section>
 {{ end }} {{ end }}
