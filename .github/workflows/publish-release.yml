@@ -46,7 +46,7 @@ jobs:
           if [[ "${{ github.event_name }}" == "push" ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
           else
-            VERSION=${{ github.event.inputs.version }}
+            VERSION="${{ github.event.inputs.version }}"
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
