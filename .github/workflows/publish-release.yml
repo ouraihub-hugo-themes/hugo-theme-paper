@@ -139,6 +139,18 @@ jobs:
             - Documentation
 
             ## Quick Start
+
+            ### Via Hugo Modules (Recommended)
+            ```toml
+            [module]
+              [[module.imports]]
+                path = "github.com/ouraihub-hugo-themes/hugo-theme-paper-dist"
+            ```
+            ```bash
+            hugo mod get -u
+            ```
+
+            ### Via Git
             ```bash
             git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper.git themes/hugo-theme-paper
             ```
@@ -148,8 +160,91 @@ jobs:
             - Dark mode support
             - SEO optimized
             - Fast performance
-            - TypeScript support
+            - Pre-compiled CSS (no build needed)
+
+            **Note:** For Hugo Modules, use the distribution repository: [hugo-theme-paper-dist](https://github.com/ouraihub-hugo-themes/hugo-theme-paper-dist)
 
             See [README.md](https://github.com/ouraihub-hugo-themes/hugo-theme-paper) for more details.
           draft: false
           prerelease: false
+
+      - name: Sync to distribution repository
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          DIST_REPO_DIR="/tmp/hugo-theme-paper-dist"
+
+          mkdir -p "$DIST_REPO_DIR"
+          cd "$DIST_REPO_DIR"
+
+          # Clone the distribution repository
+          git clone --depth 1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git . 2>&1 || {
+            echo "Distribution repository does not exist yet"
+            git init
+            git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git
+          }
+
+          # Clean old files (except .git)
+          find . -maxdepth 1 -not -name '.git*' -type f -delete
+          find . -maxdepth 1 -not -name '.git*' -type d -exec rm -rf {} + 2>/dev/null || true
+
+          # Copy the pre-compiled theme files
+          cp -r "$GITHUB_WORKSPACE/release/hugo-theme-paper-${VERSION}"/* .
+
+          # Create/update README for distribution repo
+          cat > README.md << 'DIST_README_EOF'
+          # Hugo Paper Theme - Distribution Package
+
+          This is the **pre-compiled distribution** of Hugo Paper Theme for use with Hugo Modules.
+
+          **All CSS and JavaScript are pre-compiled. No build step needed!**
+
+          ## Installation
+
+          ### Option 1: Hugo Modules (Recommended)
+          ```toml
+          [module]
+            [[module.imports]]
+              path = "github.com/ouraihub-hugo-themes/hugo-theme-paper-dist"
+          ```
+
+          ```bash
+          hugo mod get -u
+          hugo server
+          ```
+
+          ### Option 2: Direct Clone
+          ```bash
+          git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git themes/hugo-theme-paper
+          ```
+
+          ## For Development
+
+          If you want to contribute to the theme, visit the main repository:
+          https://github.com/ouraihub-hugo-themes/hugo-theme-paper
+
+          ## Features
+          - Minimal and responsive design
+          - Dark mode support
+          - SEO optimized
+          - Fast performance
+          - Pre-compiled CSS (Tailwind CSS v4)
+
+          See [RELEASE-INFO.md](RELEASE-INFO.md) for version details.
+          DIST_README_EOF
+
+          # Git configuration
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          # Create tag in distribution repo
+          git add -A
+          git commit -m "chore: sync theme v${VERSION}" || echo "No changes to commit"
+          git tag -a "v${VERSION}" -m "Hugo Paper Theme v${VERSION}" || echo "Tag already exists"
+
+          # Push to distribution repo
+          git branch -M main
+          git push -u origin main --force
+          git push -u origin "v${VERSION}" || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
