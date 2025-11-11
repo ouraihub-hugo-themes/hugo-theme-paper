@@ -37,17 +37,46 @@ git push origin v0.2.0
 
 ### 用户安装流程
 
-用户无需进行任何构建步骤,可直接使用发布的主题:
+用户无需进行任何构建步骤,可以用以下任一方式使用发布的主题:
 
+#### 方式 1: 直接克隆主题 (推荐新用户)
 ```bash
-# 方式 1: 从 GitHub 克隆
+# 从 GitHub 克隆
 git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper.git themes/hugo-theme-paper
+```
 
-# 方式 2: 下载发布包
+然后在 `config.toml` 或 `hugo.yaml` 中配置:
+```toml
+theme = "hugo-theme-paper"
+```
+
+#### 方式 2: 下载预编译包
+```bash
 cd themes
 wget https://github.com/ouraihub-hugo-themes/hugo-theme-paper/releases/download/v0.2.0/hugo-theme-paper-0.2.0.tar.gz
 tar -xzf hugo-theme-paper-0.2.0.tar.gz
 ```
+
+#### 方式 3: Hugo Modules (推荐高级用户)
+在项目的 `config/_default/config.toml` 中添加:
+
+```toml
+[module]
+  [[module.imports]]
+    path = "github.com/ouraihub-hugo-themes/hugo-theme-paper"
+```
+
+然后运行:
+```bash
+hugo mod get -u
+hugo mod tidy
+```
+
+**Hugo Modules 优势:**
+- ✅ 自动管理主题版本
+- ✅ 容易升级到新版本
+- ✅ 预编译的 CSS 已包含,无需额外配置
+- ✅ 自动处理依赖管理
 
 ## 开发工作流
 

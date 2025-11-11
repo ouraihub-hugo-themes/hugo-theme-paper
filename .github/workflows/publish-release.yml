@@ -72,7 +72,7 @@ jobs:
           done
 
           # Copy configuration and documentation files
-          for file in theme.toml README.md CONTRIBUTING.md LICENSE .gitignore; do
+          for file in theme.toml README.md CONTRIBUTING.md LICENSE .gitignore go.mod; do
             if [ -f "$file" ]; then
               cp "$file" "$RELEASE_PATH/"
             fi
@@ -98,7 +98,8 @@ jobs:
           done
 
           # Remove development configuration files
-          for file in package.json pnpm-lock.yaml tailwind.config.js tsconfig.json vitest.config.ts netlify.toml vercel.json go.mod params.toml hugo.toml; do
+          # Keep go.mod for Hugo Modules support
+          for file in package.json pnpm-lock.yaml tailwind.config.js tsconfig.json vitest.config.ts netlify.toml vercel.json params.toml hugo.toml; do
             rm -f "$RELEASE_PATH/$file"
           done
 
