@@ -65,7 +65,7 @@
 {{ end }}
 
 <!-- Paginated Pages -->
-{{ if .Paginator }}
+{{ if and (in (slice "home" "section" "taxonomy" "term") .Kind) .Paginator }}
   {{ if .Paginator.HasPrev }}
   <link rel="prev" href="{{ .Paginator.Prev.URL }}" />
   {{ end }}

@@ -68,7 +68,7 @@
   {{ range $tags }}
     {{ $popular = $popular | append . }}
   {{ end }}
-  {{ range first 3 (sort $popular "Count" "desc") }}
+  {{ range first 3 (sort $popular "Weight" "desc") }}
   <section class="mt-12 pt-12 border-t border-border">
     <h2 class="text-2xl font-bold mb-6">
       Popular: <span class="gradient-text">#{{ .Page.Title }}</span>
