@@ -1,0 +1,154 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g., 1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.152.0"
+          extended: true
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Get version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=${{ github.event.inputs.version }}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build assets
+        run: |
+          pnpm run css:build
+
+      - name: Create release package
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          RELEASE_PATH="release/hugo-theme-paper-${VERSION}"
+
+          mkdir -p "$RELEASE_PATH"
+
+          # Copy theme directories
+          for dir in layouts assets i18n data archetypes static; do
+            if [ -d "$dir" ]; then
+              cp -r "$dir" "$RELEASE_PATH/"
+            fi
+          done
+
+          # Copy configuration and documentation files
+          for file in theme.toml README.md CONTRIBUTING.md LICENSE .gitignore; do
+            if [ -f "$file" ]; then
+              cp "$file" "$RELEASE_PATH/"
+            fi
+          done
+
+          # Generate release info
+          cat > "$RELEASE_PATH/RELEASE-INFO.md" << 'RELEASE_EOF'
+          # Hugo Paper Theme - Release Package
+
+          **Version**: ${{ steps.version.outputs.version }}
+          **Release Date**: $(date -u '+%Y-%m-%d %H:%M:%S')
+
+          This release package contains pre-compiled CSS and JavaScript.
+          No build step required - ready to use immediately!
+
+          See [README.md](README.md) for installation and usage instructions.
+          RELEASE_EOF
+
+          # Clean up unnecessary files from release
+          # Remove development files
+          for dir in exampleSite tests node_modules public .git .github; do
+            rm -rf "$RELEASE_PATH/$dir"
+          done
+
+          # Remove development configuration files
+          for file in package.json pnpm-lock.yaml tailwind.config.js tsconfig.json vitest.config.ts netlify.toml vercel.json go.mod params.toml hugo.toml; do
+            rm -f "$RELEASE_PATH/$file"
+          done
+
+          # Remove TypeScript source files (keep only compiled JS)
+          find "$RELEASE_PATH/assets" -name "*.ts" -delete
+
+          echo "RELEASE_PATH=$RELEASE_PATH" >> $GITHUB_ENV
+
+      - name: Create archives
+        run: |
+          cd release
+          tar -czf "hugo-theme-paper-${{ steps.version.outputs.version }}.tar.gz" "hugo-theme-paper-${{ steps.version.outputs.version }}"
+          zip -r "hugo-theme-paper-${{ steps.version.outputs.version }}.zip" "hugo-theme-paper-${{ steps.version.outputs.version }}"
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: release/
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/hugo-theme-paper-${{ steps.version.outputs.version }}.tar.gz
+            release/hugo-theme-paper-${{ steps.version.outputs.version }}.zip
+          body: |
+            # Hugo Paper Theme v${{ steps.version.outputs.version }}
+
+            A minimal, responsive Hugo theme inspired by Astro Paper with interactive features, full SEO optimization, and comprehensive theme customization.
+
+            ## What's Included
+            - Pre-compiled CSS (Tailwind CSS v4)
+            - Complete theme templates
+            - Configuration examples
+            - Documentation
+
+            ## Quick Start
+            ```bash
+            git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper.git themes/hugo-theme-paper
+            ```
+
+            ## Features
+            - Minimal and responsive design
+            - Dark mode support
+            - SEO optimized
+            - Fast performance
+            - TypeScript support
+
+            See [README.md](https://github.com/ouraihub-hugo-themes/hugo-theme-paper) for more details.
+          draft: false
+          prerelease: false
