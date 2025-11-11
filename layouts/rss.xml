@@ -1,5 +1,5 @@
 {{ $pctx := . }}
-{{ if eq .kind "home" }}
+{{ if eq .Kind "home" }}
   {{ $pctx = .Site }}
 {{ end }}
 {{ $pages := slice }}
