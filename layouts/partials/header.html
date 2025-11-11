@@ -1,31 +1,38 @@
 {{ if .Site.Params.header.enable }}
-<header class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<header
+  class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+>
   <div class="container-wrapper">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+      <a
+        href="/"
+        class="flex items-center gap-3 hover:opacity-80 transition-opacity"
+      >
         {{ if .Site.Params.header.logo }}
-          <img
-            src="{{ .Site.Params.header.logo }}"
-            alt="{{ .Site.Title }}"
-            width="{{ .Site.Params.header.logoWidth | default 40 }}"
-            height="{{ .Site.Params.header.logoHeight | default 40 }}"
-            class="h-10 w-10"
-          />
+        <img
+          src="{{ .Site.Params.header.logo }}"
+          alt="{{ .Site.Title }}"
+          width="{{ .Site.Params.header.logoWidth | default 40 }}"
+          height="{{ .Site.Params.header.logoHeight | default 40 }}"
+          class="h-10 w-10"
+        />
         {{ end }}
-        <span class="font-bold text-lg">{{ .Site.Params.header.logoText | default .Site.Title }}</span>
+        <span class="font-bold text-lg"
+          >{{ .Site.Params.header.logoText | default .Site.Title }}</span
+        >
       </a>
 
       <!-- Navigation -->
       <nav class="hidden md:flex items-center gap-8">
-        {{ range .Site.Menus.main }}
-          {{ $active := or ($currentNode.IsMenuCurrent "main" .) ($currentNode.HasMenuCurrent "main" .) }}
-          <a
-            href="{{ .URL }}"
-            class="text-foreground hover:text-primary transition-colors duration-200 {{ if $active }}text-primary font-semibold{{ end }}"
-          >
-            {{ .Name }}
-          </a>
+        {{ range .Site.Menus.main }} {{ $active := or ($.IsMenuCurrent "main" .)
+        ($.HasMenuCurrent "main" .) }}
+        <a
+          href="{{ .URL }}"
+          class="text-foreground hover:text-primary transition-colors duration-200 {{ if $active }}text-primary font-semibold{{ end }}"
+        >
+          {{ .Name }}
+        </a>
         {{ end }}
       </nav>
 
@@ -33,46 +40,48 @@
       <div class="flex items-center gap-4">
         <!-- Theme Toggle -->
         {{ if .Site.Params.theme.switchTheme }}
-          <button
-            id="theme-toggle"
-            class="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
-            aria-label="Toggle theme"
+        <button
+          id="theme-toggle"
+          class="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+          aria-label="Toggle theme"
+        >
+          {{ if eq .Site.Params.theme.switchThemeIcon "sun" }}
+          <svg
+            id="sun-icon"
+            class="w-5 h-5 hidden"
+            fill="currentColor"
+            viewBox="0 0 20 20"
           >
-            {{ if eq .Site.Params.theme.switchThemeIcon "sun" }}
-              <svg
-                id="sun-icon"
-                class="w-5 h-5 hidden"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L13.22 3.22a1 1 0 010-1.414zm2.828 2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zM10 7a3 3 0 110 6 3 3 0 010-6zm0-2a5 5 0 110 10 5 5 0 010-10zm4.22 12.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zm2.828-2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zM10 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm-4.22-1.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L5.78 16.22a1 1 0 010-1.414zm-2.828-2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L2.34 13.46a1 1 0 010-1.414zM5 7a1 1 0 110 2 1 1 0 010-2z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              <svg
-                id="moon-icon"
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-              </svg>
-            {{ else }}
-              <!-- Toggle Icon -->
-              <svg
-                id="toggle-icon"
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M8 12a4 4 0 018 0" />
-              </svg>
-            {{ end }}
-          </button>
+            <path
+              fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L13.22 3.22a1 1 0 010-1.414zm2.828 2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zM10 7a3 3 0 110 6 3 3 0 010-6zm0-2a5 5 0 110 10 5 5 0 010-10zm4.22 12.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zm2.828-2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zM10 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm-4.22-1.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L5.78 16.22a1 1 0 010-1.414zm-2.828-2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L2.34 13.46a1 1 0 010-1.414zM5 7a1 1 0 110 2 1 1 0 010-2z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <svg
+            id="moon-icon"
+            class="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+            />
+          </svg>
+          {{ else }}
+          <!-- Toggle Icon -->
+          <svg
+            id="toggle-icon"
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12a4 4 0 018 0" />
+          </svg>
+          {{ end }}
+        </button>
         {{ end }}
 
         <!-- Mobile Menu Button -->
@@ -99,18 +108,15 @@
     </div>
 
     <!-- Mobile Menu -->
-    <nav
-      id="mobile-menu"
-      class="hidden md:hidden pb-4 border-t border-border"
-    >
-      {{ range .Site.Menus.main }}
-        {{ $active := or ($currentNode.IsMenuCurrent "main" .) ($currentNode.HasMenuCurrent "main" .) }}
-        <a
-          href="{{ .URL }}"
-          class="block px-4 py-2 hover:bg-muted rounded-lg transition-colors duration-200 {{ if $active }}text-primary font-semibold{{ end }}"
-        >
-          {{ .Name }}
-        </a>
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 border-t border-border">
+      {{ range .Site.Menus.main }} {{ $active := or ($currentNode.IsMenuCurrent
+      "main" .) ($currentNode.HasMenuCurrent "main" .) }}
+      <a
+        href="{{ .URL }}"
+        class="block px-4 py-2 hover:bg-muted rounded-lg transition-colors duration-200 {{ if $active }}text-primary font-semibold{{ end }}"
+      >
+        {{ .Name }}
+      </a>
       {{ end }}
     </nav>
   </div>
