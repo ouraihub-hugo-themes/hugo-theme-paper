@@ -23,6 +23,10 @@ contentDir = "exampleSite/content"
   showArchives = true
   showBackButton = true
   
+  # Theme Settings
+  [params.theme]
+    switchTheme = true
+  
   # Social Links
   [[params.social]]
     name = "GitHub"
@@ -84,13 +88,10 @@ contentDir = "exampleSite/content"
       unsafe = true
   
   [markup.highlight]
-    # 使用与 AstroPaper 类似的浅色主题
-    # AstroPaper 使用 Shiki 的 "min-light" 主题
-    # Chroma 最接近的是 "github" 或 "monokailight"
-    style = "github"
+    # 使用 CSS 类而不是内联样式，这样可以根据主题切换颜色
+    noClasses = false
     lineNos = false
     lineNumbersInTable = false
-    noClasses = true
 
 # Taxonomies
 [taxonomies]
