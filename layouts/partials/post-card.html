@@ -1,5 +1,5 @@
 <!-- Post Card Component -->
-<div class="card group">
+<div class="bg-background border border-border rounded-lg p-6 hover:shadow-md transition-shadow duration-200 group">
   {{ if .Params.image }}
   <div class="mb-4 h-48 bg-muted rounded-lg overflow-hidden">
     <img
@@ -14,13 +14,13 @@
   <h3 class="text-xl font-bold mb-2">
     <a
       href="{{ .Permalink }}"
-      class="link-hover"
+      class="text-accent hover:underline decoration-dashed underline-offset-4"
     >
       {{ .Title }}
     </a>
   </h3>
 
-  <p class="text-muted text-sm mb-4 truncate-2">
+  <p class="text-muted text-sm mb-4 line-clamp-2">
     {{ if .Description }}
       {{ .Description }}
     {{ else if .Summary }}

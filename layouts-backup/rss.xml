@@ -1,0 +1,34 @@
+{{ $pctx := . }}
+{{ if eq .Kind "home" }}
+  {{ $pctx = .Site }}
+{{ end }}
+{{ $pages := slice }}
+{{ if or $.IsHome $.IsSection }}
+  {{ $pages = $pctx.RegularPages }}
+{{ else }}
+  {{ $pages = $pctx.Pages }}
+{{ end }}
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ if eq  .Title  .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>Recent content {{ if ne  .Title  .Site.Title }}{{ with .Title }}in {{.}} {{ end }}{{ end }}on {{ .Site.Title }}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>{{ .Site.LanguageCode }}</language>
+    {{- with .Site.Params.author }}<managingEditor>{{.}}@{{ .Site.BaseURL }}</managingEditor>{{- end }}
+    {{- with .Site.Params.author }}<webMaster>{{.}}@{{ .Site.BaseURL }}</webMaster>{{- end }}
+    {{- if not .Date.IsZero }}<lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{- with .OutputFormats.Get "RSS" }}{{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType.Type | safeHTML }}{{ end }}
+    {{ range first 50 $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <author>{{ with .Params.author }}{{.}}{{ else }}{{ $.Site.Params.author }}{{ end }}</author>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ if .Summary }}{{ .Summary | html }}{{ else }}{{ .Description | html }}{{ end }}</description>
+    </item>
+    {{ end }}
+  </channel>
+</rss>

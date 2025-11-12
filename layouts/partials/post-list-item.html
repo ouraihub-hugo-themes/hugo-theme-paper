@@ -1,7 +1,7 @@
 <!-- Post List Item Component -->
 <a
   href="{{ .Permalink }}"
-  class="block p-4 md:p-6 rounded-lg border border-border hover:border-primary hover:shadow-md transition-all duration-200 group"
+  class="block p-4 md:p-6 rounded-lg border border-border hover:border-accent hover:shadow-md transition-all duration-200 group"
 >
   <div class="flex items-start gap-4">
     {{ if .Params.image }}
@@ -16,11 +16,11 @@
     {{ end }}
 
     <div class="flex-1">
-      <h3 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+      <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">
         {{ .Title }}
       </h3>
 
-      <p class="text-muted text-sm mb-4 truncate-2">
+      <p class="text-muted text-sm mb-4 line-clamp-2">
         {{ if .Description }}
           {{ .Description }}
         {{ else if .Summary }}
@@ -38,7 +38,7 @@
         <span>{{ .ReadingTime }} min read</span>
         {{ end }}
         {{ if .Params.categories }}
-        <span class="px-2 py-1 rounded bg-primary/10 text-primary">
+        <span class="px-2 py-1 rounded bg-accent/10 text-accent">
           {{ index .Params.categories 0 }}
         </span>
         {{ end }}

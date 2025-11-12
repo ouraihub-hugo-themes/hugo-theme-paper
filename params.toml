@@ -61,6 +61,13 @@
     showLikeButton = true
     showShare = true
 
+  # Edit Post Link
+  # 参考: astro-paper/src/config.ts 的 editPost 配置
+  [params.editPost]
+    enabled = true
+    text = "Edit this post"
+    url = "https://github.com/username/repo/edit/main/content/"
+
   # Search
   [params.search]
     enable = false
@@ -77,20 +84,27 @@
     provider = "giscus"  # giscus or disqus
 
   # Social Links
+  # 参考: astro-paper/src/constants.ts 的 SOCIALS 配置
+  # 支持的平台: github, twitter, x, linkedin, email, mail, facebook, telegram, mastodon, reddit
   [[params.social]]
     name = "GitHub"
-    url = "https://github.com/ouraihub-hugo-themes"
-    icon = "github"
+    href = "https://github.com/ouraihub-hugo-themes"
+    linkTitle = "Follow on GitHub"
 
   [[params.social]]
-    name = "Twitter"
-    url = "https://twitter.com"
-    icon = "twitter"
+    name = "X"
+    href = "https://x.com/username"
+    linkTitle = "Follow on X"
 
   [[params.social]]
-    name = "Email"
-    url = "mailto:contact@example.com"
-    icon = "mail"
+    name = "LinkedIn"
+    href = "https://www.linkedin.com/in/username/"
+    linkTitle = "Connect on LinkedIn"
+
+  [[params.social]]
+    name = "Mail"
+    href = "mailto:contact@example.com"
+    linkTitle = "Send an email"
 
   # Navigation Links
   [params.navigation]

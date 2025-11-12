@@ -21,7 +21,7 @@ beforeEach(() => {
         <button id="back-to-top" class="opacity-0 invisible"></button>
       </body>
     </html>
-  `);
+  `, { url: 'http://localhost:3000' });
 
   window = dom.window;
   document = window.document;
@@ -77,7 +77,7 @@ describe('ThemeManager', () => {
           }
           const metaThemeColor = document.querySelector('meta[name="theme-color"]');
           if (metaThemeColor) {
-            const color = theme === 'dark' ? '#0f172a' : '#ffffff';
+            const color = theme === 'dark' ? '#212737' : '#fdfdfd';
             metaThemeColor.setAttribute('content', color);
           }
           localStorage.setItem(this.THEME_KEY, theme);
@@ -208,6 +208,63 @@ describe('ThemeManager', () => {
     themeManager.setTheme('dark');
 
     expect(window.localStorage.getItem('hugo-paper-theme')).toBe('dark');
+  });
+
+  it('should update meta theme-color when theme changes', () => {
+    window.localStorage.clear();
+
+    eval(`
+      class ThemeManager {
+        constructor() {
+          this.THEME_KEY = 'hugo-paper-theme';
+          this.HTML_ELEMENT = document.documentElement;
+          this.THEMES = ['light', 'dark'];
+          this.currentTheme = 'light';
+        }
+
+        applyTheme(theme) {
+          this.currentTheme = theme;
+          if (theme === 'dark') {
+            this.HTML_ELEMENT.classList.add('dark');
+            this.HTML_ELEMENT.setAttribute('data-theme', 'dark');
+          } else {
+            this.HTML_ELEMENT.classList.remove('dark');
+            this.HTML_ELEMENT.setAttribute('data-theme', 'light');
+          }
+          const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+          if (metaThemeColor) {
+            const color = theme === 'dark' ? '#212737' : '#fdfdfd';
+            metaThemeColor.setAttribute('content', color);
+          }
+          localStorage.setItem(this.THEME_KEY, theme);
+        }
+
+        setTheme(theme) {
+          if (this.THEMES.includes(theme)) {
+            this.applyTheme(theme);
+          }
+        }
+
+        getTheme() {
+          return this.currentTheme;
+        }
+      }
+      const themeManager = new ThemeManager();
+      window.themeManager = themeManager;
+    `);
+
+    const themeManager = (window as any).themeManager;
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+
+    // Test light theme color
+    themeManager.setTheme('light');
+    expect(metaThemeColor?.getAttribute('content')).toBe('#fdfdfd');
+    expect(themeManager.getTheme()).toBe('light');
+
+    // Test dark theme color
+    themeManager.setTheme('dark');
+    expect(metaThemeColor?.getAttribute('content')).toBe('#212737');
+    expect(themeManager.getTheme()).toBe('dark');
   });
 });
 

@@ -195,7 +195,7 @@ describe('Performance Benchmarks', () => {
         const start = performance.now();
 
         // Simulate keyboard event processing
-        const keys = [];
+        const keys: string[] = [];
         if (i % 3 === 0) keys.push('ctrl');
         if (i % 5 === 0) keys.push('shift');
         keys.push('k');

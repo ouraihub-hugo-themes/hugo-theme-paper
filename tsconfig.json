@@ -9,7 +9,7 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./assets/ts",
+    "outDir": "./static/js",
     "rootDir": "./assets/ts",
     "strict": true,
     "noUnusedLocals": true,

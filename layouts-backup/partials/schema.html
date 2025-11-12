@@ -1,0 +1,60 @@
+<!-- JSON-LD Structured Data -->
+
+{{ if .IsPage }}
+<!-- Article Schema -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ .Title }}",
+    "description": "{{ .Description | default (cond (.Summary) .Summary "") }}",
+    "image": "{{ .Params.image | default .Site.Params.seo.ogImage | absURL }}",
+    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ .Params.author | default .Site.Params.seo.author }}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ .Site.Title }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ .Site.Params.header.logo | absURL }}"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ .Permalink }}"
+    }
+  }
+</script>
+{{ else if .IsHome }}
+<!-- Website Schema -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ .Site.Title }}",
+    "description": "{{ .Site.Params.seo.description }}",
+    "url": "{{ .Site.BaseURL }}",
+    "logo": "{{ .Site.Params.header.logo | absURL }}",
+    "sameAs": [
+      {{ range .Site.Params.social }}
+        "{{ .url }}"{{ if not (eq .url (index .Site.Params.social -1).url) }},{{ end }}
+      {{ end }}
+    ]
+  }
+</script>
+{{ else if .IsSection }}
+<!-- Collection Schema -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "{{ .Title }}",
+    "description": "{{ .Description | default (cond (.Summary) .Summary "") }}",
+    "url": "{{ .Permalink }}"
+  }
+</script>
+{{ end }}

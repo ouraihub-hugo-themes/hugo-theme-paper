@@ -1,0 +1,39 @@
+{{- /*
+Edit Post Component
+参考: astro-paper/src/components/EditPost.astro
+显示编辑文章的链接，指向 GitHub 或其他代码仓库
+*/ -}}
+
+{{- if .Site.Params.editPost.enabled -}}
+  {{- if not .Params.hideEditPost -}}
+    {{- if .File -}}
+      {{- $editUrl := printf "%s%s" .Site.Params.editPost.url .File.Path -}}
+      {{- if ne (trim $editUrl " ") "" -}}
+        <a 
+          href="{{ $editUrl }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex justify-baseline gap-1.5 opacity-80 hover:text-accent transition-colors"
+          title="{{ .Site.Params.editPost.text | default "Edit page" }}"
+        >
+          {{- /* 编辑图标 SVG - 与 AstroPaper 的 IconEdit 一致 */ -}}
+          <svg 
+            class="inline-block w-5 h-5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path 
+              stroke-linecap="round" 
+              stroke-linejoin="round" 
+              stroke-width="2" 
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            />
+          </svg>
+          <span>{{ .Site.Params.editPost.text | default "Edit page" }}</span>
+        </a>
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

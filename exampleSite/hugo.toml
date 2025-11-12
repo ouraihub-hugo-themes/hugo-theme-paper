@@ -1,7 +1,7 @@
 baseURL = "http://localhost:1313/"
 languageCode = "en-us"
 title = "Hugo Paper"
-theme = "."
+theme = "hugo-theme-paper"
 enableInlineShortcodes = true
 enableEmoji = true
 hasCJKLanguage = true
@@ -11,9 +11,9 @@ defaultContentLanguage = "en"
 
 # Outputs
 [outputs]
-  home = ["HTML", "JSON"]
+  home = ["HTML", "RSS", "JSON"]
   page = ["HTML"]
-  section = ["HTML"]
+  section = ["HTML", "RSS"]
 
 # Markup
 [markup]

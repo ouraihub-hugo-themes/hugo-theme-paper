@@ -55,6 +55,7 @@ jobs:
 
       - name: Build assets
         run: |
+          pnpm run ts:build
           pnpm run css:build
 
       - name: Create release package
