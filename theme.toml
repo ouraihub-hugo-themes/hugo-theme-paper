@@ -48,7 +48,3 @@ hugo_version = "0.120+"
   name = "Astro Paper"
   homepage = "https://astro-paper-example.vercel.app"
   repo = "https://github.com/satnaing/astro-paper"
-
-[module]
-  [[module.imports]]
-    path = "github.com/ouraihub-hugo-themes/hugo-theme-paper"

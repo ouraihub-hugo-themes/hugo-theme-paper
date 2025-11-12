@@ -88,24 +88,22 @@
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
+  /* Hugo uses Chroma for syntax highlighting */
+  
+  pre {
+    @apply rounded-lg border border-border bg-muted/30 p-4 overflow-x-auto;
+  }
 
-  /* Note: Hugo uses Chroma for syntax highlighting, not Shiki */
+  pre code {
+    @apply bg-transparent p-0 text-sm;
+  }
 
-  /* These styles may need adjustment based on Hugo's output */
+  /* Chroma syntax highlighting */
   .chroma {
-    @apply flex border bg-background text-foreground outline-border;
+    @apply bg-transparent;
   }
 
-  html[data-theme="dark"] .chroma {
-    @apply bg-background text-foreground;
-  }
-
-  /* Highlighted lines for code blocks */
-  .chroma .line.highlighted {
-    @apply inline-block w-full bg-accent/20;
-  }
-
-  .chroma .highlighted-word {
-    @apply rounded-sm border border-border px-0.5 py-px;
+  html[data-theme="dark"] pre {
+    @apply bg-muted/20;
   }
 }
