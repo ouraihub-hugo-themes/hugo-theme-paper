@@ -1,0 +1,46 @@
+{{- /*
+  Back Button Component
+  参考: astro-paper/src/components/BackButton.astro
+  
+  显示返回按钮，使用 sessionStorage 记录的 backUrl
+*/ -}}
+
+<div class="mx-auto flex w-full max-w-app items-center justify-start px-2">
+  <a
+    id="back-button"
+    href="/"
+    class="focus-outline mt-8 mb-2 flex hover:text-foreground/75"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="inline-block size-6 rtl:rotate-180"
+    >
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    <span>Go back</span>
+  </a>
+</div>
+
+<script>
+  (function() {
+    function updateGoBackUrl() {
+      const backButton = document.querySelector("#back-button");
+      const backUrl = sessionStorage.getItem("backUrl");
+
+      if (backUrl && backButton) {
+        backButton.href = backUrl;
+      }
+    }
+    
+    document.addEventListener("DOMContentLoaded", updateGoBackUrl);
+    updateGoBackUrl();
+  })();
+</script>

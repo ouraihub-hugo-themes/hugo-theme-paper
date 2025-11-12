@@ -1,236 +1,239 @@
 /**
- * Theme Manager
- * Handles dark/light theme switching with system preference detection
+ * Main Script
+ * 参考: astro-paper/src/layouts/PostDetails.astro 中的 <script> 标签
+ * 
+ * 这个脚本在页面加载后运行，处理各种交互功能
+ * 注意：主题切换由 toggle-theme.js 处理，不在这里
  */
-class ThemeManager {
-  private readonly THEME_KEY = 'hugo-paper-theme';
-  private readonly HTML_ELEMENT = document.documentElement;
-  private readonly THEMES = ['light', 'dark'] as const;
-  private currentTheme: 'light' | 'dark';
 
-  constructor() {
-    this.currentTheme = this.getInitialTheme();
-    this.applyTheme(this.currentTheme);
-    this.setupEventListeners();
-  }
+/**
+ * Create a progress indicator at the top
+ * 参考: createProgressBar() in PostDetails.astro
+ */
+function createProgressBar(): void {
+  // Create the main container div
+  const progressContainer = document.createElement("div");
+  progressContainer.className =
+    "progress-container fixed top-0 z-10 h-1 w-full bg-background";
 
-  /**
-   * Get initial theme based on: saved preference > system preference > default
-   */
-  private getInitialTheme(): 'light' | 'dark' {
-    // Check localStorage first
-    const savedTheme = localStorage.getItem(this.THEME_KEY);
-    if (savedTheme && this.THEMES.includes(savedTheme as any)) {
-      return savedTheme as 'light' | 'dark';
+  // Create the progress bar div
+  const progressBar = document.createElement("div");
+  progressBar.className = "progress-bar h-1 w-0 bg-accent";
+  progressBar.id = "myBar";
+
+  // Append the progress bar to the progress container
+  progressContainer.appendChild(progressBar);
+
+  // Append the progress container to the document body
+  document.body.appendChild(progressContainer);
+}
+
+/**
+ * Update the progress bar when user scrolls
+ * 参考: updateScrollProgress() in PostDetails.astro
+ */
+function updateScrollProgress(): void {
+  document.addEventListener("scroll", () => {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    
+    const myBar = document.getElementById("myBar");
+    if (myBar) {
+      myBar.style.width = scrolled + "%";
     }
+  });
+}
 
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
+/**
+ * Attaches links to headings in the document,
+ * allowing sharing of sections easily
+ * 参考: addHeadingLinks() in PostDetails.astro
+ */
+function addHeadingLinks(): void {
+  const headings = Array.from(
+    document.querySelectorAll("h2, h3, h4, h5, h6")
+  );
+  
+  for (const heading of headings) {
+    heading.classList.add("group");
+    const link = document.createElement("a");
+    link.className =
+      "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
+    link.href = "#" + heading.id;
 
-    // Default to light
-    return 'light';
-  }
-
-  /**
-   * Apply theme to DOM
-   */
-  private applyTheme(theme: 'light' | 'dark'): void {
-    this.currentTheme = theme;
-
-    if (theme === 'dark') {
-      this.HTML_ELEMENT.classList.add('dark');
-      this.HTML_ELEMENT.setAttribute('data-theme', 'dark');
-    } else {
-      this.HTML_ELEMENT.classList.remove('dark');
-      this.HTML_ELEMENT.setAttribute('data-theme', 'light');
-    }
-
-    // Update meta theme-color
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-    if (metaThemeColor) {
-      const color = theme === 'dark' ? '#212737' : '#fdfdfd';
-      metaThemeColor.setAttribute('content', color);
-    }
-
-    localStorage.setItem(this.THEME_KEY, theme);
-    this.updateThemeIcons();
-  }
-
-  /**
-   * Update theme toggle icons
-   */
-  private updateThemeIcons(): void {
-    const sunIcon = document.getElementById('sun-icon');
-    const moonIcon = document.getElementById('moon-icon');
-
-    if (sunIcon && moonIcon) {
-      if (this.currentTheme === 'dark') {
-        sunIcon.classList.remove('hidden');
-        moonIcon.classList.add('hidden');
-      } else {
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
-      }
-    }
-  }
-
-  /**
-   * Toggle theme
-   */
-  public toggle(): void {
-    const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
-    this.applyTheme(newTheme);
-  }
-
-  /**
-   * Set specific theme
-   */
-  public setTheme(theme: 'light' | 'dark'): void {
-    if (this.THEMES.includes(theme)) {
-      this.applyTheme(theme);
-    }
-  }
-
-  /**
-   * Get current theme
-   */
-  public getTheme(): 'light' | 'dark' {
-    return this.currentTheme;
-  }
-
-  /**
-   * Setup event listeners for theme toggle
-   */
-  private setupEventListeners(): void {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', () => this.toggle());
-    }
-
-    // Listen for system theme changes
-    if (window.matchMedia) {
-      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      darkModeQuery.addEventListener('change', (e) => {
-        const newTheme = e.matches ? 'dark' : 'light';
-        this.applyTheme(newTheme);
-      });
-    }
+    const span = document.createElement("span");
+    span.ariaHidden = "true";
+    span.innerText = "#";
+    link.appendChild(span);
+    heading.appendChild(link);
   }
 }
 
 /**
- * Mobile Menu Manager
- * Handles mobile navigation menu toggle
+ * Attaches copy buttons to code blocks in the document,
+ * allowing users to copy code easily
+ * 参考: attachCopyButtons() in PostDetails.astro
  */
-class MobileMenuManager {
-  private readonly MENU_BUTTON = document.getElementById('mobile-menu-btn');
-  private readonly MOBILE_MENU = document.getElementById('mobile-menu');
+function attachCopyButtons(): void {
+  const copyButtonLabel = "Copy";
+  const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
-  constructor() {
-    this.setupEventListeners();
-  }
+  for (const codeBlock of codeBlocks) {
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
 
-  private setupEventListeners(): void {
-    if (this.MENU_BUTTON && this.MOBILE_MENU) {
-      this.MENU_BUTTON.addEventListener('click', () => this.toggle());
+    // Check if --file-name-offset custom property exists
+    const computedStyle = getComputedStyle(codeBlock);
+    const hasFileNameOffset =
+      computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
 
-      // Close menu when clicking on a link
-      const links = this.MOBILE_MENU.querySelectorAll('a');
-      links.forEach(link => {
-        link.addEventListener('click', () => this.close());
-      });
+    // Determine the top positioning class
+    const topClass = hasFileNameOffset
+      ? "top-(--file-name-offset)"
+      : "-top-3";
 
-      // Close menu when clicking outside
-      document.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        if (
-          !this.MOBILE_MENU?.contains(target) &&
-          !this.MENU_BUTTON?.contains(target)
-        ) {
-          this.close();
-        }
-      });
-    }
-  }
+    const copyButton = document.createElement("button");
+    copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
+    copyButton.innerHTML = copyButtonLabel;
+    codeBlock.setAttribute("tabindex", "0");
+    codeBlock.appendChild(copyButton);
 
-  private toggle(): void {
-    if (this.MOBILE_MENU?.classList.contains('hidden')) {
-      this.open();
-    } else {
-      this.close();
-    }
-  }
+    // wrap codeblock with relative parent element
+    codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+    wrapper.appendChild(codeBlock);
 
-  private open(): void {
-    this.MOBILE_MENU?.classList.remove('hidden');
-  }
-
-  private close(): void {
-    this.MOBILE_MENU?.classList.add('hidden');
-  }
-}
-
-/**
- * Back to Top Manager
- * Handles back to top button visibility and scroll behavior
- */
-class BackToTopManager {
-  private readonly BUTTON = document.getElementById('back-to-top');
-  private readonly SCROLL_THRESHOLD = 300;
-
-  constructor() {
-    this.setupEventListeners();
-  }
-
-  private setupEventListeners(): void {
-    if (!this.BUTTON) return;
-
-    window.addEventListener('scroll', () => this.updateButtonVisibility(), { passive: true });
-    this.BUTTON.addEventListener('click', () => this.scrollToTop());
-  }
-
-  private updateButtonVisibility(): void {
-    if (!this.BUTTON) return;
-
-    if (window.scrollY > this.SCROLL_THRESHOLD) {
-      this.BUTTON.classList.remove('opacity-0', 'invisible');
-      this.BUTTON.classList.add('opacity-100', 'visible');
-    } else {
-      this.BUTTON.classList.add('opacity-0', 'invisible');
-      this.BUTTON.classList.remove('opacity-100', 'visible');
-    }
-  }
-
-  private scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
+    copyButton.addEventListener("click", async () => {
+      await copyCode(codeBlock, copyButton);
     });
   }
+
+  async function copyCode(block: Element, button: HTMLButtonElement): Promise<void> {
+    const code = block.querySelector("code");
+    const text = code?.innerText;
+
+    await navigator.clipboard.writeText(text ?? "");
+
+    // visual feedback that task is completed
+    button.innerText = "Copied";
+
+    setTimeout(() => {
+      button.innerText = copyButtonLabel;
+    }, 700);
+  }
 }
 
 /**
- * Initialize all managers
+ * Toggle navigation menu (mobile)
+ * 参考: toggleNav() in Header.astro
+ */
+function toggleNav(): void {
+  const menuBtn = document.querySelector("#menu-btn");
+  const menuItems = document.querySelector("#menu-items");
+  const menuIcon = document.querySelector("#menu-icon");
+  const closeIcon = document.querySelector("#close-icon");
+
+  if (!menuBtn || !menuItems || !menuIcon || !closeIcon) return;
+
+  menuBtn.addEventListener("click", () => {
+    const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
+
+    menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
+    menuBtn.setAttribute("aria-label", openMenu ? "Open Menu" : "Close Menu");
+
+    menuItems.classList.toggle("hidden");
+    menuIcon.classList.toggle("hidden");
+    closeIcon.classList.toggle("hidden");
+  });
+}
+
+/**
+ * Scrolls the document to the top when the "Back to Top" button is clicked
+ * 参考: backToTop() in BackToTopButton.astro
+ */
+function backToTop(): void {
+  const rootElement = document.documentElement;
+  const btnContainer = document.querySelector("#btt-btn-container");
+  const backToTopBtn = document.querySelector("[data-button='back-to-top']");
+  const progressIndicator = document.querySelector("#progress-indicator");
+
+  if (!rootElement || !btnContainer || !backToTopBtn || !progressIndicator)
+    return;
+
+  // Attach click event handler for back-to-top button
+  backToTopBtn.addEventListener("click", () => {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  });
+
+  // Handle button visibility according to scroll position
+  let lastVisible: boolean | null = null;
+  function handleScroll(): void {
+    const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
+    const scrollTop = rootElement.scrollTop;
+    const scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
+
+    // Update progress indicator (conic-gradient)
+    if (progressIndicator) {
+      progressIndicator.setAttribute(
+        "style",
+        `background-image: conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`
+      );
+    }
+
+    // Show/hide button when scroll > 30%
+    const isVisible = scrollTop / scrollTotal > 0.3;
+
+    if (isVisible !== lastVisible && btnContainer) {
+      btnContainer.classList.toggle("opacity-100", isVisible);
+      btnContainer.classList.toggle("translate-y-0", isVisible);
+      btnContainer.classList.toggle("opacity-0", !isVisible);
+      btnContainer.classList.toggle("translate-y-14", !isVisible);
+      lastVisible = isVisible;
+    }
+  }
+
+  // Use requestAnimationFrame for better performance
+  let ticking = false;
+  document.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        handleScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+}
+
+
+
+/**
+ * Initialize all features
+ * 只在文章详情页运行某些功能
  */
 function initializeApp(): void {
-  // Theme Manager
-  new ThemeManager();
+  // 汉堡菜单 - 所有页面
+  toggleNav();
 
-  // Mobile Menu Manager
-  new MobileMenuManager();
-
-  // Back to Top Manager
-  new BackToTopManager();
-
-  // Add any additional initialization here
-  console.log('Hugo Paper theme initialized');
+  // 以下功能只在文章详情页运行
+  const isPostPage = document.querySelector("#article") !== null;
+  
+  if (isPostPage) {
+    createProgressBar();
+    updateScrollProgress();
+    addHeadingLinks();
+    attachCopyButtons();
+    backToTop();
+  }
 }
 
 // Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeApp);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeApp);
 } else {
   initializeApp();
 }

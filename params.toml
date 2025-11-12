@@ -1,5 +1,8 @@
 # Site Params
 [params]
+  # 显示 Archives 按钮（参考 AstroPaper 的 SITE.showArchives）
+  showArchives = true
+  
   # Header and Footer
   [params.header]
     enable = true

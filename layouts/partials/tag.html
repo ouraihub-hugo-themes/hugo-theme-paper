@@ -1,0 +1,51 @@
+{{- /*
+  Tag Component
+  参考: astro-paper/src/components/Tag.astro
+  
+  标签组件，显示 # 前缀 + 标签名
+  
+  参数:
+  - . (string): 标签名
+  或传递字典:
+  - tag: 标签 slug
+  - tagName: 标签显示名称
+  - size: "sm" 或 "lg" (默认 "sm")
+*/ -}}
+
+{{- $tag := . -}}
+{{- $tagName := . -}}
+{{- $size := "sm" -}}
+
+{{- if reflect.IsMap . -}}
+  {{- $tag = .tag -}}
+  {{- $tagName = .tagName | default .tag -}}
+  {{- $size = .size | default "sm" -}}
+{{- end -}}
+
+{{- /* 生成标签 URL */ -}}
+{{- $tagURL := printf "/tags/%s/" ($tag | urlize) -}}
+
+<li
+  class="group inline-block group-hover:cursor-pointer{{ if eq $size "sm" }} my-1 underline-offset-4{{ else }} mx-1 my-3 underline-offset-8{{ end }}"
+>
+  <a
+    href="{{ $tagURL | relLangURL }}"
+    class="relative pe-2 text-lg underline decoration-dashed group-hover:-top-0.5 group-hover:text-accent focus-visible:p-1 focus-visible:no-underline{{ if eq $size "sm" }} text-sm{{ end }}"
+  >
+    <svg
+      class="inline-block opacity-80{{ if eq $size "sm" }} -me-3.5 size-4{{ else }} -me-5 size-6{{ end }}"
+      width="{{ if eq $size "sm" }}16{{ else }}24{{ end }}"
+      height="{{ if eq $size "sm" }}16{{ else }}24{{ end }}"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4 7v10M20 7v10M10 4l3 3l3-3M10 20l3-3l3 3"/>
+    </svg>
+    &nbsp;<span>{{ $tagName }}</span>
+  </a>
+</li>

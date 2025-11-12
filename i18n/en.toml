@@ -1,0 +1,43 @@
+# English Translations for Hugo Paper Theme
+
+[nav]
+posts = "Posts"
+tags = "Tags"
+about = "About"
+archives = "Archives"
+search = "Search"
+
+[ui]
+allPosts = "All Posts"
+featured = "Featured"
+recentPosts = "Recent Posts"
+readMore = "Read more"
+backToTop = "Back To Top"
+goBack = "Go back"
+updated = "Updated:"
+published = "Published:"
+shareOn = "Share this post on:"
+suggestChanges = "Suggest Changes"
+skipToContent = "Skip to content"
+
+[action]
+copy = "Copy"
+copied = "Copied"
+previous = "Previous"
+next = "Next"
+
+[footer]
+copyright = "Copyright ©"
+allRightsReserved = "All rights reserved."
+socialLinks = "Social Links:"
+
+[language]
+switchTo = "Switch to"
+
+[time]
+minuteRead = "{{ .Count }} min read"
+minutesRead = "{{ .Count }} min read"
+
+[search]
+placeholder = "Search posts..."
+noResults = "No results found"

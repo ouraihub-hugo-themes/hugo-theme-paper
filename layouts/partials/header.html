@@ -1,161 +1,206 @@
-{{ if .Site.Params.header.enable }}
-<header
-  class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
->
+{{- /*
+  Header Component
+  参考: astro-paper/src/components/Header.astro
+  
+  完全对齐 AstroPaper 的导航栏设计
+*/ -}}
+
+<header>
   <a
     id="skip-to-content"
     href="#main-content"
     class="absolute start-16 -top-full z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
   >
-    Skip to content
+    {{ i18n "ui.skipToContent" | default "Skip to content" }}
   </a>
-  <div class="container-wrapper">
-    <div class="flex items-center justify-between h-16">
-      <!-- Logo -->
+  <div
+    id="nav-container"
+    class="mx-auto flex max-w-app flex-col items-center justify-between"
+  >
+    <div
+      id="top-nav-wrap"
+      class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"
+    >
       <a
-        href="/"
-        class="flex items-center gap-3 hover:opacity-80 transition-opacity"
+        href="{{ "/" | relLangURL }}"
+        class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
       >
-        {{ if .Site.Params.header.logo }}
-        <img
-          src="{{ .Site.Params.header.logo }}"
-          alt="{{ .Site.Title }}"
-          width="{{ .Site.Params.header.logoWidth | default 40 }}"
-          height="{{ .Site.Params.header.logoHeight | default 40 }}"
-          class="h-10 w-10"
-        />
-        {{ end }}
-        <span class="font-bold text-lg"
-          >{{ .Site.Params.header.logoText | default .Site.Title }}</span
-        >
+        {{ .Site.Title }}
       </a>
-
-      <!-- Navigation -->
-      <nav class="hidden md:flex items-center gap-8">
-        {{ range .Site.Menus.main }}
-        {{ $active := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
-        {{ $isActive := false }}
-        {{ if $active }}
-          {{ $isActive = true }}
-        {{ else }}
-          {{/* 特殊处理：检查当前路径是否匹配菜单项 */}}
-          {{ $currentPath := $.Page.RelPermalink }}
-          {{ $menuPath := .URL }}
-          {{/* 移除尾部斜杠进行比较 */}}
-          {{ $currentPath = strings.TrimSuffix $currentPath "/" }}
-          {{ $menuPath = strings.TrimSuffix $menuPath "/" }}
-          {{/* 精确匹配或路径前缀匹配 */}}
-          {{ if or (eq $currentPath $menuPath) (hasPrefix $currentPath (printf "%s/" $menuPath)) }}
-            {{ $isActive = true }}
-          {{ end }}
-        {{ end }}
-        <a
-          href="{{ .URL }}"
-          class="text-foreground hover:text-accent transition-colors duration-200 {{ if $isActive }}active-nav{{ end }}"
+      <nav
+        id="nav-menu"
+        class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
+      >
+        <button
+          id="menu-btn"
+          class="focus-outline self-end p-2 sm:hidden"
+          aria-label="Open Menu"
+          aria-expanded="false"
+          aria-controls="menu-items"
         >
-          {{ .Name }}
-        </a>
-        {{ end }}
+          <svg id="close-icon" class="hidden size-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+          <svg id="menu-icon" class="size-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+        </button>
+        <ul
+          id="menu-items"
+          class="mt-4 grid w-44 grid-cols-2 place-content-center gap-2 [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1 hidden sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0"
+        >
+          {{- /* 导航菜单项 */ -}}
+          {{- range .Site.Menus.main -}}
+            {{- $isActive := false -}}
+            
+            {{- /* 获取当前页面路径，移除尾部斜杠（除了根路径） */ -}}
+            {{- $currentPath := $.Page.RelPermalink -}}
+            {{- if and (strings.HasSuffix $currentPath "/") (ne $currentPath "/") -}}
+              {{- $currentPath = strings.TrimSuffix "/" $currentPath -}}
+            {{- end -}}
+            
+            {{- /* 获取菜单路径，移除尾部斜杠（除了根路径） */ -}}
+            {{- $menuPath := .URL -}}
+            {{- if and (strings.HasSuffix $menuPath "/") (ne $menuPath "/") -}}
+              {{- $menuPath = strings.TrimSuffix "/" $menuPath -}}
+            {{- end -}}
+            
+            {{- /* 分割路径为数组 */ -}}
+            {{- $currentPathParts := split $currentPath "/" -}}
+            {{- $menuPathParts := split $menuPath "/" -}}
+            
+            {{- /* 过滤空字符串 */ -}}
+            {{- $currentPathArray := slice -}}
+            {{- range $currentPathParts -}}
+              {{- if ne . "" -}}
+                {{- $currentPathArray = $currentPathArray | append . -}}
+              {{- end -}}
+            {{- end -}}
+            
+            {{- $menuPathArray := slice -}}
+            {{- range $menuPathParts -}}
+              {{- if ne . "" -}}
+                {{- $menuPathArray = $menuPathArray | append . -}}
+              {{- end -}}
+            {{- end -}}
+            
+            {{- /* 检查是否匹配：完整路径相同 或 第一段路径相同 */ -}}
+            {{- if eq $currentPath $menuPath -}}
+              {{- $isActive = true -}}
+            {{- else if and (gt (len $currentPathArray) 0) (gt (len $menuPathArray) 0) -}}
+              {{- if eq (index $currentPathArray 0) (index $menuPathArray 0) -}}
+                {{- $isActive = true -}}
+              {{- end -}}
+            {{- end -}}
+            
+            <li class="col-span-2">
+              <a href="{{ .URL | relLangURL }}" class="{{ if $isActive }}active-nav{{ end }}">
+                {{ .Name }}
+              </a>
+            </li>
+          {{- end -}}
+          
+          {{- /* Archives 按钮 - 在 About 之后 */ -}}
+          {{- if .Site.Params.showArchives -}}
+          <li class="col-span-2">
+            {{- $isArchivesActive := false -}}
+            {{- $currentPath := $.Page.RelPermalink -}}
+            {{- if and (strings.HasSuffix $currentPath "/") (ne $currentPath "/") -}}
+              {{- $currentPath = strings.TrimSuffix "/" $currentPath -}}
+            {{- end -}}
+            
+            {{- $archivesPath := "/archives" -}}
+            {{- $currentPathParts := split $currentPath "/" -}}
+            {{- $archivesPathParts := split $archivesPath "/" -}}
+            
+            {{- $currentPathArray := slice -}}
+            {{- range $currentPathParts -}}
+              {{- if ne . "" -}}
+                {{- $currentPathArray = $currentPathArray | append . -}}
+              {{- end -}}
+            {{- end -}}
+            
+            {{- $archivesPathArray := slice -}}
+            {{- range $archivesPathParts -}}
+              {{- if ne . "" -}}
+                {{- $archivesPathArray = $archivesPathArray | append . -}}
+              {{- end -}}
+            {{- end -}}
+            
+            {{- if eq $currentPath $archivesPath -}}
+              {{- $isArchivesActive = true -}}
+            {{- else if and (gt (len $currentPathArray) 0) (gt (len $archivesPathArray) 0) -}}
+              {{- if eq (index $currentPathArray 0) (index $archivesPathArray 0) -}}
+                {{- $isArchivesActive = true -}}
+              {{- end -}}
+            {{- end -}}
+            
+            <a
+              href="{{ "/archives/" | relLangURL }}"
+              class="focus-outline flex justify-center p-3 sm:p-1 {{ if $isArchivesActive }}active-nav [&>svg]:stroke-accent{{ end }}"
+              aria-label="archives"
+              title="{{ i18n "nav.archives" | default "Archives" }}"
+            >
+              <svg class="hidden sm:inline-block size-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="5" x="2" y="3" rx="1"/>
+                <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/>
+              </svg>
+              <span class="sm:sr-only">{{ i18n "nav.archives" | default "Archives" }}</span>
+            </a>
+          </li>
+          {{- end -}}
+          
+          {{- /* Search 按钮 */ -}}
+          <li class="col-span-1 flex items-center justify-center">
+            {{- $isSearchActive := false -}}
+            {{- $currentPath := strings.TrimSuffix "/" $.Page.RelPermalink -}}
+            {{- if or (eq $currentPath "/search") (hasPrefix $currentPath "/search/") -}}
+              {{- $isSearchActive = true -}}
+            {{- end -}}
+            <a
+              href="{{ "/search/" | relLangURL }}"
+              class="focus-outline flex p-3 sm:p-1 {{ if $isSearchActive }}[&>svg]:stroke-accent{{ end }}"
+              aria-label="search"
+              title="{{ i18n "nav.search" | default "Search" }}"
+            >
+              <svg class="size-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+              </svg>
+              <span class="sr-only">{{ i18n "nav.search" | default "Search" }}</span>
+            </a>
+          </li>
+          
+          {{- /* 语言切换按钮 */ -}}
+          {{- if hugo.IsMultilingual -}}
+          <li class="col-span-1 flex items-center justify-center">
+            {{ partial "language-switcher.html" . }}
+          </li>
+          {{- end -}}
+          
+          {{- /* 主题切换按钮 */ -}}
+          {{- if .Site.Params.theme.switchTheme -}}
+          <li class="col-span-1 flex items-center justify-center">
+            <button
+              id="theme-btn"
+              class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
+              title="Toggles light & dark"
+              aria-label="auto"
+              aria-live="polite"
+            >
+              <svg id="moon-svg" class="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+              <svg id="sun-svg" class="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+              </svg>
+            </button>
+          </li>
+          {{- end -}}
+        </ul>
       </nav>
-
-      <!-- Right Actions -->
-      <div class="flex items-center gap-4">
-        <!-- Theme Toggle -->
-        {{ if .Site.Params.theme.switchTheme }}
-        <button
-          id="theme-toggle"
-          class="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
-          aria-label="Toggle theme"
-        >
-          {{ if eq .Site.Params.theme.switchThemeIcon "sun" }}
-          <svg
-            id="sun-icon"
-            class="w-5 h-5 hidden"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L13.22 3.22a1 1 0 010-1.414zm2.828 2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zM10 7a3 3 0 110 6 3 3 0 010-6zm0-2a5 5 0 110 10 5 5 0 010-10zm4.22 12.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zm2.828-2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zM10 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm-4.22-1.78a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L5.78 16.22a1 1 0 010-1.414zm-2.828-2.828a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414L2.34 13.46a1 1 0 010-1.414zM5 7a1 1 0 110 2 1 1 0 010-2z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          <svg
-            id="moon-icon"
-            class="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-            />
-          </svg>
-          {{ else }}
-          <!-- Toggle Icon -->
-          <svg
-            id="toggle-icon"
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8 12a4 4 0 018 0" />
-          </svg>
-          {{ end }}
-        </button>
-        {{ end }}
-
-        <!-- Mobile Menu Button -->
-        <button
-          id="mobile-menu-btn"
-          class="md:hidden p-2 rounded-lg hover:bg-muted transition-colors duration-200"
-          aria-label="Toggle menu"
-        >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      </div>
     </div>
-
-    <!-- Mobile Menu -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4 border-t border-border">
-      {{ range .Site.Menus.main }}
-      {{ $active := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
-      {{ $isActive := false }}
-      {{ if $active }}
-        {{ $isActive = true }}
-      {{ else }}
-        {{/* 特殊处理：检查当前路径是否匹配菜单项 */}}
-        {{ $currentPath := $.Page.RelPermalink }}
-        {{ $menuPath := .URL }}
-        {{/* 移除尾部斜杠进行比较 */}}
-        {{ $currentPath = strings.TrimSuffix $currentPath "/" }}
-        {{ $menuPath = strings.TrimSuffix $menuPath "/" }}
-        {{/* 精确匹配或路径前缀匹配 */}}
-        {{ if or (eq $currentPath $menuPath) (hasPrefix $currentPath (printf "%s/" $menuPath)) }}
-          {{ $isActive = true }}
-        {{ end }}
-      {{ end }}
-      <a
-        href="{{ .URL }}"
-        class="block px-4 py-2 hover:bg-muted rounded-lg transition-colors duration-200 {{ if $isActive }}active-nav{{ end }}"
-      >
-        {{ .Name }}
-      </a>
-      {{ end }}
-    </nav>
   </div>
+  {{ partial "hr.html" . }}
 </header>
-{{ end }}

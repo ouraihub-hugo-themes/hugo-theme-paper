@@ -1,0 +1,64 @@
+{{- /*
+  Datetime Component
+  参考: astro-paper/src/components/Datetime.astro
+  
+  显示文章日期，带日历图标
+  
+  参数:
+  - . (Page): 文章页面对象
+  - size: "sm" 或 "lg" (默认 "sm")
+  - class: 额外的 CSS 类
+  
+  如果传递字典:
+  - page: 文章页面对象
+  - size: "sm" 或 "lg"
+  - class: 额外的 CSS 类
+*/ -}}
+
+{{- $page := . -}}
+{{- $size := "sm" -}}
+{{- $class := "" -}}
+
+{{- if reflect.IsMap . -}}
+  {{- $page = .page -}}
+  {{- $size = .size | default "sm" -}}
+  {{- $class = .class | default "" -}}
+{{- end -}}
+
+{{- $pubDate := $page.Date -}}
+{{- $modDate := $page.Lastmod -}}
+{{- $isModified := false -}}
+
+{{- if and $modDate (gt $modDate $pubDate) -}}
+  {{- $isModified = true -}}
+{{- end -}}
+
+{{- $datetime := $pubDate -}}
+{{- if $isModified -}}
+  {{- $datetime = $modDate -}}
+{{- end -}}
+
+<div class="flex items-center gap-x-2 opacity-80{{ if $class }} {{ $class }}{{ end }}">
+  <svg
+    class="inline-block size-6 min-w-[1.375rem]{{ if eq $size "sm" }} scale-90{{ end }}"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path>
+    <path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path>
+  </svg>
+  {{- if $isModified -}}
+    <span class="text-sm{{ if eq $size "lg" }} sm:text-base{{ end }}">
+      {{ i18n "ui.updated" | default "Updated:" }}
+    </span>
+  {{- end -}}
+  <time
+    class="text-sm{{ if eq $size "lg" }} sm:text-base{{ end }}"
+    datetime="{{ $datetime.Format "2006-01-02T15:04:05Z07:00" }}"
+  >
+    {{ $datetime.Format "2 Jan, 2006" }}
+  </time>
+</div>

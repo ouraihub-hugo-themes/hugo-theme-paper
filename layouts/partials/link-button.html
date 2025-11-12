@@ -1,0 +1,65 @@
+{{- /*
+  LinkButton Component
+  参考: astro-paper/src/components/LinkButton.astro
+  
+  链接按钮组件，支持内部和外部链接
+  
+  参数（必须传递字典）:
+  - href: 链接地址
+  - text: 链接文本（可选，如果使用 slot 则不需要）
+  - class: 额外的 CSS 类
+  - ariaLabel: aria-label 属性
+  - title: title 属性
+  - disabled: 是否禁用（默认 false）
+  
+  使用方式:
+  {{ partial "link-button.html" (dict "href" "/posts/" "text" "All Posts") }}
+  
+  或使用 slot（通过 content 参数）:
+  {{ partial "link-button.html" (dict "href" "/posts/" "content" "<span>All Posts</span>") }}
+*/ -}}
+
+{{- $href := .href | default "#" -}}
+{{- $text := .text | default "" -}}
+{{- $content := .content | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $ariaLabel := .ariaLabel | default "" -}}
+{{- $title := .title | default "" -}}
+{{- $disabled := .disabled | default false -}}
+{{- $id := .id | default "" -}}
+
+{{- /* 判断是否为外部链接 */ -}}
+{{- $isExternal := false -}}
+{{- if or (hasPrefix $href "http://") (hasPrefix $href "https://") (hasPrefix $href "//") -}}
+  {{- $isExternal = true -}}
+{{- end -}}
+
+{{- if $disabled -}}
+  <span
+    {{- if $id }} id="{{ $id }}"{{ end }}
+    class="group inline-block{{ if $class }} {{ $class }}{{ end }}"
+    {{- if $title }} title="{{ $title }}"{{ end }}
+    aria-disabled="true"
+  >
+    {{- if $content -}}
+      {{ $content | safeHTML }}
+    {{- else -}}
+      {{ $text }}
+    {{- end -}}
+  </span>
+{{- else -}}
+  <a
+    {{- if $id }} id="{{ $id }}"{{ end }}
+    href="{{ $href }}"
+    class="group inline-block hover:text-accent{{ if $class }} {{ $class }}{{ end }}"
+    {{- if $ariaLabel }} aria-label="{{ $ariaLabel }}"{{ end }}
+    {{- if $title }} title="{{ $title }}"{{ end }}
+    {{- if $isExternal }} target="_blank" rel="noopener noreferrer"{{ end }}
+  >
+    {{- if $content -}}
+      {{ $content | safeHTML }}
+    {{- else -}}
+      {{ $text }}
+    {{- end -}}
+  </a>
+{{- end -}}

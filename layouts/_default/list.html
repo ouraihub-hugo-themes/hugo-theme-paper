@@ -1,100 +1,43 @@
-{{ define "main" }}
-<!-- Hero Section -->
-<section id="hero" class="pt-8 pb-6">
-  <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-    {{ .Site.Params.home.title | default "Mingalaba" }}
-  </h1>
-  {{- /* RSS Feed Link */ -}}
-  {{- with .OutputFormats.Get "rss" -}}
-  <a
-    href="{{ .RelPermalink }}"
-    target="_blank"
-    rel="noopener noreferrer"
-    title="RSS Feed"
-    aria-label="rss feed"
-    class="inline-block"
-  >
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      class="scale-125 stroke-accent stroke-3 rtl:-rotate-90"
-    >
-      <path
-        d="M5 3a1 1 0 011-1h8a1 1 0 011 1v8a6 6 0 11-6 6v-8z"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-    <span class="sr-only">RSS Feed</span>
-  </a>
-  {{- end -}}
-
-  <p>
-    {{ .Site.Params.home.subtitle | default "A minimal, responsive, accessible and SEO-friendly Hugo blog theme." }}
-  </p>
-  <p class="mt-2">
-    Read the blog posts or check
-    <a
-      href="https://github.com/ouraihub-hugo-themes/hugo-theme-paper#readme"
-      class="underline decoration-dashed underline-offset-4 hover:text-accent"
-    >
-      README
-    </a> for more info.
-  </p>
+{{- define "main" -}}
+  {{- /* Breadcrumb */ -}}
+  {{ partial "breadcrumb.html" . }}
   
-  {{- /* Social Links */ -}}
-  {{- if .Site.Params.social -}}
-  <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-    <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
-    {{ partial "socials.html" . }}
-  </div>
-  {{- end -}}
-</section>
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-app px-4 pb-4"
+    data-backurl="{{ .Permalink }}"
+  >
+    {{- /* Page Title */ -}}
+    <h1 class="text-2xl font-semibold sm:text-3xl">
+      {{ .Title }}
+    </h1>
+    
+    {{- /* Page Description */ -}}
+    {{- if .Description }}
+      <p class="mt-2 mb-6 italic">{{ .Description }}</p>
+    {{- else if eq .Kind "section" }}
+      <p class="mt-2 mb-6 italic">All the articles I've posted.</p>
+    {{- end }}
+    
+    {{- /* Posts List */ -}}
+    <ul>
+      {{- range .Pages }}
+        {{ partial "card.html" . }}
+      {{- end }}
+    </ul>
+  </main>
 
-<hr class="my-8 border-dashed border-border" />
+  {{- /* Pagination */ -}}
+  {{ partial "pagination.html" . }}
 
-<!-- Featured Posts -->
-{{ $featured := where .Site.RegularPages "Params.featured" true }}
-{{ if gt (len $featured) 0 }}
-<section id="featured" class="pt-12 pb-6">
-  <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
-  <ul>
-    {{ range first (.Site.Params.home.featuredPostCount | default 3) $featured }}
-    {{ partial "post-card.html" . }}
-    {{ end }}
-  </ul>
-</section>
-{{ if gt (len (where .Site.RegularPages "Type" "post")) 0 }}
-<hr class="my-8 border-dashed border-border" />
-{{ end }}
-{{ end }}
-
-<!-- Recent Posts -->
-{{ $recent := where .Site.RegularPages "Type" "post" }}
-{{ if gt (len $recent) 0 }}
-<section id="recent-posts" class="pt-12 pb-6">
-  <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
-  <ul>
-    {{ range first (.Site.Params.home.recentPostCount | default 4) $recent }}
-    {{ if ne .File.BaseFileName "_index" }}
-    {{ partial "post-card.html" . }}
-    {{ end }}
-    {{ end }}
-  </ul>
-</section>
-{{ end }}
-
-<div class="my-8 text-center">
-  <a href="/posts/" class="inline-flex items-center gap-2 text-accent hover:text-accent/80 underline decoration-dashed underline-offset-4">
-    All Posts
-    <svg class="inline-block rtl:-rotate-180" width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </a>
-</div>
-{{ end }}
+  {{- /* Back URL tracking script */ -}}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const mainContent = document.querySelector("#main-content");
+      const backUrl = mainContent?.dataset?.backurl;
+      if (backUrl) {
+        sessionStorage.setItem("backUrl", backUrl);
+      }
+    });
+  </script>
+{{- end -}}

@@ -70,6 +70,10 @@
       @apply rounded bg-muted/75 p-1 break-words text-foreground before:content-none after:content-none;
     }
 
+    .astro-code code {
+      @apply flex-[1_0_100%] bg-inherit p-0;
+    }
+
     blockquote {
       @apply border-s-accent/80 break-words opacity-80;
     }
@@ -88,22 +92,112 @@
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
-  /* Hugo uses Chroma for syntax highlighting */
-  
-  pre {
-    @apply rounded-lg border border-border bg-muted/30 p-4 overflow-x-auto;
+  /* Hugo Chroma 生成的代码块样式 */
+  .highlight {
+    @apply my-6 relative;
   }
 
-  pre code {
-    @apply bg-transparent p-0 text-sm;
+  .highlight pre {
+    @apply rounded-lg border border-border p-4 overflow-x-auto;
+    /* Hugo 的 Chroma 已经通过 noClasses=true 生成了内联样式 */
+    /* 这里只需要添加布局相关的样式 */
   }
 
-  /* Chroma syntax highlighting */
+  /* 文件名标签样式 (类似 Shiki 的 transformerFileName) */
+  .highlight[data-filename]::before {
+    content: attr(data-filename);
+    @apply absolute -top-3 left-3 z-10 rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium;
+  }
+
+  /* 如果使用 Shiki (Astro) */
+  .astro-code {
+    @apply flex border border-border rounded-lg p-4 overflow-x-auto bg-(--shiki-light-bg) text-(--shiki-light) [&_span]:text-(--shiki-light);
+  }
+
+  html[data-theme="dark"] .astro-code {
+    @apply bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
+  }
+
+  /* Styles for Shiki transformers */
+  /* https://shiki.style/packages/transformers */
+  .astro-code {
+    .line.diff.add {
+      @apply relative inline-block w-full bg-green-400/20 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
+    }
+    .line.diff.remove {
+      @apply relative inline-block w-full bg-red-500/20 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
+    }
+    .line.highlighted {
+      @apply inline-block w-full bg-slate-400/20;
+    }
+    .highlighted-word {
+      @apply rounded-sm border border-border px-0.5 py-px;
+    }
+  }
+
+  /* Chroma syntax highlighting - override colors */
   .chroma {
-    @apply bg-transparent;
+    @apply bg-transparent text-foreground;
+  }
+
+  .chroma .err,
+  .chroma .k,
+  .chroma .kc,
+  .chroma .kd,
+  .chroma .kn,
+  .chroma .kp,
+  .chroma .kr,
+  .chroma .kt,
+  .chroma .n,
+  .chroma .na,
+  .chroma .nb,
+  .chroma .nc,
+  .chroma .no,
+  .chroma .nd,
+  .chroma .ni,
+  .chroma .ne,
+  .chroma .nf,
+  .chroma .nl,
+  .chroma .nn,
+  .chroma .nt,
+  .chroma .nv,
+  .chroma .s,
+  .chroma .sa,
+  .chroma .sb,
+  .chroma .sc,
+  .chroma .dl,
+  .chroma .sd,
+  .chroma .s2,
+  .chroma .se,
+  .chroma .sh,
+  .chroma .si,
+  .chroma .sx,
+  .chroma .sr,
+  .chroma .s1,
+  .chroma .ss,
+  .chroma .m,
+  .chroma .mb,
+  .chroma .mf,
+  .chroma .mh,
+  .chroma .mi,
+  .chroma .il,
+  .chroma .mo,
+  .chroma .o,
+  .chroma .ow,
+  .chroma .p,
+  .chroma .c,
+  .chroma .ch,
+  .chroma .cm,
+  .chroma .c1,
+  .chroma .cs,
+  .chroma .cp,
+  .chroma .cpf {
+    @apply text-foreground;
+
+    color: inherit !important;
   }
 
   html[data-theme="dark"] pre {
-    @apply bg-muted/20;
+    @apply bg-muted/15;
   }
 }

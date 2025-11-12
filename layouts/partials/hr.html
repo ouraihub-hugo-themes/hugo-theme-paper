@@ -1,0 +1,19 @@
+{{- /*
+  Hr Component
+  参考: astro-paper/src/components/Hr.astro
+  
+  显示水平分隔线
+  
+  参数:
+  - 如果传递字典: { "noPadding": true/false }
+  - 如果传递页面上下文: 默认 noPadding = false
+*/ -}}
+
+{{- $noPadding := false }}
+{{- if reflect.IsMap . }}
+  {{- $noPadding = .noPadding | default false }}
+{{- end }}
+
+<div class="mx-auto max-w-app{{ if not $noPadding }} px-4{{ end }}">
+  <hr class="border-border" aria-hidden="true" />
+</div>

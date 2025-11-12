@@ -5,6 +5,9 @@
   显示社交媒体链接列表
   从 .Site.Params.social 读取配置
   
+  参数:
+  - centered: 是否居中显示（默认 false）
+  
   配置格式:
   [[params.social]]
     name = "GitHub"
@@ -12,8 +15,13 @@
     linkTitle = "Follow on GitHub"
 */ -}}
 
+{{- $centered := false }}
+{{- if reflect.IsMap . }}
+  {{- $centered = .centered | default false }}
+{{- end }}
+
 {{- if .Site.Params.social -}}
-<div class="flex flex-wrap justify-center gap-1">
+<div class="flex-wrap justify-center gap-1{{ if $centered }} flex{{ end }}">
   {{- range .Site.Params.social -}}
     {{- $name := .name | lower -}}
     {{- $href := .href -}}

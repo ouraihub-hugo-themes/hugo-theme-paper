@@ -1,0 +1,40 @@
+{{- /*
+  Card Component
+  参考: astro-paper/src/components/Card.astro
+  
+  文章卡片组件，用于列表页面
+  
+  参数:
+  - . (Page): 文章页面对象（默认）
+  
+  如果需要指定 variant，传递字典:
+  - page: 文章页面对象
+  - variant: "h2" 或 "h3" (默认 "h2")
+*/ -}}
+
+{{- $page := . -}}
+{{- $variant := "h2" -}}
+
+{{- if reflect.IsMap . -}}
+  {{- $page = .page | default . -}}
+  {{- $variant = .variant | default "h2" -}}
+{{- end -}}
+
+<li class="my-6">
+  <a
+    href="{{ $page.Permalink }}"
+    class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+  >
+    {{- if eq $variant "h2" -}}
+      <h2 class="text-lg font-medium decoration-dashed hover:underline">
+        {{ $page.Title }}
+      </h2>
+    {{- else -}}
+      <h3 class="text-lg font-medium decoration-dashed hover:underline">
+        {{ $page.Title }}
+      </h3>
+    {{- end -}}
+  </a>
+  {{ partial "datetime.html" $page }}
+  <p>{{ $page.Description | default $page.Summary }}</p>
+</li>

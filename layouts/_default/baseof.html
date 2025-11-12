@@ -1,145 +1,123 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ .Site.Language.Lang }}" dir="{{ .Site.Params.direction | default "ltr" }}">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="{{ .Description | default .Site.Params.description }}"
-    />
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ .Permalink }}" />
+    
+    <!-- Generator -->
+    <meta name="generator" content="{{ hugo.Generator }}" />
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="{{ .Site.Params.colors.primary }}" />
+    <!-- General Meta Tags -->
+    <title>{{ .Title | default .Site.Title }}</title>
+    <meta name="title" content="{{ .Title | default .Site.Title }}" />
+    <meta name="description" content="{{ .Description | default .Site.Params.description }}" />
+    <meta name="author" content="{{ .Site.Params.author }}" />
+    <link rel="sitemap" href="/sitemap.xml" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}" />
-    <meta property="og:url" content="{{ .Permalink }}" />
     <meta property="og:title" content="{{ .Title | default .Site.Title }}" />
-    <meta
-      property="og:description"
-      content="{{ .Description | default .Site.Params.description }}"
-    />
+    <meta property="og:description" content="{{ .Description | default .Site.Params.description }}" />
+    <meta property="og:url" content="{{ .Permalink }}" />
     {{- if .Params.image }}
       <meta property="og:image" content="{{ .Params.image | absURL }}" />
-    {{- else if .Site.Params.seo.ogImage }}
-      <meta property="og:image" content="{{ .Site.Params.seo.ogImage | absURL }}" />
+    {{- else if .Site.Params.ogImage }}
+      <meta property="og:image" content="{{ .Site.Params.ogImage | absURL }}" />
+    {{- end }}
+
+    <!-- Article Published/Modified time -->
+    {{- if .PublishDate }}
+      <meta property="article:published_time" content="{{ .PublishDate.Format "2006-01-02T15:04:05Z07:00" }}" />
+    {{- end }}
+    {{- if .Lastmod }}
+      <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}" />
     {{- end }}
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="{{ .Permalink }}" />
     <meta property="twitter:title" content="{{ .Title | default .Site.Title }}" />
-    <meta
-      property="twitter:description"
-      content="{{ .Description | default .Site.Params.description }}"
-    />
-    {{- if .Site.Params.seo.twitterHandle }}
-      <meta property="twitter:creator" content="{{ .Site.Params.seo.twitterHandle }}" />
+    <meta property="twitter:description" content="{{ .Description | default .Site.Params.description }}" />
+    {{- if .Params.image }}
+      <meta property="twitter:image" content="{{ .Params.image | absURL }}" />
+    {{- else if .Site.Params.ogImage }}
+      <meta property="twitter:image" content="{{ .Site.Params.ogImage | absURL }}" />
     {{- end }}
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="{{ .Permalink }}" />
-
-    <!-- Alternate Links -->
-    {{ range .AllTranslations }}
-      <link
-        rel="alternate"
-        hreflang="{{ .Language.Lang }}"
-        href="{{ .Permalink }}"
-      />
-    {{ end }}
-
-    <!-- RSS Feed -->
-    {{ if eq .Kind "home" }}
-      <link
-        rel="alternate"
-        type="application/rss+xml"
-        title="{{ .Site.Title }}"
-        href="{{ .Site.Home.RelPermalink }}index.xml"
-      />
-    {{ end }}
-
-    <!-- Anti-flicker script - must run before CSS loads -->
-    <script>
-      (function() {
-        const theme = localStorage.getItem('hugo-paper-theme') || 
-                      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    </script>
-
-    <!-- CSS -->
-    <!-- Pre-built by Tailwind CLI, no PostCSS processing needed -->
-    <link rel="stylesheet" href="/css/main.css" />
-
-    <!-- Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Google Analytics (Optional) -->
-    {{ if and .Site.Params.analytics.enable (eq .Site.Params.analytics.provider "google") }}
-      {{ template "_internal/google_analytics.html" . }}
-    {{ end }}
-
-    <!-- SEO Meta Tags -->
-    {{ partial "seo-meta.html" . }}
 
     <!-- JSON-LD Structured Data -->
     {{ partial "schema.html" . }}
 
-    <!-- Title -->
-    <title>{{ .Title | default .Site.Title }}{{ if not .IsHome }} - {{ .Site.Title }}{{ end }}</title>
+    <!-- RSS Feed Auto-discovery -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="{{ .Site.Title }}"
+      href="{{ "index.xml" | absURL }}"
+    />
 
-    <!-- Custom Head -->
-    {{ partial "head-custom.html" . }}
+    <!-- Multi-language Support - hreflang links -->
+    {{- if hugo.IsMultilingual }}
+      {{- if .IsTranslated }}
+        {{- /* 为所有翻译版本添加 hreflang */ -}}
+        {{- range .AllTranslations }}
+          <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" />
+        {{- end }}
+        {{- /* x-default 指向默认语言版本 */ -}}
+        {{- $defaultLang := site.Params.defaultContentLanguage | default "en" }}
+        {{- range .AllTranslations }}
+          {{- if eq .Language.Lang $defaultLang }}
+            <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+          {{- end }}
+        {{- end }}
+      {{- else }}
+        {{- /* 当前页面没有翻译，只添加当前语言的 hreflang */ -}}
+        <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" />
+        {{- $defaultLang := site.Params.defaultContentLanguage | default "en" }}
+        {{- if eq .Language.Lang $defaultLang }}
+          <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+        {{- end }}
+      {{- end }}
+    {{- end }}
+
+    <meta name="theme-color" content="" />
+
+    <!-- Google Analytics (Optional) -->
+    {{- if and .Site.Params.analytics.enable (eq .Site.Params.analytics.provider "google") }}
+      {{ template "_internal/google_analytics.html" . }}
+    {{- end }}
+
+    <!-- Theme toggle script - must run before body renders to prevent flash -->
+    <script src="/toggle-theme.js"></script>
+
+    <!-- Web Fonts - IBM Plex Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css" />
   </head>
 
-  <body class="bg-background text-foreground transition-colors duration-300">
-    <!-- Reading Progress Bar -->
-    {{ partial "reading-progress.html" . }}
-
-    <!-- Header -->
+  <body class="flex min-h-svh flex-col bg-background font-mono text-foreground">
     {{ partial "header.html" . }}
-
-    <!-- Main Content -->
-    <main id="main-content" class="container-wrapper py-8 md:py-12">
-      {{ block "main" . }}{{ end }}
-    </main>
-
-    <!-- Footer -->
+    
+    {{ block "main" . }}{{ end }}
+    
     {{ partial "footer.html" . }}
 
-    <!-- Back to top button -->
-    {{ partial "back-to-top.html" . }}
-
-    <!-- Inline SVG Icons -->
-    {{ partial "icons.html" . }}
-
     <!-- Scripts -->
-    {{ $ts := resources.Get "ts/main.ts" | js.Build (dict "minified" true) }}
-    <script defer src="{{ $ts.RelPermalink }}"></script>
-
-    <!-- Code Copy Functionality -->
-    {{ partial "code-copy.html" . }}
-
-    <!-- Keyboard Shortcuts -->
-    {{ partial "keyboard-shortcuts.html" . }}
-
-    <!-- Performance Optimization -->
-    {{ partial "performance.html" . }}
-
-    <!-- Custom Scripts -->
-    {{ partial "scripts-custom.html" . }}
+    {{- $ts := resources.Get "ts/main.ts" }}
+    {{- if $ts }}
+      {{- $js := $ts | js.Build (dict "minify" true) }}
+      <script defer src="{{ $js.RelPermalink }}"></script>
+    {{- end }}
   </body>
 </html>

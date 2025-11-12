@@ -1,0 +1,131 @@
+{{- define "main" -}}
+  <main id="main-content" data-layout="index">
+    {{- /* Hero Section */ -}}
+    <section id="hero" class="mx-auto max-w-app px-4 pb-6 pt-8">
+      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
+        {{ .Site.Title }}
+      </h1>
+      <a
+        target="_blank"
+        href="/index.xml"
+        class="inline-block"
+        aria-label="rss feed"
+        title="RSS Feed"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="scale-125 stroke-accent rtl:-rotate-90"
+        >
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </svg>
+        <span class="sr-only">RSS Feed</span>
+      </a>
+
+      <p>
+        {{ .Site.Params.description | default "A minimal, responsive, accessible and SEO-friendly Hugo blog theme." }}
+      </p>
+      
+      {{- if .Site.Params.readmeUrl }}
+      <p class="mt-2">
+        Read the blog posts or check
+        <a
+          href="{{ .Site.Params.readmeUrl }}"
+          class="underline decoration-dashed underline-offset-4 hover:text-accent"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          README
+        </a> for more info.
+      </p>
+      {{- end }}
+
+      {{- /* Social Links */ -}}
+      {{- if .Site.Params.social }}
+      <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
+        <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
+        {{ partial "socials.html" . }}
+      </div>
+      {{- end }}
+    </section>
+
+    {{- /* Hr separator */ -}}
+    {{ partial "hr.html" . }}
+
+    {{- /* Featured Posts Section */ -}}
+    {{- $featuredPosts := where .Site.RegularPages "Params.featured" true }}
+    {{- $recentPosts := where .Site.RegularPages "Params.featured" "!=" true }}
+    
+    {{- if gt (len $featuredPosts) 0 }}
+    <section id="featured" class="mx-auto max-w-app px-4 pb-6 pt-12">
+      <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
+      <ul>
+        {{- range $featuredPosts }}
+          {{ partial "card.html" . }}
+        {{- end }}
+      </ul>
+    </section>
+    
+    {{- if gt (len $recentPosts) 0 }}
+      {{ partial "hr.html" . }}
+    {{- end }}
+    {{- end }}
+
+    {{- /* Recent Posts Section */ -}}
+    {{- if gt (len $recentPosts) 0 }}
+    <section id="recent-posts" class="mx-auto max-w-app px-4 pb-6 pt-12">
+      <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
+      <ul>
+        {{- $postPerIndex := .Site.Params.postPerIndex | default 4 }}
+        {{- range first $postPerIndex $recentPosts }}
+          {{ partial "card.html" . }}
+        {{- end }}
+      </ul>
+    </section>
+    {{- end }}
+
+    {{- /* All Posts Button */ -}}
+    <div class="my-8 text-center">
+      <a
+        href="/posts/"
+        class="group inline-block hover:text-accent"
+      >
+        All Posts
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="inline-block rtl:-rotate-180"
+        >
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </main>
+
+  {{- /* Back URL tracking script */ -}}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const indexLayout = document.querySelector("#main-content")?.dataset?.layout;
+      if (indexLayout) {
+        sessionStorage.setItem("backUrl", "/");
+      }
+    });
+  </script>
+{{- end -}}

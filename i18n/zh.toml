@@ -1,0 +1,43 @@
+# 中文翻译 - Hugo Paper 主题
+
+[nav]
+posts = "文章"
+tags = "标签"
+about = "关于"
+archives = "归档"
+search = "搜索"
+
+[ui]
+allPosts = "所有文章"
+featured = "精选"
+recentPosts = "最新文章"
+readMore = "阅读更多"
+backToTop = "返回顶部"
+goBack = "返回"
+updated = "更新于："
+published = "发布于："
+shareOn = "分享到："
+suggestChanges = "建议修改"
+skipToContent = "跳转到内容"
+
+[action]
+copy = "复制"
+copied = "已复制"
+previous = "上一页"
+next = "下一页"
+
+[footer]
+copyright = "版权所有 ©"
+allRightsReserved = "保留所有权利。"
+socialLinks = "社交链接："
+
+[language]
+switchTo = "切换到"
+
+[time]
+minuteRead = "{{ .Count }} 分钟阅读"
+minutesRead = "{{ .Count }} 分钟阅读"
+
+[search]
+placeholder = "搜索文章..."
+noResults = "未找到结果"

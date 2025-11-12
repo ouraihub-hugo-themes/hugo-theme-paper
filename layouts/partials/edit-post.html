@@ -7,7 +7,9 @@ Edit Post Component
 {{- if .Site.Params.editPost.enabled -}}
   {{- if not .Params.hideEditPost -}}
     {{- if .File -}}
-      {{- $editUrl := printf "%s%s" .Site.Params.editPost.url .File.Path -}}
+      {{- /* 将反斜杠替换为正斜杠，以适应 GitHub URL */ -}}
+      {{- $filePath := replace .File.Path "\\" "/" -}}
+      {{- $editUrl := printf "%s%s" .Site.Params.editPost.url $filePath -}}
       {{- if ne (trim $editUrl " ") "" -}}
         <a 
           href="{{ $editUrl }}"
