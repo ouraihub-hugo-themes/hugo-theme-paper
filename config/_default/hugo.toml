@@ -1,0 +1,56 @@
+# Hugo Paper Theme - Basic Configuration
+# This file contains core Hugo settings
+
+baseURL = "http://localhost:1313/"
+languageCode = "en-us"
+title = "Hugo Paper - Theme Development"
+# theme = "." # Commented out for theme development
+
+# Content Settings
+enableInlineShortcodes = true
+enableEmoji = true
+hasCJKLanguage = true
+summaryLength = 200
+defaultContentLanguage = "en"
+
+# For theme development, load content from exampleSite
+contentDir = "exampleSite/content"
+
+# Pagination
+[pagination]
+  pagerSize = 4
+
+# Taxonomies
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+# Outputs
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+
+# Output Formats
+[outputFormats]
+  [outputFormats.JSON]
+    mediaType = "application/json"
+    baseName = "index"
+
+# Markup Configuration
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      typographer = true
+    [markup.goldmark.parser]
+      attribute = true
+      autoHeadingID = true
+      autoHeadingIDType = "github"
+    [markup.goldmark.renderer]
+      unsafe = true
+  
+  [markup.highlight]
+    # Use CSS classes instead of inline styles for theme switching
+    noClasses = false
+    lineNos = false
+    lineNumbersInTable = false

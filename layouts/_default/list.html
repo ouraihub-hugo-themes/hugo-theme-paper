@@ -21,7 +21,8 @@
     
     {{- /* Posts List */ -}}
     <ul>
-      {{- range .Pages }}
+      {{- $paginator := .Paginate .Pages }}
+      {{- range $paginator.Pages }}
         {{ partial "card.html" . }}
       {{- end }}
     </ul>

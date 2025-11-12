@@ -96,10 +96,10 @@
     {{- /* All Posts Button */ -}}
     <div class="my-8 text-center">
       <a
-        href="/posts/"
+        href="{{ "/post/" | relLangURL }}"
         class="group inline-block hover:text-accent"
       >
-        All Posts
+        {{ i18n "ui.allPosts" | default "All Posts" }}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
