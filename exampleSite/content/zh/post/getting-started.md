@@ -1,11 +1,12 @@
 ---
-title: "Getting Started with Hugo Paper"
-description: "Learn how to set up and customize Hugo Paper theme for your blog"
+title: "Hugo Paper 入门指南"
+slug: "getting-started"
+description: "了解如何为你的博客设置和自定义 Hugo Paper 主题"
 date: 2024-11-11
 draft: false
 featured: true
 author: "Hugo Paper Team"
-authorBio: "The Hugo Paper development team"
+authorBio: "Hugo Paper 开发团队"
 image: "/images/getting-started.jpg"
 categories:
   - "Tutorial"

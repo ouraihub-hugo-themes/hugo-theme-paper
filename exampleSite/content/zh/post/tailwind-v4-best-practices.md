@@ -1,6 +1,7 @@
 ---
-title: "Tailwind CSS v4 Best Practices"
-description: "Discover best practices for working with Tailwind CSS v4 in Hugo Paper"
+title: "Tailwind CSS v4 最佳实践"
+slug: "tailwind-v4-best-practices"
+description: "探索在 Hugo Paper 中使用 Tailwind CSS v4 的最佳实践"
 date: 2024-11-10
 draft: false
 featured: true
