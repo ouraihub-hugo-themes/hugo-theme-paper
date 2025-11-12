@@ -28,12 +28,20 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "scripts:build": "pnpm run scripts:build:new-post && pnpm run scripts:build:quick-post",
+    "scripts:build:new-post": "esbuild scripts/new-post.ts --bundle --platform=node --outfile=bin/new-post.js --target=node18",
+    "scripts:build:quick-post": "esbuild scripts/quick-post.ts --bundle --platform=node --outfile=bin/quick-post.js --target=node18",
+    "scripts:watch": "concurrently -n \"NewPost,QuickPost\" -c \"blue,cyan\" \"esbuild scripts/new-post.ts --bundle --platform=node --watch --outfile=bin/new-post.js --target=node18\" \"esbuild scripts/quick-post.ts --bundle --platform=node --watch --outfile=bin/quick-post.js --target=node18\"",
+    "new-post": "node bin/new-post.js",
+    "quick-post": "node bin/quick-post.js",
+    "postinstall": "pnpm scripts:build"
   },
   "dependencies": {
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
+    "@shikijs/transformers": "^3.15.0",
     "@tailwindcss/cli": "^4.1.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@tailwindcss/typography": "^0.5.19",
@@ -54,8 +62,10 @@
     "postcss-cli": "^11.0.0",
     "postcss-import": "^16.0.0",
     "prettier": "^3.1.0",
+    "shiki": "^3.15.0",
     "stylelint": "^16.0.0",
     "stylelint-config-standard": "^36.0.0",
+    "tsx": "^4.7.0",
     "typescript": "^5.8.0",
     "vite": "^5.0.0",
     "vitest": "^2.0.0"
