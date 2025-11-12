@@ -1,17 +1,12 @@
 {{ define "main" }}
-<article class="max-w-3xl mx-auto">
-  <!-- Page Header -->
-  <header class="mb-8 pb-8 border-b border-border">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ .Title }}</h1>
+<!-- Breadcrumb -->
+{{ partial "breadcrumb.html" . }}
 
-    {{ if .Description }}
-    <p class="text-lg text-muted">{{ .Description }}</p>
-    {{ end }}
-  </header>
-
-  <!-- Page Content -->
-  <div class="prose prose-lg max-w-none">
+<!-- Main Content -->
+<main id="main-content">
+  <section id="about" class="app-prose mb-28 max-w-app prose-img:border-0">
+    <h1 class="text-2xl tracking-wider sm:text-3xl">{{ .Title }}</h1>
     {{ .Content }}
-  </div>
-</article>
+  </section>
+</main>
 {{ end }}

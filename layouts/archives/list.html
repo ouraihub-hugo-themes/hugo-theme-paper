@@ -1,56 +1,42 @@
 {{ define "main" }}
-<!-- Page Header -->
-<div class="mb-12">
-  <h1 class="text-4xl md:text-5xl font-bold mb-4">Archives</h1>
-  <p class="text-lg text-muted">Browse all articles by date</p>
-</div>
+<!-- Breadcrumb -->
+{{ partial "breadcrumb.html" . }}
 
-<!-- Filter by Category -->
-{{ $categories := where .Site.Taxonomies.categories "Count" ">=" 0 }}
-{{ if $categories }}
-<div class="mb-8">
-  <div class="flex flex-wrap gap-2">
-    <a
-      href="/archives/"
-      class="px-4 py-2 rounded-full text-sm font-medium bg-primary text-white hover:bg-accent transition-colors"
-    >
-      All
-    </a>
-    {{ range $categories }}
-    <a
-      href="{{ .Page.RelPermalink }}"
-      class="px-4 py-2 rounded-full text-sm font-medium bg-muted hover:bg-primary hover:text-white transition-colors"
-    >
-      {{ .Page.Title }} ({{ .Count }})
-    </a>
+<!-- Main Content -->
+<main id="main-content" class="mx-auto w-full max-w-app px-4 pb-4">
+  <h1 class="text-2xl font-semibold sm:text-3xl">{{ .Title }}</h1>
+  <p class="mt-2 mb-6 italic">All the articles I've archived.</p>
+
+  {{ $posts := where .Site.RegularPages "Type" "post" }}
+  {{ $posts = where $posts "Draft" false }}
+  
+  {{ if gt (len $posts) 0 }}
+    <!-- Group by Year -->
+    {{ range $posts.GroupByDate "2006" "desc" }}
+      <div>
+        <span class="text-2xl font-bold">{{ .Key }}</span>
+        <sup class="text-sm">{{ len .Pages }}</sup>
+        
+        <!-- Group by Month -->
+        {{ range .Pages.GroupByDate "January" "desc" }}
+          <div class="flex flex-col sm:flex-row">
+            <div class="mt-6 min-w-36 text-lg sm:my-6">
+              <span class="font-bold">{{ .Key }}</span>
+              <sup class="text-xs">{{ len .Pages }}</sup>
+            </div>
+            <ul>
+              {{ range .Pages }}
+                {{ partial "card.html" . }}
+              {{ end }}
+            </ul>
+          </div>
+        {{ end }}
+      </div>
     {{ end }}
-  </div>
-</div>
-{{ end }}
-
-<!-- Articles by Date -->
-{{ $posts := where .Site.RegularPages "Type" "post" }}
-{{ if gt (len $posts) 0 }}
-<div class="space-y-8">
-  {{ range $posts.GroupByDate "2006" }}
-  <section>
-    <h2 class="text-2xl font-bold mb-4 pb-2 border-b border-primary">
-      {{ .Key }}
-    </h2>
-    <div class="space-y-4">
-      {{ range .Pages }}
-      {{ partial "post-list-item.html" . }}
-      {{ end }}
+  {{ else }}
+    <div class="py-12 text-center">
+      <p class="text-muted text-lg">No articles found.</p>
     </div>
-  </section>
   {{ end }}
-</div>
-{{ else }}
-<div class="py-12 text-center">
-  <p class="text-muted text-lg">No articles found.</p>
-</div>
-{{ end }}
-
-<!-- Pagination -->
-{{ partial "pagination.html" . }}
+</main>
 {{ end }}

@@ -104,6 +104,9 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/main.css" />
+    
+    <!-- Custom head content (for page-specific styles/scripts) -->
+    {{ block "head-custom" . }}{{ end }}
   </head>
 
   <body class="flex min-h-svh flex-col bg-background font-mono text-foreground">

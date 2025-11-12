@@ -17,7 +17,8 @@ Reference: astro-paper/src/components/Breadcrumb.astro
 {{- if eq .Kind "section" -}}
 {{- /* For section pages (Posts list), show: Home > Posts (Page N) */ -}}
 {{- $sectionTitle := .Title -}}
-{{- if .Paginator -}}
+{{- /* Only show page number for paginated sections (not archives or search) */ -}}
+{{- if and .Paginator (ne .Section "archives") (ne .Section "search") -}}
 {{- $sectionTitle = printf "%s (Page %d)" .Title .Paginator.PageNumber -}}
 {{- end -}}
 {{- $breadcrumbList = slice (dict "title" $sectionTitle "url" "" "current" true) -}}

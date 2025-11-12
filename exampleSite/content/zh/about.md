@@ -1,51 +1,36 @@
 ---
-title: "About"
-description: "Learn more about Hugo Paper and its creator"
+title: "关于"
+type: "page"
 draft: false
 ---
 
-## About Hugo Paper
+HugoPaper 是一个极简、易访问且 SEO 友好的博客主题，使用 [Hugo](https://gohugo.io/) 和 [Tailwind CSS](https://tailwindcss.com/) 构建。
 
-Hugo Paper is a minimal, fast, and responsive Hugo theme inspired by Astro Paper. It's designed to be simple yet powerful, perfect for bloggers, developers, and content creators.
+HugoPaper 为博客甚至作品集提供了坚实的基础\_完整支持 Markdown、内置深色模式，以及开箱即用的简洁布局。
 
-### Key Features
+此主题中的博客文章也可作为指南、文档或示例文章\_使 HugoPaper 成为你下一个内容驱动网站的灵活起点。
 
-- **Minimal Design** - Clean and distraction-free reading experience
-- **Fast Performance** - Static site generation with Hugo
-- **Responsive** - Mobile-first design that works on all devices
-- **Dark Mode** - Built-in theme switching with system preference detection
-- **SEO Optimized** - Proper meta tags and structured data
-- **Accessibility** - WCAG 2.1 AA compliant
+## 特性
 
-### Technology Stack
+HugoPaper 提供了一系列实用功能，让内容发布变得简单高效：
 
-- **Static Site Generator**: [Hugo](https://gohugo.io)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
-- **Scripting**: [TypeScript](https://www.typescriptlang.org)
-- **Package Manager**: [pnpm](https://pnpm.io)
+- SEO 友好
+- 快速性能
+- 明暗模式
+- 高度可定制
+- 可组织的博客文章
+- 响应式且易访问
+- 使用 [Fuse.js](https://www.fusejs.io/) 的静态搜索
+- 自动生成社交图片
 
-### Getting Started
+还有更多功能。
 
-To get started with Hugo Paper, visit the [Getting Started Guide](/getting-started/).
+## 支持我们
 
-### Contributing
+如果你喜欢 [HugoPaper](https://github.com/ouraihub-hugo-themes/hugo-theme-paper)，请考虑给它一个星标 ⭐️。
 
-We welcome contributions! See our [Contributing Guide](/contributing/) for more information.
+发现了 bug 🐛 或有改进想法 ✨？欢迎提交 [issue](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/issues)、[pull request](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/pulls) 或发起 [讨论](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/discussions)。
 
-### License
+如果你觉得这个主题有帮助，也可以在 [GitHub 上赞助我](https://github.com/sponsors/ouraihub) 或 [请我喝杯咖啡](https://buymeacoffee.com/ouraihub) 来表示支持——每一分钱都很重要。
 
-Hugo Paper is released under the [MIT License](https://github.com/ouraihub-hugo-themes/hugo-paper/blob/main/LICENSE).
-
----
-
-## About the Author
-
-[Your Name] is a [Your Title] passionate about web design and development.
-
-### Contact
-
-Feel free to reach out:
-
-- Email: [your-email@example.com](mailto:your-email@example.com)
-- Twitter: [@yourhandle](https://twitter.com/yourhandle)
-- GitHub: [yourusername](https://github.com/yourusername)
+谢谢！🙏🏼

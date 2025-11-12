@@ -1,0 +1,25 @@
+{{- $posts := where .Site.RegularPages "Type" "post" -}}
+{{- $posts = where $posts "Draft" false -}}
+[
+  {{- range $index, $post := $posts -}}
+    {{- if $index -}},{{- end }}
+    {
+      "title": {{ $post.Title | jsonify }},
+      "url": {{ $post.Permalink | jsonify }},
+      "date": {{ $post.Date.Format "2006-01-02" | jsonify }},
+      "description": {{ with $post.Description }}{{ . | jsonify }}{{ else }}{{ $post.Summary | plainify | jsonify }}{{ end }},
+      "tags": [
+        {{- range $tagIndex, $tag := $post.Params.tags -}}
+          {{- if $tagIndex -}},{{- end -}}
+          {{ $tag | jsonify }}
+        {{- end -}}
+      ],
+      "categories": [
+        {{- range $catIndex, $cat := $post.Params.categories -}}
+          {{- if $catIndex -}},{{- end -}}
+          {{ $cat | jsonify }}
+        {{- end -}}
+      ]
+    }
+  {{- end -}}
+]

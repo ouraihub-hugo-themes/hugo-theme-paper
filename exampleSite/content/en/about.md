@@ -1,51 +1,36 @@
 ---
 title: "About"
-description: "Learn more about Hugo Paper and its creator"
+type: "page"
 draft: false
 ---
 
-## About Hugo Paper
+HugoPaper is a minimal, accessible and SEO-friendly blog theme built with [Hugo](https://gohugo.io/) and [Tailwind CSS](https://tailwindcss.com/).
 
-Hugo Paper is a minimal, fast, and responsive Hugo theme inspired by Astro Paper. It's designed to be simple yet powerful, perfect for bloggers, developers, and content creators.
+HugoPaper provides a solid foundation for blogs, or even portfolios\_ with full markdown support, built-in dark mode, and a clean layout that works out-of-the-box.
 
-### Key Features
+The blog posts in this theme also serve as guides, docs or example articles\_ making HugoPaper a flexible starting point for your next content-driven site.
 
-- **Minimal Design** - Clean and distraction-free reading experience
-- **Fast Performance** - Static site generation with Hugo
-- **Responsive** - Mobile-first design that works on all devices
-- **Dark Mode** - Built-in theme switching with system preference detection
-- **SEO Optimized** - Proper meta tags and structured data
-- **Accessibility** - WCAG 2.1 AA compliant
+## Features
 
-### Technology Stack
+HugoPaper comes with a set of useful features that make content publishing easy and effective:
 
-- **Static Site Generator**: [Hugo](https://gohugo.io)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
-- **Scripting**: [TypeScript](https://www.typescriptlang.org)
-- **Package Manager**: [pnpm](https://pnpm.io)
+- SEO-friendly
+- Fast performance
+- Light & dark mode
+- Highly customizable
+- Organizable blog posts
+- Responsive & accessible
+- Static search with [Fuse.js](https://www.fusejs.io/)
+- Automatic social image generation
 
-### Getting Started
+and so much more.
 
-To get started with Hugo Paper, visit the [Getting Started Guide](/getting-started/).
+## Show your support
 
-### Contributing
+If you like [HugoPaper](https://github.com/ouraihub-hugo-themes/hugo-theme-paper), consider giving it a star ⭐️.
 
-We welcome contributions! See our [Contributing Guide](/contributing/) for more information.
+Found a bug 🐛 or have an improvement ✨ in mind? Feel free to open an [issue](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/issues), submit a [pull request](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/pulls) or start a [discussion](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/discussions).
 
-### License
+If you find this theme helpful, you can also [sponsor me on GitHub](https://github.com/sponsors/ouraihub) or [buy me a coffee](https://buymeacoffee.com/ouraihub) to show your support — every penny counts.
 
-Hugo Paper is released under the [MIT License](https://github.com/ouraihub-hugo-themes/hugo-paper/blob/main/LICENSE).
-
----
-
-## About the Author
-
-[Your Name] is a [Your Title] passionate about web design and development.
-
-### Contact
-
-Feel free to reach out:
-
-- Email: [your-email@example.com](mailto:your-email@example.com)
-- Twitter: [@yourhandle](https://twitter.com/yourhandle)
-- GitHub: [yourusername](https://github.com/yourusername)
+Thank you! 🙏🏼
