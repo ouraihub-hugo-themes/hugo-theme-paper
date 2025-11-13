@@ -18,6 +18,7 @@ contentDir = "exampleSite/content"
 
 # Pagination
 [pagination]
+  # 每页显示的文章数量
   pagerSize = 4
 
 # Taxonomies
