@@ -12,7 +12,7 @@ tags:
 
 ## JavaScript Example
 
-```javascript
+```javascript {file="greet.js"}
 function greet(name) {
   console.log(`Hello, ${name}!`);
   return true;
@@ -20,6 +20,39 @@ function greet(name) {
 
 const user = "World";
 greet(user);
+```
+
+## Diff Markers Example
+
+```javascript {file="api.js"}
+function fetchData(url) {
+  // [!code --]
+  return fetch(url).then(res => res.json());
+  // [!code ++]
+  return fetch(url)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+}
+
+// [!code hl]
+const API_URL = "https://api.example.com/data";
+fetchData(API_URL);
+```
+
+## Multiple Line Diff
+
+```typescript {file="user.ts"}
+interface User {
+  id: number;
+  name: string;
+  // [!code --:2]
+  age: number;
+  address: string;
+  // [!code ++:3]
+  email: string;
+  phone: string;
+  createdAt: Date;
+}
 ```
 
 ## Python Example

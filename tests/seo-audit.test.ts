@@ -150,7 +150,7 @@ describe('SEO Audit', () => {
       const schemas = document.querySelectorAll('script[type="application/ld+json"]');
       let hasWebSiteSchema = false;
 
-      schemas.forEach(schema => {
+      schemas.forEach((schema: Element) => {
         try {
           const data = JSON.parse(schema.textContent || '{}');
           if (data['@type'] === 'WebSite') {
@@ -203,9 +203,8 @@ describe('SEO Audit', () => {
 
     it('should have proper heading hierarchy', () => {
       const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      let previousLevel = 0;
 
-      headings.forEach(heading => {
+      headings.forEach((heading: Element) => {
         const level = parseInt(heading.tagName[1]);
         // Allow any valid progression (may skip levels)
         expect(level).toBeGreaterThanOrEqual(1);
@@ -240,7 +239,7 @@ describe('SEO Audit', () => {
 
     it('should have alt text for images', () => {
       const images = document.querySelectorAll('img');
-      images.forEach(img => {
+      images.forEach((img: Element) => {
         expect(img.hasAttribute('alt')).toBe(true);
       });
     });
@@ -387,7 +386,7 @@ describe('SEO Audit', () => {
   describe('Links', () => {
     it('should have valid internal links', () => {
       const links = document.querySelectorAll('a[href^="/"]');
-      links.forEach(link => {
+      links.forEach((link: Element) => {
         const href = link.getAttribute('href');
         expect(href).toBeTruthy();
         expect(href).toMatch(/^\/[a-zA-Z0-9-/]*$/);
@@ -396,7 +395,7 @@ describe('SEO Audit', () => {
 
     it('should have valid external links', () => {
       const links = document.querySelectorAll('a[href^="http"]');
-      links.forEach(link => {
+      links.forEach((link: Element) => {
         const href = link.getAttribute('href');
         expect(href).toMatch(/^https?:\/\/.+/);
       });
@@ -404,7 +403,7 @@ describe('SEO Audit', () => {
 
     it('should have proper link text', () => {
       const links = document.querySelectorAll('a');
-      links.forEach(link => {
+      links.forEach((link: Element) => {
         // Links should have meaningful text (not just generic "click here")
         const text = link.textContent?.trim();
         expect(text).toBeTruthy();

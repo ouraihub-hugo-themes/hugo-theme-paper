@@ -6,6 +6,9 @@
  * 注意：主题切换由 toggle-theme.js 处理，不在这里
  */
 
+// 导入代码增强模块
+import './code-enhance';
+
 /**
  * Create a progress indicator at the top
  * 参考: createProgressBar() in PostDetails.astro
@@ -226,7 +229,7 @@ function initializeApp(): void {
     createProgressBar();
     updateScrollProgress();
     addHeadingLinks();
-    attachCopyButtons();
+    attachCopyButtons(); // 恢复旧的复制按钮实现
     backToTop();
   }
 }

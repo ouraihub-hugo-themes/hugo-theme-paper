@@ -1,6 +1,7 @@
 @plugin '@tailwindcss/typography';
 
 @layer base {
+
   /* ===== Override default Tailwind Typography styles ===== */
   .app-prose {
     @apply prose;
@@ -28,7 +29,7 @@
     }
 
     a {
-      @apply break-words text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
+      @apply wrap-break-word text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
     }
 
     ul {
@@ -52,6 +53,7 @@
     }
 
     table {
+
       th,
       td {
         @apply border border-border p-2;
@@ -67,7 +69,7 @@
     }
 
     code {
-      @apply rounded bg-muted/75 p-1 break-words text-foreground before:content-none after:content-none;
+      @apply rounded bg-muted/75 p-1 wrap-break-word text-foreground before:content-none after:content-none;
     }
 
     .astro-code code {
@@ -75,11 +77,11 @@
     }
 
     blockquote {
-      @apply border-s-accent/80 break-words opacity-80;
+      @apply border-s-accent/80 wrap-break-word opacity-80;
     }
 
     details {
-      @apply inline-block cursor-pointer text-foreground select-none [&_p]:hidden [&_ul]:!my-0;
+      @apply inline-block cursor-pointer text-foreground select-none [&_p]:hidden [&_ul]:my-0!;
     }
 
     summary {
@@ -124,12 +126,15 @@
     .line.diff.add {
       @apply relative inline-block w-full bg-green-400/20 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
     }
+
     .line.diff.remove {
       @apply relative inline-block w-full bg-red-500/20 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
     }
+
     .line.highlighted {
       @apply inline-block w-full bg-slate-400/20;
     }
+
     .highlighted-word {
       @apply rounded-sm border border-border px-0.5 py-px;
     }
@@ -145,16 +150,24 @@
   :root .chroma .ch,
   :root .chroma .cm,
   :root .chroma .c1,
-  :root .chroma .cs { color: #6a737d; } /* Comments - gray */
-  
+  :root .chroma .cs {
+    color: #6a737d;
+  }
+
+  /* Comments - gray */
+
   :root .chroma .k,
   :root .chroma .kc,
   :root .chroma .kd,
   :root .chroma .kn,
   :root .chroma .kp,
   :root .chroma .kr,
-  :root .chroma .kt { color: #d73a49; } /* Keywords - red */
-  
+  :root .chroma .kt {
+    color: #d73a49;
+  }
+
+  /* Keywords - red */
+
   :root .chroma .s,
   :root .chroma .sa,
   :root .chroma .sb,
@@ -168,16 +181,24 @@
   :root .chroma .sx,
   :root .chroma .sr,
   :root .chroma .s1,
-  :root .chroma .ss { color: #032f62; } /* Strings - blue */
-  
+  :root .chroma .ss {
+    color: #032f62;
+  }
+
+  /* Strings - blue */
+
   :root .chroma .m,
   :root .chroma .mb,
   :root .chroma .mf,
   :root .chroma .mh,
   :root .chroma .mi,
   :root .chroma .il,
-  :root .chroma .mo { color: #005cc5; } /* Numbers - blue */
-  
+  :root .chroma .mo {
+    color: #005cc5;
+  }
+
+  /* Numbers - blue */
+
   :root .chroma .n,
   :root .chroma .na,
   :root .chroma .nb,
@@ -190,26 +211,42 @@
   :root .chroma .nl,
   :root .chroma .nn,
   :root .chroma .nt,
-  :root .chroma .nv { color: #24292e; } /* Names - dark */
-  
+  :root .chroma .nv {
+    color: #24292e;
+  }
+
+  /* Names - dark */
+
   :root .chroma .o,
-  :root .chroma .ow { color: #d73a49; } /* Operators - red */
+  :root .chroma .ow {
+    color: #d73a49;
+  }
+
+  /* Operators - red */
 
   /* Dark theme colors */
   html[data-theme="dark"] .chroma .c,
   html[data-theme="dark"] .chroma .ch,
   html[data-theme="dark"] .chroma .cm,
   html[data-theme="dark"] .chroma .c1,
-  html[data-theme="dark"] .chroma .cs { color: #8b949e; } /* Comments - gray */
-  
+  html[data-theme="dark"] .chroma .cs {
+    color: #8b949e;
+  }
+
+  /* Comments - gray */
+
   html[data-theme="dark"] .chroma .k,
   html[data-theme="dark"] .chroma .kc,
   html[data-theme="dark"] .chroma .kd,
   html[data-theme="dark"] .chroma .kn,
   html[data-theme="dark"] .chroma .kp,
   html[data-theme="dark"] .chroma .kr,
-  html[data-theme="dark"] .chroma .kt { color: #ff7b72; } /* Keywords - red */
-  
+  html[data-theme="dark"] .chroma .kt {
+    color: #ff7b72;
+  }
+
+  /* Keywords - red */
+
   html[data-theme="dark"] .chroma .s,
   html[data-theme="dark"] .chroma .sa,
   html[data-theme="dark"] .chroma .sb,
@@ -223,16 +260,24 @@
   html[data-theme="dark"] .chroma .sx,
   html[data-theme="dark"] .chroma .sr,
   html[data-theme="dark"] .chroma .s1,
-  html[data-theme="dark"] .chroma .ss { color: #a5d6ff; } /* Strings - light blue */
-  
+  html[data-theme="dark"] .chroma .ss {
+    color: #a5d6ff;
+  }
+
+  /* Strings - light blue */
+
   html[data-theme="dark"] .chroma .m,
   html[data-theme="dark"] .chroma .mb,
   html[data-theme="dark"] .chroma .mf,
   html[data-theme="dark"] .chroma .mh,
   html[data-theme="dark"] .chroma .mi,
   html[data-theme="dark"] .chroma .il,
-  html[data-theme="dark"] .chroma .mo { color: #79c0ff; } /* Numbers - blue */
-  
+  html[data-theme="dark"] .chroma .mo {
+    color: #79c0ff;
+  }
+
+  /* Numbers - blue */
+
   html[data-theme="dark"] .chroma .n,
   html[data-theme="dark"] .chroma .na,
   html[data-theme="dark"] .chroma .nb,
@@ -245,10 +290,18 @@
   html[data-theme="dark"] .chroma .nl,
   html[data-theme="dark"] .chroma .nn,
   html[data-theme="dark"] .chroma .nt,
-  html[data-theme="dark"] .chroma .nv { color: #c9d1d9; } /* Names - light */
-  
+  html[data-theme="dark"] .chroma .nv {
+    color: #c9d1d9;
+  }
+
+  /* Names - light */
+
   html[data-theme="dark"] .chroma .o,
-  html[data-theme="dark"] .chroma .ow { color: #ff7b72; } /* Operators - red */
+  html[data-theme="dark"] .chroma .ow {
+    color: #ff7b72;
+  }
+
+  /* Operators - red */
 
   html[data-theme="dark"] pre {
     @apply bg-muted/15;
