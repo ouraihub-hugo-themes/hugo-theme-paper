@@ -5,6 +5,13 @@ description: "为 AstroPaper 博客主题精心设计的一些预定义配色方
 date: 2022-09-26T12:13:24Z
 lastmod: 2024-01-04T09:09:06Z
 author: "Sat Naing"
+keywords:
+  - 配色方案
+  - 主题
+  - 设计
+  - css
+  - 自定义
+  - astropaper
 draft: false
 featured: false
 tags:

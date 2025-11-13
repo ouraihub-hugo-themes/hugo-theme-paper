@@ -4,6 +4,14 @@ description: "Learn how to add LaTeX equations in Astro blog posts using Markdow
 date: 2024-09-08T20:58:52.737Z
 lastmod: 2025-03-22T09:25:46.734Z
 author: "Alberto Perdomo"
+keywords:
+  - latex
+  - katex
+  - math equations
+  - markdown
+  - astro
+  - remark
+  - rehype
 draft: false
 tags:
   - docs

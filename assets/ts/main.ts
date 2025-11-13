@@ -1,10 +1,12 @@
 /**
  * Main Script
  * 参考: astro-paper/src/layouts/PostDetails.astro 中的 <script> 标签
- * 
+ *
  * 这个脚本在页面加载后运行，处理各种交互功能
  * 注意：主题切换由 toggle-theme.js 处理，不在这里
  */
+
+import { CodeEnhancer } from "./code-enhance";
 
 /**
  * Create a progress indicator at the top
@@ -40,7 +42,7 @@ function updateScrollProgress(): void {
       document.documentElement.scrollHeight -
       document.documentElement.clientHeight;
     const scrolled = (winScroll / height) * 100;
-    
+
     const myBar = document.getElementById("myBar");
     if (myBar) {
       myBar.style.width = scrolled + "%";
@@ -54,10 +56,8 @@ function updateScrollProgress(): void {
  * 参考: addHeadingLinks() in PostDetails.astro
  */
 function addHeadingLinks(): void {
-  const headings = Array.from(
-    document.querySelectorAll("h2, h3, h4, h5, h6")
-  );
-  
+  const headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+
   for (const heading of headings) {
     heading.classList.add("group");
     const link = document.createElement("a");
@@ -92,9 +92,7 @@ function attachCopyButtons(): void {
       computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
 
     // Determine the top positioning class
-    const topClass = hasFileNameOffset
-      ? "top-(--file-name-offset)"
-      : "-top-3";
+    const topClass = hasFileNameOffset ? "top-(--file-name-offset)" : "-top-3";
 
     const copyButton = document.createElement("button");
     copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
@@ -111,7 +109,10 @@ function attachCopyButtons(): void {
     });
   }
 
-  async function copyCode(block: Element, button: HTMLButtonElement): Promise<void> {
+  async function copyCode(
+    block: Element,
+    button: HTMLButtonElement,
+  ): Promise<void> {
     const code = block.querySelector("code");
     const text = code?.innerText;
 
@@ -145,6 +146,7 @@ function toggleNav(): void {
     menuBtn.setAttribute("aria-label", openMenu ? "Open Menu" : "Close Menu");
 
     menuItems.classList.toggle("hidden");
+    menuItems.classList.toggle("grid"); // Add grid layout when menu is open on mobile
     menuIcon.classList.toggle("hidden");
     closeIcon.classList.toggle("hidden");
   });
@@ -180,7 +182,7 @@ function backToTop(): void {
     if (progressIndicator) {
       progressIndicator.setAttribute(
         "style",
-        `background-image: conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`
+        `background-image: conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`,
       );
     }
 
@@ -209,7 +211,28 @@ function backToTop(): void {
   });
 }
 
+/**
+ * 初始化代码增强功能
+ * 根据配置决定使用 CodeEnhancer（Shiki 模式）还是传统的 attachCopyButtons（Basic 模式）
+ * Requirements: 1.4, 8.3
+ */
+function initCodeEnhancement(): void {
+  // 从 HTML 元素读取配置
+  const codeHighlightEngine =
+    document.documentElement.dataset.codeEngine || "basic";
+  const showDiff = document.documentElement.dataset.codeDiff !== "false";
+  const showHighlight =
+    document.documentElement.dataset.codeHighlight !== "false";
 
+  if (codeHighlightEngine === "shiki") {
+    // Shiki 模式：使用 CodeEnhancer
+    const enhancer = new CodeEnhancer(showDiff, showHighlight);
+    enhancer.init();
+  } else {
+    // Basic 模式：使用传统的 attachCopyButtons
+    attachCopyButtons();
+  }
+}
 
 /**
  * Initialize all features
@@ -221,12 +244,12 @@ function initializeApp(): void {
 
   // 以下功能只在文章详情页运行
   const isPostPage = document.querySelector("#article") !== null;
-  
+
   if (isPostPage) {
     createProgressBar();
     updateScrollProgress();
     addHeadingLinks();
-    attachCopyButtons();
+    initCodeEnhancement(); // 使用新的代码增强初始化函数
     backToTop();
   }
 }

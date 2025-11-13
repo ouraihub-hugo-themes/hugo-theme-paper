@@ -1,5 +1,26 @@
 User-agent: *
 Allow: /
 Disallow: /search
+Disallow: /admin
+Disallow: /private
+Disallow: /*.json$
+Disallow: /api/
 
+# 允许 Google 图片爬虫
+User-agent: Googlebot-Image
+Allow: /images/
+
+# 允许 Google 移动爬虫
+User-agent: Googlebot-Mobile
+Allow: /
+
+# 爬取频率限制
+Crawl-delay: 1
+
+# Sitemap
 Sitemap: {{ .Site.BaseURL }}sitemap.xml
+{{- if hugo.IsMultilingual }}
+{{- range .Site.Languages }}
+Sitemap: {{ $.Site.BaseURL }}{{ .Lang }}/sitemap.xml
+{{- end }}
+{{- end }}

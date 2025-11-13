@@ -336,8 +336,9 @@ describe('CodeCopyManager', () => {
       window.codeCopyManager = new CodeCopyManager();
     `);
 
-    const codeCopyManager = (window as any).codeCopyManager;
-    const codeBlock = document.getElementById('code-block-1');
+    // Verify the manager and code block exist
+    expect((window as any).codeCopyManager).toBeDefined();
+    expect(document.getElementById('code-block-1')).toBeTruthy();
 
     expect(window.navigator.clipboard.writeText).toHaveBeenCalledWith('const hello = "world";');
   });

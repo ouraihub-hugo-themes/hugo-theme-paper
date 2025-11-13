@@ -4,6 +4,14 @@ description: "How you can make AstroPaper theme absolutely yours."
 date: 2022-09-23T04:58:53Z
 lastmod: 2025-03-20T03:15:57.792Z
 author: "Sat Naing"
+keywords:
+  - astropaper
+  - configuration
+  - customization
+  - theme setup
+  - site config
+  - logo
+  - social links
 draft: false
 featured: true
 tags:

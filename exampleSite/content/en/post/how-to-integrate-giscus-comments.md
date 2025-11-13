@@ -4,6 +4,13 @@ description: "Comment function on a static blog hosted on GitHub Pages with Gisc
 date: 2024-07-25T11:11:53Z
 lastmod: 2025-03-12T12:28:53Z
 author: "FjellOverflow"
+keywords:
+  - giscus
+  - comments
+  - github discussions
+  - static blog
+  - github pages
+  - astro
 draft: false
 featured: false
 tags:

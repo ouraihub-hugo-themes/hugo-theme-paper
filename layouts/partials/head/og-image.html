@@ -1,0 +1,74 @@
+{{- /* 
+  Dynamic OG Image Generation
+  Priority: cover > image > dynamic generation > fallback
+  
+  Supports:
+  - Manual specification via frontmatter
+  - Unsplash API with keyword search
+  - Random images when no keywords
+  - Fallback to default image
+*/ -}}
+
+{{- $ogImage := "" -}}
+
+{{- /* Priority 1: Article specified cover */ -}}
+{{- if .Params.cover -}}
+  {{- $ogImage = .Params.cover | absURL -}}
+  
+{{- /* Priority 2: Article specified image */ -}}
+{{- else if .Params.image -}}
+  {{- $ogImage = .Params.image | absURL -}}
+  
+{{- /* Priority 3: Dynamic generation */ -}}
+{{- else if .Site.Params.ogImage -}}
+  {{- $mode := .Site.Params.ogImage.mode | default "manual" -}}
+  
+  {{- if eq $mode "unsplash" -}}
+    {{- $config := .Site.Params.ogImage.unsplash -}}
+    {{- $keywords := slice -}}
+    
+    {{- /* Extract keywords based on source */ -}}
+    {{- $source := $config.keywordSource | default "keywords" -}}
+    {{- if eq $source "keywords" -}}
+      {{- $keywords = .Params.keywords -}}
+    {{- else if eq $source "tags" -}}
+      {{- $keywords = .Params.tags -}}
+    {{- else if eq $source "categories" -}}
+      {{- $keywords = .Params.categories -}}
+    {{- else if eq $source "title" -}}
+      {{- /* Split title into words */ -}}
+      {{- $words := split .Title " " -}}
+      {{- $keywords = first 3 $words -}}
+    {{- end -}}
+    
+    {{- /* Build Unsplash URL */ -}}
+    {{- $width := $config.width | default 1200 -}}
+    {{- $height := $config.height | default 630 -}}
+    
+    {{- if $keywords -}}
+      {{- /* Use keywords for search */ -}}
+      {{- $count := $config.keywordCount | default 2 -}}
+      {{- $selectedKeywords := first $count $keywords -}}
+      {{- $query := delimit $selectedKeywords "," -}}
+      {{- $ogImage = printf "https://source.unsplash.com/%dx%d/?%s" $width $height $query -}}
+    {{- else if $config.useRandomOnEmpty -}}
+      {{- /* Use random image when no keywords */ -}}
+      {{- $ogImage = printf "https://source.unsplash.com/%dx%d/random" $width $height -}}
+    {{- end -}}
+  {{- end -}}
+  
+  {{- /* Priority 4: Site default fallback image */ -}}
+  {{- if and (not $ogImage) .Site.Params.ogImage.fallback -}}
+    {{- $ogImage = .Site.Params.ogImage.fallback | absURL -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Output meta tags */ -}}
+{{- if $ogImage -}}
+<meta property="og:image" content="{{ $ogImage }}" />
+<meta property="twitter:image" content="{{ $ogImage }}" />
+{{- with .Site.Params.ogImage.unsplash -}}
+<meta property="og:image:width" content="{{ .width | default 1200 }}" />
+<meta property="og:image:height" content="{{ .height | default 630 }}" />
+{{- end -}}
+{{- end -}}

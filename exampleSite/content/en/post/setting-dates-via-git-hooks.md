@@ -4,6 +4,13 @@ description: "How to use Git Hooks to set your Created and Modified Dates on Ast
 date: 2024-01-03T20:40:08Z
 lastmod: 2024-01-08T18:59:05Z
 author: "Simon Smale"
+keywords:
+  - git hooks
+  - automation
+  - frontmatter
+  - dates
+  - husky
+  - pre-commit
 draft: false
 featured: false
 tags:

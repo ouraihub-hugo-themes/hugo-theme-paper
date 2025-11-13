@@ -17,18 +17,25 @@
     <title>{{ .Title | default .Site.Title }}</title>
     <meta name="title" content="{{ .Title | default .Site.Title }}" />
     <meta name="description" content="{{ .Description | default .Site.Params.description }}" />
-    <meta name="author" content="{{ .Site.Params.author }}" />
+    <meta name="author" content="{{ .Params.author | default .Site.Params.seo.author }}" />
+    {{- if .Params.keywords }}
+    <meta name="keywords" content="{{ delimit .Params.keywords ", " }}" />
+    {{- else if .Site.Params.seo.keywords }}
+    <meta name="keywords" content="{{ .Site.Params.seo.keywords }}" />
+    {{- end }}
     <link rel="sitemap" href="/sitemap.xml" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="{{ .Title | default .Site.Title }}" />
     <meta property="og:description" content="{{ .Description | default .Site.Params.description }}" />
     <meta property="og:url" content="{{ .Permalink }}" />
-    {{- if .Params.image }}
-      <meta property="og:image" content="{{ .Params.image | absURL }}" />
-    {{- else if .Site.Params.ogImage }}
-      <meta property="og:image" content="{{ .Site.Params.ogImage | absURL }}" />
+    <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+    {{- if .Site.Params.author }}
+      <meta property="og:site_name" content="{{ .Site.Params.author }}" />
     {{- end }}
+    
+    <!-- Dynamic OG Image -->
+    {{ partial "head/og-image.html" . }}
 
     <!-- Article Published/Modified time -->
     {{- if .PublishDate }}
@@ -43,11 +50,10 @@
     <meta property="twitter:url" content="{{ .Permalink }}" />
     <meta property="twitter:title" content="{{ .Title | default .Site.Title }}" />
     <meta property="twitter:description" content="{{ .Description | default .Site.Params.description }}" />
-    {{- if .Params.image }}
-      <meta property="twitter:image" content="{{ .Params.image | absURL }}" />
-    {{- else if .Site.Params.ogImage }}
-      <meta property="twitter:image" content="{{ .Site.Params.ogImage | absURL }}" />
+    {{- if .Site.Params.author }}
+      <meta property="twitter:creator" content="@{{ .Site.Params.author }}" />
     {{- end }}
+    <!-- Twitter image is handled by og-image.html partial -->
 
     <!-- JSON-LD Structured Data -->
     {{ partial "schema.html" . }}
@@ -105,11 +111,16 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/main.css" />
     
+    <!-- Custom CSS -->
+    {{- range .Site.Params.customCSS }}
+      <link rel="stylesheet" href="{{ . | relURL }}" />
+    {{- end }}
+    
     <!-- Custom head content (for page-specific styles/scripts) -->
     {{ block "head-custom" . }}{{ end }}
   </head>
 
-  <body class="flex min-h-svh flex-col bg-background font-mono text-foreground">
+  <body class="flex min-h-svh flex-col bg-background font-mono text-foreground" data-max-width="{{ .Site.Params.maxWidth | default "3xl" }}">
     {{ partial "header.html" . }}
     
     {{ block "main" . }}{{ end }}

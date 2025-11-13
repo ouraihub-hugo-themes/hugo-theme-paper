@@ -2,11 +2,19 @@
 title: "Getting Started with Hugo Paper"
 description: "Learn how to set up and customize Hugo Paper theme for your blog"
 date: 2024-11-11
+lastmod: 2024-11-15
 draft: false
 featured: true
 author: "Hugo Paper Team"
 authorBio: "The Hugo Paper development team"
 image: "/images/getting-started.jpg"
+keywords:
+  - hugo paper
+  - hugo theme
+  - getting started
+  - installation
+  - setup guide
+  - static site generator
 categories:
   - "Tutorial"
 tags:
@@ -34,40 +42,88 @@ cd my-blog
 
 ### Step 3: Add Hugo Paper Theme
 
+**Option 1: Using Hugo Modules (Recommended)**
+
 ```bash
-# Using git submodule
+# Initialize Hugo Modules
+hugo mod init github.com/yourusername/my-blog
+
+# Add to hugo.toml
+echo '[module]
+[[module.imports]]
+  path = "github.com/ouraihub-hugo-themes/hugo-theme-paper"' >> hugo.toml
+
+# Download theme
+hugo mod get
+```
+
+**Option 2: Using Git Submodule**
+
+```bash
 git init
 git submodule add https://github.com/ouraihub-hugo-themes/hugo-paper.git themes/hugo-paper
-
-# Update hugo.toml
 echo 'theme = "hugo-paper"' >> hugo.toml
 ```
 
 ## Configuration
 
+Hugo Paper uses separate configuration files for better clarity and maintainability.
+
 ### Basic Configuration
 
-Edit your `hugo.toml` file:
+Edit `config/_default/hugo.toml`:
 
 ```toml
 baseURL = "https://yourdomain.com/"
 languageCode = "en-us"
 title = "My Awesome Blog"
-theme = "hugo-paper"
+theme = "hugo-paper"  # if using git submodule
 ```
 
-### Customize Parameters
+### Theme Parameters
 
-Create or edit `params.toml`:
+Edit `config/_default/params.toml`:
 
 ```toml
-[params]
-[params.header]
-logo = "/logo.svg"
-logoText = "My Blog"
+description = "My personal blog"
+showArchives = true
+showBackButton = true
+lightAndDarkMode = true  # Enable theme switching
 
-[params.footer]
-copyright = "© 2024 My Blog. All rights reserved."
+# Social links
+[[social]]
+  name = "GitHub"
+  href = "https://github.com/yourusername"
+  linkTitle = "Follow on GitHub"
+```
+
+### Multilingual Setup
+
+Edit `config/_default/languages.toml`:
+
+```toml
+[en]
+  languageName = "English"
+  languageCode = "en"
+  weight = 1
+  title = "My Blog"
+  contentDir = "content/en"
+```
+
+### Menu Configuration
+
+Edit `config/_default/menus.en.toml`:
+
+```toml
+[[main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[main]]
+  name = "Posts"
+  url = "/post/"
+  weight = 2
 ```
 
 ## Creating Content
@@ -75,7 +131,11 @@ copyright = "© 2024 My Blog. All rights reserved."
 ### Create Your First Post
 
 ```bash
-hugo new post/hello-world.md
+# Using built-in scripts (recommended)
+pnpm new-post "Hello World" en
+
+# Or using Hugo command
+hugo new content/en/post/hello-world.md
 ```
 
 Edit the generated file:
@@ -98,7 +158,7 @@ This is my first post!
 ### Create a Page
 
 ```bash
-hugo new about.md
+hugo new content/en/about.md
 ```
 
 ## Running Locally
@@ -117,22 +177,50 @@ Visit `http://localhost:1313` to see your site.
 
 ### Changing Colors
 
-Edit `assets/css/main.css` and modify the CSS variables in `:root`:
+Hugo Paper uses CSS variables for theming.
+
+**Step 1: Create Custom CSS File**
+
+Create `static/css/custom.css` in your project:
 
 ```css
+/* Custom colors */
 :root {
-  --color-primary: #0ea5e9;
-  --color-accent: #f43f5e;
-  /* ... more colors ... */
+  --color-fill: 251, 254, 251;
+  --color-accent: 0, 108, 172;
+  --color-accent-2: 13, 148, 136;
+}
+
+[data-theme="dark"] {
+  --color-fill: 33, 39, 55;
+  --color-accent: 255, 107, 1;
 }
 ```
 
-### Adding Custom CSS
+**Step 2: Reference in Configuration**
 
-Create `assets/css/custom.css` and import it in `main.css`:
+Edit `config/_default/params.toml`:
 
-```css
-@import "custom.css";
+```toml
+# Custom CSS files
+customCSS = ["css/custom.css"]
+```
+
+> 💡 Tip: You can add multiple custom CSS files:
+> ```toml
+> customCSS = ["css/custom.css", "css/fonts.css"]
+> ```
+
+### Using Built-in Scripts
+
+Hugo Paper provides convenient scripts for creating posts:
+
+```bash
+# Interactive creation (recommended)
+pnpm new-post
+
+# Quick creation
+pnpm quick-post "Article Title" en
 ```
 
 ## Next Steps

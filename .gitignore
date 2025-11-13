@@ -32,3 +32,8 @@ Thumbs.db
 dist
 .cache
 exampleSite/.cache
+bin/
+
+# Shiki
+.shiki-cache
+.shiki-output

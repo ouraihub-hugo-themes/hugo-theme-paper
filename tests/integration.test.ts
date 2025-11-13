@@ -300,7 +300,7 @@ describe('Navigation System Integration', () => {
     const navLinks = document.querySelectorAll('nav a');
     expect(navLinks.length).toBeGreaterThan(0);
 
-    const homeLink = Array.from(navLinks).find(link => link.getAttribute('href') === '/');
+    const homeLink = Array.from(navLinks).find((link) => (link as Element).getAttribute('href') === '/');
     expect(homeLink).toBeTruthy();
   });
 });
@@ -414,8 +414,9 @@ describe('Accessibility Integration', () => {
     const buttons = document.querySelectorAll('button');
     expect(buttons.length).toBeGreaterThan(0);
 
-    buttons.forEach(button => {
-      expect(button.textContent || button.title).toBeTruthy();
+    buttons.forEach((button: Element) => {
+      const el = button as HTMLElement;
+      expect(el.textContent || el.title).toBeTruthy();
     });
   });
 });

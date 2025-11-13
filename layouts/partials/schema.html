@@ -1,5 +1,39 @@
 <!-- JSON-LD Structured Data -->
 
+<!-- Breadcrumb Schema -->
+{{ if not .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    }
+    {{ if .Section }},
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ .Section | humanize }}",
+      "item": "{{ .Site.BaseURL }}{{ .Section }}/"
+    }
+    {{ end }}
+    {{ if .IsPage }},
+    {
+      "@type": "ListItem",
+      "position": {{ if .Section }}3{{ else }}2{{ end }},
+      "name": "{{ .Title }}",
+      "item": "{{ .Permalink }}"
+    }
+    {{ end }}
+  ]
+}
+</script>
+{{ end }}
+
 {{ if .IsPage }}
 <!-- Article Schema -->
 <script type="application/ld+json">
@@ -11,9 +45,26 @@
     "image": "{{ .Params.image | default .Site.Params.seo.ogImage | absURL }}",
     "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
     "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+    {{- if .Params.keywords }}
+    "keywords": "{{ delimit .Params.keywords ", " }}",
+    {{- end }}
+    {{- if .ReadingTime }}
+    "timeRequired": "PT{{ .ReadingTime }}M",
+    {{- end }}
+    "wordCount": {{ .WordCount }},
     "author": {
       "@type": "Person",
       "name": "{{ .Params.author | default .Site.Params.seo.author }}"
+      {{- if .Params.authorUrl }},
+      "url": "{{ .Params.authorUrl }}"
+      {{- else if .Site.Params.seo.authorUrl }},
+      "url": "{{ .Site.Params.seo.authorUrl }}"
+      {{- end }}
+      {{- if .Params.authorImage }},
+      "image": "{{ .Params.authorImage | absURL }}"
+      {{- else if .Site.Params.seo.authorImage }},
+      "image": "{{ .Site.Params.seo.authorImage | absURL }}"
+      {{- end }}
     },
     "publisher": {
       "@type": "Organization",
@@ -27,6 +78,9 @@
       "@type": "WebPage",
       "@id": "{{ .Permalink }}"
     }
+    {{- if .Params.tags }},
+    "articleSection": {{ .Params.tags | jsonify }}
+    {{- end }}
   }
 </script>
 {{ else if .IsHome }}

@@ -1,0 +1,125 @@
+# Hugo Paper Theme - Parameters Configuration
+# Inspired by AstroPaper's config.ts structure
+# See: https://github.com/satnaing/astro-paper/blob/main/src/config.ts
+
+# ===== SITE Configuration =====
+# Core site settings (equivalent to AstroPaper's SITE object)
+
+author = "Hugo Paper Team"
+profile = "https://github.com/ouraihub-hugo-themes"  # Your personal/portfolio website URL (for SEO)
+description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme. This theme follows best practices and provides accessibility out of the box. Light and dark mode are supported by default. Moreover, additional color schemes can also be configured."
+
+# Default OG Image for social media sharing (deprecated, use ogImage.fallback)
+# Place image in static/ directory or use external URL
+# ogImage = "astropaper-og.jpg"
+
+# Enable/disable light & dark mode toggle
+lightAndDarkMode = true
+
+# Number of posts to display on home page (Recent Posts section)
+postPerIndex = 4
+
+# Show Archives menu and page
+showArchives = true
+
+# Show back button in post detail pages
+showBackButton = true
+
+# Timezone (IANA format) - ensures consistent timestamps
+# See: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone = "UTC"
+
+# Text direction: "ltr" | "rtl" | "auto"
+direction = "ltr"
+
+# ===== Dynamic OG Image Configuration =====
+# Automatically generate OG images from free image APIs
+[ogImage]
+  # Mode: "manual" (default), "unsplash", "generated"
+  mode = "unsplash"
+  
+  # Fallback image when all methods fail
+  fallback = "/images/og-default.jpg"
+  
+  # Unsplash configuration
+  [ogImage.unsplash]
+    # Keyword source: "keywords", "tags", "categories", "title"
+    keywordSource = "keywords"
+    
+    # Number of keywords to use (1-5)
+    keywordCount = 2
+    
+    # Image dimensions (recommended: 1200x630 for social media)
+    width = 1200
+    height = 630
+    
+    # Image quality (1-100)
+    quality = 80
+    
+    # Use random image when no keywords available
+    useRandomOnEmpty = true
+
+# ===== Edit Post Configuration =====
+# Allow users to suggest changes to blog posts
+[editPost]
+  enabled = true
+  text = "Edit page"  # or "Suggest Changes"
+  url = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/edit/main/exampleSite/content/en/"
+
+# ===== SOCIALS Configuration =====
+# Social links displayed in header and footer
+# Equivalent to AstroPaper's SOCIALS array in constants.ts
+
+[[social]]
+  name = "GitHub"
+  href = "https://github.com/satnaing/astro-paper"
+  linkTitle = "Hugo Paper on GitHub"
+
+[[social]]
+  name = "X"
+  href = "https://x.com/username"
+  linkTitle = "Hugo Paper on X"
+
+[[social]]
+  name = "LinkedIn"
+  href = "https://www.linkedin.com/in/username/"
+  linkTitle = "Hugo Paper on LinkedIn"
+
+[[social]]
+  name = "Mail"
+  href = "mailto:yourmail@gmail.com"
+  linkTitle = "Send an email to Hugo Paper"
+
+# ===== SHARE_LINKS Configuration =====
+# Share buttons displayed on post pages
+# Equivalent to AstroPaper's SHARE_LINKS array in constants.ts
+
+[[shareLinks]]
+  name = "WhatsApp"
+  href = "https://wa.me/?text="
+  linkTitle = "Share this post via WhatsApp"
+
+[[shareLinks]]
+  name = "Facebook"
+  href = "https://www.facebook.com/sharer.php?u="
+  linkTitle = "Share this post on Facebook"
+
+[[shareLinks]]
+  name = "X"
+  href = "https://x.com/intent/post?url="
+  linkTitle = "Share this post on X"
+
+[[shareLinks]]
+  name = "Telegram"
+  href = "https://t.me/share/url?url="
+  linkTitle = "Share this post via Telegram"
+
+[[shareLinks]]
+  name = "Pinterest"
+  href = "https://pinterest.com/pin/create/button/?url="
+  linkTitle = "Share this post on Pinterest"
+
+[[shareLinks]]
+  name = "Mail"
+  href = "mailto:?subject=See%20this%20post&body="
+  linkTitle = "Share this post via email"

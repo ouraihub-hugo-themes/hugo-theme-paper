@@ -4,6 +4,13 @@ date: 2022-09-23T15:22:00Z
 lastmod: 2025-06-13T16:52:45Z
 author: "Sat Naing"
 description: "Some rules & recommendations for creating or adding new posts using HugoPaper theme."
+keywords:
+  - hugo
+  - hugopaper
+  - blog post
+  - markdown
+  - frontmatter
+  - content creation
 tags:
   - docs
 categories:

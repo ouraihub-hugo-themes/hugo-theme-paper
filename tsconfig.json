@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "types": ["node"],
     "module": "ES2020",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -10,7 +11,6 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./static/js",
-    "rootDir": "./assets/ts",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -21,6 +21,6 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true
   },
-  "include": ["assets/ts/**/*.ts"],
+  "include": ["assets/ts/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules", ".hugo_build.lock"]
 }

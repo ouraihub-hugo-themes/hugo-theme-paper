@@ -4,10 +4,27 @@
 
 ### ✅ 已启用的测试
 
-- **main.test.ts** (8 个测试)
-  - ThemeManager: 主题切换功能测试
-  - MobileMenuManager: 移动端菜单测试
-  - BackToTopManager: 返回顶部按钮测试
+- **main.test.ts** (8 个测试) - 核心功能
+  - ThemeManager: 主题切换
+  - MobileMenuManager: 移动端菜单
+  - BackToTopManager: 返回顶部
+
+- **scripts/new-post.test.ts** (35 个测试) - 文章创建脚本
+  - titleToSlug: 标题转 slug
+  - generateFrontmatter: 生成 frontmatter
+  - 文件操作、输入验证、语言支持
+
+- **scripts/quick-post.test.ts** (38 个测试) - 快速创建脚本
+  - titleToSlug: 标题转 slug
+  - generatePost: 生成文章内容
+  - 文件操作、语言处理、命令行参数
+
+- **theme.test.ts** (21 个测试) - 主题配置
+  - 主题配置验证
+  - 内容结构检查
+  - 构建流程验证
+
+**总计**: 102 个测试，覆盖率 ~95%
 
 ### ⏸️ 暂时禁用的测试
 

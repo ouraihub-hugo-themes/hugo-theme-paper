@@ -69,7 +69,6 @@ describe('Security Audit', () => {
   describe('XSS Prevention', () => {
     it('should escape user input in DOM', () => {
       const input = document.getElementById('search-input');
-      const maliciousInput = '<img src=x onerror=alert("XSS")>';
 
       // Proper way: set textContent instead of innerHTML
       input?.addEventListener('change', (e: any) => {
@@ -77,6 +76,11 @@ describe('Security Audit', () => {
         div.textContent = e.target.value; // Safe way
         expect(div.innerHTML).not.toContain('onerror');
       });
+      
+      // Test with malicious input
+      const testDiv = document.createElement('div');
+      testDiv.textContent = '<img src=x onerror=alert("XSS")>';
+      expect(testDiv.innerHTML).not.toContain('onerror');
     });
 
     it('should not use eval() or Function() constructor', () => {
@@ -215,11 +219,13 @@ describe('Security Audit', () => {
    */
   describe('Authentication & Authorization', () => {
     it('should not store sensitive data in localStorage', () => {
+      // Verify sensitive methods don't exist
       const sensitiveMethods = {
         getToken: () => null,
         getPassword: () => null,
         getPrivateKey: () => null,
       };
+      expect(sensitiveMethods.getToken()).toBeNull();
 
       // These should never be stored in localStorage
       expect(localStorage.getItem('token')).toBeNull();
@@ -240,8 +246,8 @@ describe('Security Audit', () => {
 
     it('should implement token rotation', () => {
       const tokenManager = {
-        tokens: new Map(),
-        rotateToken: (oldToken: string) => {
+        tokens: new Map<string, number>(),
+        rotateToken: function(oldToken: string) {
           const newToken = Math.random().toString(36);
           if (this.tokens.has(oldToken)) {
             this.tokens.delete(oldToken);
@@ -291,11 +297,11 @@ describe('Security Audit', () => {
       const rateLimit = {
         limit: 100,
         window: 60000, // 1 minute
-        calls: [],
+        calls: [] as number[],
 
         isAllowed: function() {
           const now = Date.now();
-          this.calls = this.calls.filter(call => now - call < this.window);
+          this.calls = this.calls.filter((call: number) => now - call < this.window);
           if (this.calls.length >= this.limit) return false;
           this.calls.push(now);
           return true;
@@ -360,7 +366,7 @@ describe('Security Audit', () => {
 
     it('should log errors securely', () => {
       const secureLog = {
-        error: (message: string, context?: any) => {
+        error: (_message: string, context?: any) => {
           // Remove sensitive fields
           if (context) {
             delete context.password;
@@ -514,7 +520,7 @@ describe('Security Audit', () => {
 
     it('should use HTTPS for external resources', () => {
       const scripts = document.querySelectorAll('script[src]');
-      scripts.forEach(script => {
+      scripts.forEach((script: Element) => {
         const src = script.getAttribute('src');
         if (src?.startsWith('http')) {
           expect(src).toMatch(/^https:\/\//);
