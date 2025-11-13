@@ -37,3 +37,4 @@ exampleSite/.cache
 static/js/
 static/css/main.css
 static/toggle-theme.js
+assets/js/bundle.js
