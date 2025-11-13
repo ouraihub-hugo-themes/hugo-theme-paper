@@ -1,0 +1,17 @@
+# Hugo Paper Example Site - Markup Configuration
+
+[goldmark.extensions]
+typographer = true
+
+[goldmark.parser]
+attribute = true
+autoHeadingID = true
+autoHeadingIDType = "github"
+
+[goldmark.renderer]
+unsafe = true
+
+[highlight]
+noClasses = false
+lineNos = false
+lineNumbersInTable = false

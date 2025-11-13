@@ -1,0 +1,13 @@
+# Hugo Paper Example Site - Languages Configuration
+
+[en]
+languageName = "English"
+languageCode = "en"
+weight = 1
+title = "Hugo Paper"
+
+[zh]
+languageName = "中文"
+languageCode = "zh"
+weight = 2
+title = "Hugo Paper"

@@ -1,0 +1,61 @@
+# Hugo Paper Example Site - Parameters Configuration
+
+# 基础配置
+description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme."
+readmeUrl = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+showArchives = true
+showBackButton = true
+
+# 首页配置
+postPerIndex = 4
+
+# 主题配置
+[theme]
+defaultTheme = "light"  # light or dark
+switchTheme = true
+
+# Header 配置
+[header]
+logo = "/logo.svg"
+
+# 编辑链接配置
+[editPost]
+enabled = true
+text = "Edit this page"
+url = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/edit/main/exampleSite/content/"
+
+# 社交链接配置
+[[social]]
+name = "GitHub"
+href = "https://github.com/ouraihub-hugo-themes"
+linkTitle = "Follow us on GitHub"
+
+[[social]]
+name = "X"
+href = "https://x.com/ouraihub"
+linkTitle = "Follow us on X"
+
+[[social]]
+name = "Mail"
+href = "mailto:contact@example.com"
+linkTitle = "Send us an email"
+
+# 评论配置（Giscus）
+[comments]
+enable = false
+provider = "giscus"
+repo = ""
+repoId = ""
+category = ""
+categoryId = ""
+mapping = "pathname"
+strict = "0"
+reactionsEnabled = "1"
+emitMetadata = "0"
+inputPosition = "bottom"
+
+# SEO 配置
+[seo]
+description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme."
+author = "OurAIHub"
+ogImage = "/og-image.png"
