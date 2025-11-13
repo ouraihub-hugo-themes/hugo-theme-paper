@@ -84,7 +84,7 @@ jobs:
             cp "go.mod.dist" "$RELEASE_PATH/go.mod"
           else
             # Fallback: create go.mod for dist repo
-            cat > "$RELEASE_PATH/go.mod" << 'GO_MOD_EOF'
+            cat > "$RELEASE_PATH/go.mod" <<'GO_MOD_EOF'
 module github.com/ouraihub-hugo-themes/hugo-theme-paper-dist
 
 go 1.24
@@ -92,7 +92,7 @@ GO_MOD_EOF
           fi
 
           # Generate release info
-          cat > "$RELEASE_PATH/RELEASE-INFO.md" << 'RELEASE_EOF'
+          cat > "$RELEASE_PATH/RELEASE-INFO.md" <<'RELEASE_EOF'
 # Hugo Paper Theme - Release Package
 
 **Version**: ${{ steps.version.outputs.version }}
