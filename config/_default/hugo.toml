@@ -1,10 +1,8 @@
-# Hugo Paper Theme - Basic Configuration
-# This file contains core Hugo settings
+# Hugo Paper Theme - Core Configuration
+# This file contains core Hugo settings for theme development
 
 baseURL = "http://localhost:1313/"
-languageCode = "en-us"
 title = "Hugo Paper - Theme Development"
-# theme = "." # Commented out for theme development
 
 # Content Settings
 enableInlineShortcodes = true
@@ -18,40 +16,20 @@ contentDir = "exampleSite/content"
 
 # Pagination
 [pagination]
-  # 每页显示的文章数量
-  pagerSize = 4
+pagerSize = 4
 
 # Taxonomies
 [taxonomies]
-  category = "categories"
-  tag = "tags"
+category = "categories"
+tag = "tags"
 
 # Outputs
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
-  page = ["HTML"]
-  section = ["HTML", "RSS"]
+home = ["HTML", "RSS", "JSON"]
+page = ["HTML"]
+section = ["HTML", "RSS"]
 
 # Output Formats
-[outputFormats]
-  [outputFormats.JSON]
-    mediaType = "application/json"
-    baseName = "index"
-
-# Markup Configuration
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.extensions]
-      typographer = true
-    [markup.goldmark.parser]
-      attribute = true
-      autoHeadingID = true
-      autoHeadingIDType = "github"
-    [markup.goldmark.renderer]
-      unsafe = true
-  
-  [markup.highlight]
-    # Use CSS classes instead of inline styles for theme switching
-    noClasses = false
-    lineNos = false
-    lineNumbersInTable = false
+[outputFormats.JSON]
+mediaType = "application/json"
+baseName = "index"

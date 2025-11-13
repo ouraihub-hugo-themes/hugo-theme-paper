@@ -1,0 +1,16 @@
+# Hugo Paper Theme - English Menu Configuration
+
+[[main]]
+name = "Posts"
+url = "/post/"
+weight = 1
+
+[[main]]
+name = "Tags"
+url = "/tags/"
+weight = 2
+
+[[main]]
+name = "About"
+url = "/about/"
+weight = 3

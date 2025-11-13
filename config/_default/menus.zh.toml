@@ -1,0 +1,16 @@
+# Hugo Paper Theme - Chinese Menu Configuration
+
+[[main]]
+name = "文章"
+url = "/post/"
+weight = 1
+
+[[main]]
+name = "标签"
+url = "/tags/"
+weight = 2
+
+[[main]]
+name = "关于"
+url = "/about/"
+weight = 3
