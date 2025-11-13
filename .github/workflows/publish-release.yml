@@ -73,11 +73,23 @@ jobs:
           done
 
           # Copy configuration and documentation files
-          for file in theme.toml README.md CONTRIBUTING.md LICENSE .gitignore go.mod; do
+          for file in theme.toml README.md CONTRIBUTING.md LICENSE .gitignore; do
             if [ -f "$file" ]; then
               cp "$file" "$RELEASE_PATH/"
             fi
           done
+
+          # Use go.mod.dist for distribution repository
+          if [ -f "go.mod.dist" ]; then
+            cp "go.mod.dist" "$RELEASE_PATH/go.mod"
+          else
+            # Fallback: create go.mod for dist repo
+            cat > "$RELEASE_PATH/go.mod" << 'GO_MOD_EOF'
+module github.com/ouraihub-hugo-themes/hugo-theme-paper-dist
+
+go 1.24
+GO_MOD_EOF
+          fi
 
           # Generate release info
           cat > "$RELEASE_PATH/RELEASE-INFO.md" << 'RELEASE_EOF'
