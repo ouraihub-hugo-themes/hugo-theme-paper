@@ -57,6 +57,11 @@ jobs:
         run: |
           pnpm run ts:build
           pnpm run css:build
+          
+          # Verify build output
+          echo "Checking build output:"
+          ls -la static/js/ || echo "static/js/ not found"
+          ls -la static/css/ || echo "static/css/ not found"
 
       - name: Create release package
         run: |
@@ -65,12 +70,33 @@ jobs:
 
           mkdir -p "$RELEASE_PATH"
 
-          # Copy theme directories
-          for dir in layouts assets i18n data archetypes static; do
+          # Copy theme directories (excluding static, we'll copy it separately)
+          for dir in layouts assets i18n data archetypes; do
             if [ -d "$dir" ]; then
               cp -r "$dir" "$RELEASE_PATH/"
             fi
           done
+          
+          # Copy static directory with all generated files
+          if [ -d "static" ]; then
+            mkdir -p "$RELEASE_PATH/static"
+            cp -r static/* "$RELEASE_PATH/static/" 2>/dev/null || true
+            # Ensure js directory exists and copy
+            if [ -d "static/js" ]; then
+              mkdir -p "$RELEASE_PATH/static/js"
+              cp -r static/js/* "$RELEASE_PATH/static/js/"
+            fi
+            # Ensure css directory exists and copy
+            if [ -d "static/css" ]; then
+              mkdir -p "$RELEASE_PATH/static/css"
+              cp -r static/css/* "$RELEASE_PATH/static/css/"
+            fi
+          fi
+          
+          # Verify copied files
+          echo "Verifying release package:"
+          ls -la "$RELEASE_PATH/static/js/" || echo "js directory not found in release"
+          ls -la "$RELEASE_PATH/static/css/" || echo "css directory not found in release"
 
           # Copy configuration and documentation files
           for file in theme.toml README.md CONTRIBUTING.md LICENSE .gitignore; do
