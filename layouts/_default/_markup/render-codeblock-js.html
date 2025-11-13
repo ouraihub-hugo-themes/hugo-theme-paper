@@ -1,0 +1,76 @@
+{{- /*
+  Render Hook for Code Blocks
+  
+  This template handles code block rendering with support for two modes:
+  1. Basic mode: Uses Hugo's built-in Chroma highlighter
+  2. Shiki mode: Uses pre-processed HTML from Shiki
+  
+  The mode is determined by the codeHighlight.engine parameter in params.toml
+  
+  Requirements: 1.1, 1.4, 8.1, 8.2
+*/ -}}
+
+{{- /* Get configuration */ -}}
+{{- $engine := .Page.Site.Params.codeHighlight.engine | default "basic" -}}
+{{- $lang := .Type -}}
+{{- $code := .Inner -}}
+{{- $attributes := .Attributes -}}
+
+{{- /* Debug information (only in development) */ -}}
+{{- if hugo.IsServer -}}
+  {{- /* warnf "Code block: lang=%s, engine=%s, file=%s, ordinal=%d" $lang $engine .Page.File.Path .Ordinal */ -}}
+{{- end -}}
+
+{{- if eq $engine "shiki" -}}
+  {{- /* Shiki mode: Try to read pre-processed HTML from JSON */ -}}
+  
+  {{- /* Build path to Shiki JSON file */ -}}
+  {{- $filePath := "" -}}
+  {{- with .Page.File -}}
+    {{- $filePath = .Path -}}
+  {{- end -}}
+  
+  {{- $ordinal := .Ordinal -}}
+  {{- $shikiHTML := "" -}}
+  
+  {{- if $filePath -}}
+    {{- /* Remove file extension and normalize path separators */ -}}
+    {{- $filePathNoExt := strings.TrimSuffix ".md" $filePath -}}
+    {{- $filePathNoExt = replace $filePathNoExt "\\" "/" -}}
+    {{- /* Hugo runs from exampleSite directory, so .shiki-output is relative to it */ -}}
+    {{- $shikiJSONPath := printf ".shiki-output/%s.json" $filePathNoExt -}}
+    
+    {{- /* Try to read the JSON file */ -}}
+    {{- if fileExists $shikiJSONPath -}}
+      {{- $jsonContent := readFile $shikiJSONPath -}}
+      {{- $blocks := unmarshal $jsonContent -}}
+      
+      {{- /* Find the block with matching index */ -}}
+      {{- range $blocks -}}
+        {{- /* Convert float64 to int for comparison */ -}}
+        {{- $blockIndex := int .index -}}
+        {{- if eq $blockIndex $ordinal -}}
+          {{- $shikiHTML = .html -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    
+    {{- if $shikiHTML -}}
+      {{- /* Successfully loaded Shiki HTML */ -}}
+      {{- $shikiHTML | safeHTML -}}
+    {{- else -}}
+      {{- /* Fallback to basic mode if Shiki HTML not found */ -}}
+      {{- if hugo.IsServer -}}
+        {{- warnf "Shiki HTML not found for %s (block %d), falling back to basic mode" $filePath $ordinal -}}
+      {{- end -}}
+      {{- partial "code-block-basic.html" (dict "code" $code "lang" $lang "attributes" $attributes "page" .Page) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- /* No file path available, fallback to basic mode */ -}}
+    {{- partial "code-block-basic.html" (dict "code" $code "lang" $lang "attributes" $attributes "page" .Page) -}}
+  {{- end -}}
+  
+{{- else -}}
+  {{- /* Basic mode: Use Chroma + client-side enhancement */ -}}
+  {{- partial "code-block-basic.html" (dict "code" $code "lang" $lang "attributes" $attributes "page" .Page) -}}
+{{- end -}}

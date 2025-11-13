@@ -5,11 +5,13 @@
  * 扫描 Markdown 文件，提取代码块，使用 Shiki 处理，并缓存结果
  */
 
-import { writeFile, mkdir } from "fs/promises";
+import { writeFile, mkdir, readFile, stat } from "fs/promises";
 import { join, dirname, relative } from "path";
+import { existsSync } from "fs";
 import { ShikiProcessor } from "./processor.js";
 import { ShikiCache } from "./cache.js";
 import { MarkdownScanner } from "./markdown-scanner.js";
+import { configValidator } from "./config-validator.js";
 import type { ShikiConfig, CodeBlock } from "./types.js";
 
 interface BuildOptions {
@@ -29,8 +31,14 @@ interface BuildStats {
   processedBlocks: number;
   cachedBlocks: number;
   failedBlocks: number;
+  skippedFiles: number;
   startTime: number;
   endTime: number;
+}
+
+interface BuildTimeRecord {
+  lastBuildTime: number;
+  version: string;
 }
 
 export class ShikiBuild {
@@ -39,12 +47,19 @@ export class ShikiBuild {
   private cache: ShikiCache | null = null;
   private scanner: MarkdownScanner | null = null;
   private stats: BuildStats;
+  private buildTimeFile: string;
 
   constructor(options: BuildOptions = {}) {
+    // 智能检测路径：如果在主题目录运行，自动使用 exampleSite
+    const isThemeDir = existsSync("exampleSite");
+    const defaultContentDir = isThemeDir ? "exampleSite/content" : "content";
+    const defaultOutputDir = isThemeDir ? "exampleSite/.shiki-output" : ".shiki-output";
+    const defaultCacheDir = isThemeDir ? "exampleSite/.shiki-cache" : ".shiki-cache";
+    
     this.options = {
-      contentDir: options.contentDir || "content",
-      outputDir: options.outputDir || ".shiki-output",
-      cacheDir: options.cacheDir || ".shiki-cache",
+      contentDir: options.contentDir || defaultContentDir,
+      outputDir: options.outputDir || defaultOutputDir,
+      cacheDir: options.cacheDir || defaultCacheDir,
       configFile: options.configFile || "params.toml",
       incremental: options.incremental ?? true,
       parallel: options.parallel ?? true,
@@ -58,9 +73,56 @@ export class ShikiBuild {
       processedBlocks: 0,
       cachedBlocks: 0,
       failedBlocks: 0,
+      skippedFiles: 0,
       startTime: 0,
       endTime: 0,
     };
+
+    this.buildTimeFile = join(this.options.cacheDir, "build-time.json");
+  }
+
+  /**
+   * 读取上次构建时间
+   */
+  private async getLastBuildTime(): Promise<number> {
+    try {
+      if (!existsSync(this.buildTimeFile)) {
+        return 0;
+      }
+      const content = await readFile(this.buildTimeFile, "utf-8");
+      const record: BuildTimeRecord = JSON.parse(content);
+      return record.lastBuildTime;
+    } catch {
+      return 0;
+    }
+  }
+
+  /**
+   * 保存构建时间
+   */
+  private async saveBuildTime(): Promise<void> {
+    const record: BuildTimeRecord = {
+      lastBuildTime: this.stats.startTime,
+      version: "1.0.0",
+    };
+    await writeFile(this.buildTimeFile, JSON.stringify(record, null, 2), "utf-8");
+  }
+
+  /**
+   * 检查文件是否需要处理
+   */
+  private async shouldProcessFile(filePath: string, lastBuildTime: number): Promise<boolean> {
+    if (!this.options.incremental) {
+      return true;
+    }
+
+    try {
+      const stats = await stat(filePath);
+      return stats.mtimeMs > lastBuildTime;
+    } catch {
+      // 文件不存在或无法访问，跳过
+      return false;
+    }
   }
 
   /**
@@ -68,30 +130,24 @@ export class ShikiBuild {
    */
   private async loadConfig(): Promise<ShikiConfig> {
     // 默认配置（与 AstroPaper 一致）
-    const defaultConfig: ShikiConfig = {
-      themes: {
-        light: "min-light",
-        dark: "night-owl",
-      },
-      defaultColor: false,
-      wrap: false,
-      transformers: {
-        fileName: true,
-        diff: true,
-        highlight: true,
-        wordHighlight: false,
-      },
-      fileNameOptions: {
-        style: "v2",
-        hideDot: false,
-      },
-      diffOptions: {
-        matchAlgorithm: "v3",
-      },
-    };
+    const defaultConfig = configValidator.generateDefaultConfig();
 
     // TODO: 从 params.toml 读取配置
     // 这需要 TOML 解析器，可以在后续实现
+
+    // 验证配置
+    const validationResult = configValidator.validate(defaultConfig);
+    
+    if (!validationResult.valid) {
+      console.error("\n❌ Configuration validation failed!\n");
+      configValidator.printValidationResult(validationResult);
+      throw new Error("Invalid Shiki configuration");
+    }
+
+    // 显示警告（如果有）
+    if (validationResult.warnings.length > 0) {
+      configValidator.printValidationResult(validationResult);
+    }
 
     return defaultConfig;
   }
@@ -130,21 +186,26 @@ export class ShikiBuild {
       throw new Error("Processor or cache not initialized");
     }
 
+    const startTime = Date.now();
+
     // 检查缓存
     const cached = await this.cache.get(block.code, block.lang, block.meta);
     if (cached) {
       this.stats.cachedBlocks++;
-      this.log(`Cache hit: ${block.file}:${block.line}`, true);
+      const duration = Date.now() - startTime;
+      this.log(`✓ Cache hit: ${block.file}:${block.line} (${duration}ms)`, true);
       return cached;
     }
 
     // 处理代码块
     const result = await this.processor.processCodeBlock(block);
 
+    const duration = Date.now() - startTime;
+
     if (result.error) {
       this.stats.failedBlocks++;
       console.error(
-        `Failed to process ${block.file}:${block.line}:`,
+        `✗ Failed to process ${block.file}:${block.line} (${duration}ms):`,
         result.error.message
       );
       return null;
@@ -153,6 +214,7 @@ export class ShikiBuild {
     // 保存到缓存
     await this.cache.set(block.code, block.lang, block.meta, result.html);
     this.stats.processedBlocks++;
+    this.log(`✓ Processed: ${block.file}:${block.line} [${block.lang}] (${duration}ms)`, true);
 
     return result.html;
   }
@@ -164,7 +226,10 @@ export class ShikiBuild {
     filePath: string,
     blocks: CodeBlock[]
   ): Promise<void> {
-    this.log(`Processing ${filePath} (${blocks.length} blocks)`);
+    const startTime = Date.now();
+    const relativePath = relative(this.options.contentDir, filePath);
+    
+    this.log(`📄 Processing ${relativePath} (${blocks.length} blocks)`);
 
     const results: Array<{ block: CodeBlock; html: string | null }> = [];
 
@@ -186,6 +251,14 @@ export class ShikiBuild {
 
     // 保存结果到输出目录
     await this.saveResults(filePath, results);
+
+    const duration = Date.now() - startTime;
+    const successCount = results.filter(r => r.html !== null).length;
+    const failCount = results.length - successCount;
+    
+    this.log(
+      `✓ Completed ${relativePath}: ${successCount} success, ${failCount} failed (${duration}ms)`
+    );
   }
 
   /**
@@ -230,6 +303,13 @@ export class ShikiBuild {
       throw new Error("Scanner not initialized");
     }
 
+    // 获取上次构建时间（用于增量构建）
+    const lastBuildTime = await this.getLastBuildTime();
+    
+    if (this.options.incremental && lastBuildTime > 0) {
+      this.log(`Incremental build enabled (last build: ${new Date(lastBuildTime).toISOString()})`);
+    }
+
     this.log("Scanning markdown files...");
 
     // 扫描并提取代码块
@@ -247,18 +327,50 @@ export class ShikiBuild {
 
     // 处理每个文件
     let processedFiles = 0;
-    for (const [filePath, blocks] of fileBlocks.entries()) {
+    const filesToProcess = Array.from(fileBlocks.entries());
+    
+    console.log("\n" + "─".repeat(60));
+    console.log("Processing files...");
+    console.log("─".repeat(60) + "\n");
+
+    for (const [filePath, blocks] of filesToProcess) {
+      // 检查是否需要处理此文件（增量构建）
+      const shouldProcess = await this.shouldProcessFile(filePath, lastBuildTime);
+      
+      if (!shouldProcess) {
+        this.stats.skippedFiles++;
+        const relativePath = relative(this.options.contentDir, filePath);
+        this.log(`⊘ Skipping unchanged: ${relativePath}`, true);
+        continue;
+      }
+
       await this.processFile(filePath, blocks);
       processedFiles++;
 
-      // 显示进度
-      const progress = ((processedFiles / this.stats.totalFiles) * 100).toFixed(
-        1
+      // 显示进度条
+      const progress = ((processedFiles / this.stats.totalFiles) * 100).toFixed(1);
+      const progressBar = this.createProgressBar(
+        processedFiles,
+        this.stats.totalFiles,
+        30
       );
-      this.log(`Progress: ${progress}% (${processedFiles}/${this.stats.totalFiles})`);
+      
+      console.log(
+        `\n${progressBar} ${progress}% (${processedFiles}/${this.stats.totalFiles})`
+      );
+      console.log(
+        `Processed: ${this.stats.processedBlocks}, ` +
+        `Cached: ${this.stats.cachedBlocks}, ` +
+        `Failed: ${this.stats.failedBlocks}`
+      );
     }
 
+    console.log("\n" + "─".repeat(60) + "\n");
+
     this.stats.endTime = Date.now();
+
+    // 保存构建时间
+    await this.saveBuildTime();
 
     // 显示统计信息
     this.printStats();
@@ -276,6 +388,7 @@ export class ShikiBuild {
     console.log("Shiki Build Complete");
     console.log("=".repeat(60));
     console.log(`Total files:       ${this.stats.totalFiles}`);
+    console.log(`Skipped files:     ${this.stats.skippedFiles}`);
     console.log(`Total blocks:      ${this.stats.totalBlocks}`);
     console.log(`Processed blocks:  ${this.stats.processedBlocks}`);
     console.log(`Cached blocks:     ${this.stats.cachedBlocks}`);
@@ -290,7 +403,27 @@ export class ShikiBuild {
       console.log(`Avg time/block:    ${avgTime}ms`);
     }
 
+    // 显示增量构建效率
+    if (this.options.incremental && this.stats.skippedFiles > 0) {
+      const skipRate = ((this.stats.skippedFiles / this.stats.totalFiles) * 100).toFixed(1);
+      console.log(`Skip rate:         ${skipRate}% (incremental build)`);
+    }
+
     console.log("=".repeat(60) + "\n");
+  }
+
+  /**
+   * 创建进度条
+   */
+  private createProgressBar(current: number, total: number, width: number = 30): string {
+    const percentage = current / total;
+    const filled = Math.floor(percentage * width);
+    const empty = width - filled;
+    
+    const filledBar = "█".repeat(filled);
+    const emptyBar = "░".repeat(empty);
+    
+    return `[${filledBar}${emptyBar}]`;
   }
 
   /**

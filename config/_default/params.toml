@@ -123,3 +123,50 @@ direction = "ltr"
   name = "Mail"
   href = "mailto:?subject=See%20this%20post&body="
   linkTitle = "Share this post via email"
+
+# ===== Code Highlight Configuration =====
+# Code highlighting system (aligned with AstroPaper's markdown.shikiConfig)
+[codeHighlight]
+  # Engine: "basic" (Hugo Chroma) | "shiki" (Shiki pre-processing)
+  # Note: Shiki mode requires pre-processing, basic mode works out of the box
+  engine = "basic"
+  
+  # Show copy button on code blocks
+  showCopyButton = true
+  
+  # Show line numbers
+  showLineNumbers = false
+  
+  # Basic mode configuration (Hugo Chroma)
+  [codeHighlight.basic]
+    showFileName = true
+    showDiff = true
+    theme = "github"
+  
+  # Shiki mode configuration (aligned with AstroPaper)
+  [codeHighlight.shiki]
+    showFileName = true
+    showDiff = true
+    defaultColor = false  # AstroPaper: defaultColor: false
+    wrap = false          # AstroPaper: wrap: false
+    
+    # Shiki themes (aligned with AstroPaper)
+    [codeHighlight.shiki.themes]
+      light = "min-light"   # AstroPaper: themes.light
+      dark = "night-owl"    # AstroPaper: themes.dark
+    
+    # Shiki Transformers (aligned with AstroPaper)
+    [codeHighlight.shiki.transformers]
+      fileName = true           # transformerFileName
+      diff = true              # transformerNotationDiff
+      highlight = true         # transformerNotationHighlight
+      wordHighlight = false    # transformerNotationWordHighlight
+    
+    # fileName transformer options (aligned with AstroPaper)
+    [codeHighlight.shiki.fileNameOptions]
+      style = "v2"        # AstroPaper: style: "v2"
+      hideDot = false     # AstroPaper: hideDot: false
+    
+    # diff transformer options (aligned with AstroPaper)
+    [codeHighlight.shiki.diffOptions]
+      matchAlgorithm = "v3"  # AstroPaper: matchAlgorithm: "v3"

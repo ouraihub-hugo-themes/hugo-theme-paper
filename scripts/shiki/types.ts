@@ -35,6 +35,17 @@ export interface CodeBlock {
 export interface ProcessResult {
   html: string;
   error?: Error;
+  fallbackUsed?: string;
+}
+
+export interface ProcessError {
+  type: string;
+  message: string;
+  file: string;
+  line: number;
+  lang: string;
+  originalError?: Error;
+  fallbackUsed?: string;
 }
 
 export interface CacheEntry {

@@ -54,25 +54,27 @@ defaultContentLanguage = "en"
     baseName = "index"
 
 # Module
-[module]
-  [[module.mounts]]
-    source = "assets"
-    target = "assets"
-  [[module.mounts]]
-    source = "layouts"
-    target = "layouts"
-  [[module.mounts]]
-    source = "content"
-    target = "content"
-  [[module.mounts]]
-    source = "static"
-    target = "static"
-  [[module.mounts]]
-    source = "data"
-    target = "data"
-  [[module.mounts]]
-    source = "i18n"
-    target = "i18n"
-  [[module.mounts]]
-    source = "archetypes"
-    target = "archetypes"
+# Note: When using module mounts, Hugo only mounts the specified directories.
+# Comment out mounts to use default behavior (mount all theme directories).
+# [module]
+#   [[module.mounts]]
+#     source = "assets"
+#     target = "assets"
+#   [[module.mounts]]
+#     source = "layouts"
+#     target = "layouts"
+#   [[module.mounts]]
+#     source = "content"
+#     target = "content"
+#   [[module.mounts]]
+#     source = "static"
+#     target = "static"
+#   [[module.mounts]]
+#     source = "data"
+#     target = "data"
+#   [[module.mounts]]
+#     source = "i18n"
+#     target = "i18n"
+#   [[module.mounts]]
+#     source = "archetypes"
+#     target = "archetypes"

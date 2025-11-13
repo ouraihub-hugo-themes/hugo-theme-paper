@@ -1,6 +1,7 @@
 @plugin '@tailwindcss/typography';
 
 @layer base {
+
   /* ===== Override default Tailwind Typography styles ===== */
   .app-prose {
     @apply prose;
@@ -28,7 +29,7 @@
     }
 
     a {
-      @apply break-words text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
+      @apply wrap-break-word text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
     }
 
     ul {
@@ -52,6 +53,7 @@
     }
 
     table {
+
       th,
       td {
         @apply border border-border p-2;
@@ -67,7 +69,7 @@
     }
 
     code {
-      @apply rounded bg-muted/75 p-1 break-words text-foreground before:content-none after:content-none;
+      @apply rounded bg-muted/75 p-1 wrap-break-word text-foreground before:content-none after:content-none;
     }
 
     .astro-code code {
@@ -75,7 +77,7 @@
     }
 
     blockquote {
-      @apply border-s-accent/80 break-words opacity-80;
+      @apply border-s-accent/80 wrap-break-word opacity-80;
     }
 
     details {
@@ -113,9 +115,16 @@
     @apply absolute -top-3 left-3 z-10 rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium;
   }
 
-  /* 如果使用 Shiki (Astro) */
+  /* ===== Shiki Code Blocks (完全复刻 AstroPaper) ===== */
+
+  /* 参考: astro-paper/src/styles/typography.css */
+
+  /* Shiki 容器样式 - 对应 AstroPaper 的 flex, border, bg */
   .astro-code {
-    @apply flex border border-border rounded-lg p-4 overflow-x-auto bg-(--shiki-light-bg) text-(--shiki-light) [&_span]:text-(--shiki-light);
+    @apply flex border outline-border;
+
+    background-color: var(--shiki-light-bg);
+    color: var(--shiki-light);
 
     /* Styles for Shiki transformers */
 
@@ -137,6 +146,21 @@
     }
   }
 
+  /* Shiki span 元素颜色 */
+  .astro-code span {
+    color: var(--shiki-light);
+  }
+
+  /* 深色模式 - 使用 Shiki 的 CSS 变量 */
+  html[data-theme="dark"] .astro-code {
+    background-color: var(--shiki-dark-bg);
+    color: var(--shiki-dark);
+  }
+
+  html[data-theme="dark"] .astro-code span {
+    color: var(--shiki-dark);
+  }
+
   /* Chroma syntax highlighting - Light theme */
   .chroma {
     @apply bg-transparent;
@@ -149,7 +173,9 @@
   :root .chroma .c1,
   :root .chroma .cs {
     color: #6a737d;
-  } /* Comments - gray */
+  }
+
+  /* Comments - gray */
 
   :root .chroma .k,
   :root .chroma .kc,
@@ -159,7 +185,9 @@
   :root .chroma .kr,
   :root .chroma .kt {
     color: #d73a49;
-  } /* Keywords - red */
+  }
+
+  /* Keywords - red */
 
   :root .chroma .s,
   :root .chroma .sa,
@@ -176,7 +204,9 @@
   :root .chroma .s1,
   :root .chroma .ss {
     color: #032f62;
-  } /* Strings - blue */
+  }
+
+  /* Strings - blue */
 
   :root .chroma .m,
   :root .chroma .mb,
@@ -186,7 +216,9 @@
   :root .chroma .il,
   :root .chroma .mo {
     color: #005cc5;
-  } /* Numbers - blue */
+  }
+
+  /* Numbers - blue */
 
   :root .chroma .n,
   :root .chroma .na,
@@ -202,12 +234,16 @@
   :root .chroma .nt,
   :root .chroma .nv {
     color: #24292e;
-  } /* Names - dark */
+  }
+
+  /* Names - dark */
 
   :root .chroma .o,
   :root .chroma .ow {
     color: #d73a49;
-  } /* Operators - red */
+  }
+
+  /* Operators - red */
 
   /* Dark theme colors */
   html[data-theme="dark"] .chroma .c,
@@ -216,7 +252,9 @@
   html[data-theme="dark"] .chroma .c1,
   html[data-theme="dark"] .chroma .cs {
     color: #8b949e;
-  } /* Comments - gray */
+  }
+
+  /* Comments - gray */
 
   html[data-theme="dark"] .chroma .k,
   html[data-theme="dark"] .chroma .kc,
@@ -226,7 +264,9 @@
   html[data-theme="dark"] .chroma .kr,
   html[data-theme="dark"] .chroma .kt {
     color: #ff7b72;
-  } /* Keywords - red */
+  }
+
+  /* Keywords - red */
 
   html[data-theme="dark"] .chroma .s,
   html[data-theme="dark"] .chroma .sa,
@@ -243,7 +283,9 @@
   html[data-theme="dark"] .chroma .s1,
   html[data-theme="dark"] .chroma .ss {
     color: #a5d6ff;
-  } /* Strings - light blue */
+  }
+
+  /* Strings - light blue */
 
   html[data-theme="dark"] .chroma .m,
   html[data-theme="dark"] .chroma .mb,
@@ -253,7 +295,9 @@
   html[data-theme="dark"] .chroma .il,
   html[data-theme="dark"] .chroma .mo {
     color: #79c0ff;
-  } /* Numbers - blue */
+  }
+
+  /* Numbers - blue */
 
   html[data-theme="dark"] .chroma .n,
   html[data-theme="dark"] .chroma .na,
@@ -269,12 +313,16 @@
   html[data-theme="dark"] .chroma .nt,
   html[data-theme="dark"] .chroma .nv {
     color: #c9d1d9;
-  } /* Names - light */
+  }
+
+  /* Names - light */
 
   html[data-theme="dark"] .chroma .o,
   html[data-theme="dark"] .chroma .ow {
     color: #ff7b72;
-  } /* Operators - red */
+  }
+
+  /* Operators - red */
 
   html[data-theme="dark"] pre {
     @apply bg-muted/15;

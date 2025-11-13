@@ -78,33 +78,46 @@
 
   /* 完全复刻 AstroPaper 的 .astro-code 样式 */
 
+  /* 
+   * Shiki 在配置 themes: { light: "min-light", dark: "night-owl" } 
+   * 和 defaultColor: false 时会自动生成这些 CSS 变量：
+   * - --shiki-light-bg, --shiki-light (浅色主题)
+   * - --shiki-dark-bg, --shiki-dark (深色主题)
+   * 
+   * 参考: astro-paper/astro.config.ts 的 markdown.shikiConfig
+   * 参考: astro-paper/src/styles/typography.css 的深色模式样式
+   */
+
   /* Shiki 容器样式 - 对应 AstroPaper 的 flex, border, bg */
+  .shiki,
   .astro-code {
-    @apply flex border border-border outline-border;
+    @apply flex border border-border outline-border rounded-lg overflow-x-auto p-4 my-6;
 
     background-color: var(--shiki-light-bg);
     color: var(--shiki-light);
   }
 
   /* Shiki 代码内容 - 对应 AstroPaper 的 flex-[1_0_100%] bg-inherit p-0 */
+  .shiki code,
   .astro-code code {
-    @apply flex-[1_0_100%] bg-inherit p-0;
+    @apply flex-[1_0_100%] bg-inherit p-0 block font-mono text-sm leading-relaxed;
   }
 
   /* Shiki span 元素颜色 */
+  .shiki span,
   .astro-code span {
     color: var(--shiki-light);
   }
 
   /* ===== 深色模式支持 ===== */
 
-  /* 使用 Shiki 的 CSS 变量 - 完全复刻 AstroPaper */
-
+  html[data-theme="dark"] .shiki,
   html[data-theme="dark"] .astro-code {
     background-color: var(--shiki-dark-bg);
     color: var(--shiki-dark);
   }
 
+  html[data-theme="dark"] .shiki span,
   html[data-theme="dark"] .astro-code span {
     color: var(--shiki-dark);
   }
@@ -113,31 +126,55 @@
 
   /* 完全复刻 AstroPaper 的差异高亮和行高亮样式 */
 
+  /* 参考: astro-paper/src/styles/typography.css */
+
   /* 差异高亮 - 添加行 (bg-green-400/20, before:content-['+']) */
+  .shiki .line.diff.add,
   .astro-code .line.diff.add {
     @apply relative inline-block w-full bg-green-400/20 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
   }
 
   /* 差异高亮 - 删除行 (bg-red-500/20, before:content-['-']) */
+  .shiki .line.diff.remove,
   .astro-code .line.diff.remove {
     @apply relative inline-block w-full bg-red-500/20 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
   }
 
   /* 行高亮 (bg-slate-400/20) */
+  .shiki .line.highlighted,
   .astro-code .line.highlighted {
     @apply inline-block w-full bg-slate-400/20;
   }
 
   /* 词高亮 */
+  .shiki .highlighted-word,
   .astro-code .highlighted-word {
     @apply rounded-sm border border-border px-0.5 py-px;
   }
 
   /* ===== 深色模式下的差异和高亮颜色调整 ===== */
 
-  /* 注意：AstroPaper 没有为深色模式单独定义这些颜色 */
-
-  /* 但为了更好的视觉效果，我们保持相同的透明度 */
-
-  /* Shiki 的主题切换会自动处理代码的语法高亮颜色 */
+  /* 
+   * 注意：AstroPaper 没有为深色模式单独调整差异和高亮颜色
+   * 
+   * 原因：
+   * 1. Shiki 的主题切换会自动处理代码的语法高亮颜色
+   * 2. 差异标记（green-400/20, red-500/20）和行高亮（slate-400/20）
+   *    使用的是半透明颜色，在深色模式下也能保持良好的对比度
+   * 3. 保持与 AstroPaper 完全一致的行为
+   * 
+   * 如果未来需要调整深色模式下的颜色，可以在这里添加：
+   * 
+   * html[data-theme="dark"] .astro-code .line.diff.add {
+   *   @apply bg-green-500/30;
+   * }
+   * 
+   * html[data-theme="dark"] .astro-code .line.diff.remove {
+   *   @apply bg-red-600/30;
+   * }
+   * 
+   * html[data-theme="dark"] .astro-code .line.highlighted {
+   *   @apply bg-slate-500/30;
+   * }
+   */
 }
