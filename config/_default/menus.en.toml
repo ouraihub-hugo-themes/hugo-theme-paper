@@ -1,0 +1,22 @@
+# Hugo Paper Theme - English Menus
+# 英文菜单配置
+# 文档: https://gohugo.io/configuration/menus/
+
+# ===== 主菜单 =====
+[[main]]
+  identifier = "posts"
+  name = "Posts"
+  pageRef = "/post/"
+  weight = 1
+
+[[main]]
+  identifier = "tags"
+  name = "Tags"
+  pageRef = "/tags/"
+  weight = 2
+
+[[main]]
+  identifier = "about"
+  name = "About"
+  pageRef = "/about/"
+  weight = 3

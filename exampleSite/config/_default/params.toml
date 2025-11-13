@@ -1,0 +1,72 @@
+# Hugo Paper Example Site - Parameters
+# 示例站点主题参数配置
+
+# ===== 站点信息 =====
+description = "A minimal, responsive Hugo theme inspired by Astro Paper"
+author = "Your Name"
+showArchives = true
+showBackButton = true
+
+# ===== 主题设置 =====
+[theme]
+  defaultTheme = "light"  # light or dark
+  switchTheme = true
+
+# ===== 文章设置 =====
+[post]
+  showReadingTime = true
+  showTableOfContents = true
+  showCopyCodeButton = true
+  showRelatedPosts = true
+  relatedPostCount = 3
+
+# ===== 代码高亮 =====
+[highlight]
+  enable = true
+  style = "github"      # 浅色模式
+  styleDark = "monokai" # 深色模式
+
+[codeHighlight]
+  showCopyButton = true
+  showFileName = true
+  enableDiff = true
+  enableHighlight = true
+
+# ===== 编辑链接 =====
+[editPost]
+  enabled = true
+  text = "Edit this post"
+  url = "https://github.com/username/repo/edit/main/content/"
+
+# ===== 搜索功能 =====
+[search]
+  enable = false
+  provider = "pagefind"
+
+# ===== 评论系统 =====
+[comments]
+  enable = false
+  provider = "giscus"
+
+# ===== SEO 设置 =====
+[seo]
+  keywords = "Hugo, blog, theme, minimal"
+  description = "A minimal, responsive Hugo theme inspired by Astro Paper"
+  author = "Your Name"
+  ogImage = "/og-image.png"
+
+# ===== 社交链接 =====
+[[social]]
+  name = "GitHub"
+  href = "https://github.com/username"
+  linkTitle = "Follow on GitHub"
+
+[[social]]
+  name = "X"
+  href = "https://x.com/username"
+  linkTitle = "Follow on X"
+
+[[social]]
+  name = "Mail"
+  href = "mailto:contact@example.com"
+  linkTitle = "Send an email"

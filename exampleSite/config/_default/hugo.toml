@@ -1,0 +1,53 @@
+# Hugo Paper Example Site - Core Configuration
+# 示例站点核心配置
+
+# ===== 基本设置 =====
+baseURL = "https://example.com/"
+title = "Hugo Paper Example"
+theme = "hugo-theme-paper"
+languageCode = "en-us"
+defaultContentLanguage = "en"
+
+# ===== 内容设置 =====
+summaryLength = 200
+hasCJKLanguage = true
+enableEmoji = true
+enableInlineShortcodes = true
+enableRobotsTXT = true
+
+# ===== 分页 =====
+[pagination]
+  pagerSize = 4
+
+# ===== 分类系统 =====
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+# ===== 输出格式 =====
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "index"
+
+# ===== Markdown 配置 =====
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      typographer = true
+    [markup.goldmark.parser]
+      attribute = true
+      autoHeadingID = true
+      autoHeadingIDType = "github"
+    [markup.goldmark.renderer]
+      unsafe = true
+  
+  [markup.highlight]
+    noClasses = false
+    codeFences = true
+    lineNos = false
+    style = "github"

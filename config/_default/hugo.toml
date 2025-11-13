@@ -1,43 +1,48 @@
-# Hugo Paper Theme - Basic Configuration
-# This file contains core Hugo settings
+# Hugo Paper Theme - Core Configuration
+# 核心 Hugo 配置文件
+# 文档: https://gohugo.io/getting-started/configuration/
 
+# ===== 基本设置 =====
 baseURL = "http://localhost:1313/"
 languageCode = "en-us"
-title = "Hugo Paper - Theme Development"
-# theme = "." # Commented out for theme development
-
-# Content Settings
-enableInlineShortcodes = true
-enableEmoji = true
-hasCJKLanguage = true
-summaryLength = 200
+title = "Hugo Paper"
 defaultContentLanguage = "en"
 
-# For theme development, load content from exampleSite
+# 主题开发时注释掉，用户使用时取消注释
+# theme = "hugo-theme-paper"
+
+# ===== 内容设置 =====
+# 主题开发时使用 exampleSite 内容
 contentDir = "exampleSite/content"
+summaryLength = 200
+hasCJKLanguage = true
 
-# Pagination
+# ===== 功能开关 =====
+enableInlineShortcodes = true
+enableEmoji = true
+enableRobotsTXT = true
+enableGitInfo = false
+
+# ===== 分页设置 =====
 [pagination]
-  pagerSize = 4
+  pagerSize = 10
 
-# Taxonomies
+# ===== 分类系统 =====
 [taxonomies]
   category = "categories"
   tag = "tags"
 
-# Outputs
+# ===== 输出格式 =====
 [outputs]
   home = ["HTML", "RSS", "JSON"]
   page = ["HTML"]
   section = ["HTML", "RSS"]
 
-# Output Formats
-[outputFormats]
-  [outputFormats.JSON]
-    mediaType = "application/json"
-    baseName = "index"
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "index"
 
-# Markup Configuration
+# ===== Markdown 渲染配置 =====
 [markup]
   [markup.goldmark]
     [markup.goldmark.extensions]
@@ -50,7 +55,25 @@ contentDir = "exampleSite/content"
       unsafe = true
   
   [markup.highlight]
-    # Use CSS classes instead of inline styles for theme switching
+    # 使用 CSS 类而不是内联样式（支持主题切换）
     noClasses = false
+    codeFences = true
     lineNos = false
     lineNumbersInTable = false
+    # 浅色模式主题（对应 AstroPaper 的 min-light）
+    style = "github"
+    guessSyntax = false
+    hl_Lines = ""
+    lineNoStart = 1
+    anchorLineNos = false
+    lineAnchors = ""
+
+# ===== 隐私设置 =====
+[privacy]
+  [privacy.youtube]
+    privacyEnhanced = true
+
+# ===== 服务设置 =====
+[services]
+  [services.rss]
+    limit = 20
