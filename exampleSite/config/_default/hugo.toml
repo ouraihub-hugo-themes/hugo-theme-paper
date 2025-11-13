@@ -15,8 +15,9 @@ enableEmoji = true
 enableInlineShortcodes = true
 enableRobotsTXT = true
 
-# ===== 分页 =====
+# ===== 分页设置 =====
 [pagination]
+  # 每页显示的文章数量
   pagerSize = 4
 
 # ===== 分类系统 =====
