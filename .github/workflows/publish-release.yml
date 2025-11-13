@@ -84,25 +84,23 @@ jobs:
             cp "go.mod.dist" "$RELEASE_PATH/go.mod"
           else
             # Fallback: create go.mod for dist repo
-            cat > "$RELEASE_PATH/go.mod" <<'GO_MOD_EOF'
-module github.com/ouraihub-hugo-themes/hugo-theme-paper-dist
-
-go 1.24
-GO_MOD_EOF
+            echo "module github.com/ouraihub-hugo-themes/hugo-theme-paper-dist" > "$RELEASE_PATH/go.mod"
+            echo "" >> "$RELEASE_PATH/go.mod"
+            echo "go 1.24" >> "$RELEASE_PATH/go.mod"
           fi
 
           # Generate release info
-          cat > "$RELEASE_PATH/RELEASE-INFO.md" <<'RELEASE_EOF'
-# Hugo Paper Theme - Release Package
-
-**Version**: ${{ steps.version.outputs.version }}
-**Release Date**: $(date -u '+%Y-%m-%d %H:%M:%S')
-
-This release package contains pre-compiled CSS and JavaScript.
-No build step required - ready to use immediately!
-
-See [README.md](README.md) for installation and usage instructions.
-RELEASE_EOF
+          {
+            echo "# Hugo Paper Theme - Release Package"
+            echo ""
+            echo "**Version**: ${{ steps.version.outputs.version }}"
+            echo "**Release Date**: $(date -u '+%Y-%m-%d %H:%M:%S')"
+            echo ""
+            echo "This release package contains pre-compiled CSS and JavaScript."
+            echo "No build step required - ready to use immediately!"
+            echo ""
+            echo "See [README.md](README.md) for installation and usage instructions."
+          } > "$RELEASE_PATH/RELEASE-INFO.md"
 
           # Clean up unnecessary files from release
           # Remove development files
