@@ -117,10 +117,6 @@
     {{ partial "footer.html" . }}
 
     <!-- Scripts -->
-    {{- $ts := resources.Get "ts/main.ts" }}
-    {{- if $ts }}
-      {{- $js := $ts | js.Build (dict "minify" true) }}
-      <script defer src="{{ $js.RelPermalink }}"></script>
-    {{- end }}
+    <script defer src="{{ "js/main.js" | relURL }}"></script>
   </body>
 </html>
