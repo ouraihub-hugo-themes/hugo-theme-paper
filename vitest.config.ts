@@ -24,7 +24,7 @@ export default defineConfig({
         'assets/ts/**/*.spec.ts',
       ],
     },
-    include: ['tests/**/*.{test,spec}.ts'],
+    include: ['tests/**/*.{test,spec,bench}.ts'],
     exclude: [
       'node_modules',
       'dist',
