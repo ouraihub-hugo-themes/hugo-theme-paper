@@ -47,50 +47,28 @@
         </button>
         <ul
           id="menu-items"
-          class="mt-4 grid w-44 grid-cols-2 place-content-center gap-2 [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1 hidden sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0"
+          class="mt-4 hidden w-44 grid-cols-2 place-content-center gap-2 [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0"
         >
           {{- /* 导航菜单项 */ -}}
           {{- range .Site.Menus.main -}}
             {{- $isActive := false -}}
             
-            {{- /* 获取当前页面路径，移除尾部斜杠（除了根路径） */ -}}
+            {{- /* 获取当前页面路径 */ -}}
             {{- $currentPath := $.Page.RelPermalink -}}
-            {{- if and (strings.HasSuffix $currentPath "/") (ne $currentPath "/") -}}
-              {{- $currentPath = strings.TrimSuffix "/" $currentPath -}}
-            {{- end -}}
             
-            {{- /* 获取菜单路径，移除尾部斜杠（除了根路径） */ -}}
-            {{- $menuPath := .URL -}}
-            {{- if and (strings.HasSuffix $menuPath "/") (ne $menuPath "/") -}}
-              {{- $menuPath = strings.TrimSuffix "/" $menuPath -}}
-            {{- end -}}
+            {{- /* 获取菜单的完整 URL（包含语言前缀） */ -}}
+            {{- $menuURL := .URL | relLangURL -}}
             
-            {{- /* 分割路径为数组 */ -}}
-            {{- $currentPathParts := split $currentPath "/" -}}
-            {{- $menuPathParts := split $menuPath "/" -}}
+            {{- /* 移除尾部斜杠进行比较 */ -}}
+            {{- $currentPathClean := strings.TrimSuffix "/" $currentPath -}}
+            {{- $menuURLClean := strings.TrimSuffix "/" $menuURL -}}
             
-            {{- /* 过滤空字符串 */ -}}
-            {{- $currentPathArray := slice -}}
-            {{- range $currentPathParts -}}
-              {{- if ne . "" -}}
-                {{- $currentPathArray = $currentPathArray | append . -}}
-              {{- end -}}
-            {{- end -}}
-            
-            {{- $menuPathArray := slice -}}
-            {{- range $menuPathParts -}}
-              {{- if ne . "" -}}
-                {{- $menuPathArray = $menuPathArray | append . -}}
-              {{- end -}}
-            {{- end -}}
-            
-            {{- /* 检查是否匹配：完整路径相同 或 第一段路径相同 */ -}}
-            {{- if eq $currentPath $menuPath -}}
+            {{- /* 完全匹配 */ -}}
+            {{- if eq $currentPathClean $menuURLClean -}}
               {{- $isActive = true -}}
-            {{- else if and (gt (len $currentPathArray) 0) (gt (len $menuPathArray) 0) -}}
-              {{- if eq (index $currentPathArray 0) (index $menuPathArray 0) -}}
-                {{- $isActive = true -}}
-              {{- end -}}
+            {{- /* 前缀匹配（用于子页面） */ -}}
+            {{- else if and (ne $menuURLClean "") (ne $menuURLClean "/") (hasPrefix $currentPathClean $menuURLClean) -}}
+              {{- $isActive = true -}}
             {{- end -}}
             
             <li class="col-span-2">
