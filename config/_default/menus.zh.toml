@@ -7,10 +7,10 @@ weight = 1
 
 [[main]]
 name = "标签"
-url = "/tags/"
+url = "/zh/tags/"
 weight = 2
 
 [[main]]
 name = "关于"
-url = "/about/"
+url = "/zh/about/"
 weight = 3
