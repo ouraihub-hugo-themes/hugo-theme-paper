@@ -4,6 +4,7 @@
 baseURL = "http://localhost:1313/"
 title = "Hugo Paper - Theme Development"
 defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = true
 
 # For theme development, load content from exampleSite
 contentDir = "exampleSite/content"

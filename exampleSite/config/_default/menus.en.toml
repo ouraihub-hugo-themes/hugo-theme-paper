@@ -2,15 +2,15 @@
 
 [[main]]
 name = "Posts"
-url = "/post/"
+url = "/en/post/"
 weight = 1
 
 [[main]]
 name = "Tags"
-url = "/tags/"
+url = "/en/tags/"
 weight = 2
 
 [[main]]
 name = "About"
-url = "/about/"
+url = "/en/about/"
 weight = 3

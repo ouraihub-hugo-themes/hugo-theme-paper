@@ -1,6 +1,6 @@
 <!-- 文章点赞功能 -->
 
-<div class="post-like-container my-8 p-6 rounded-lg bg-gradient-bg border border-border text-center">
+<div class="post-like-container my-8 p-6 rounded-lg bg-muted/30 border border-border text-center">
   <button
     id="post-like-btn"
     class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200"
@@ -105,13 +105,13 @@
 
       // 更新按钮状态
       if (likeData.liked) {
-        this.btn.classList.add('bg-primary', 'text-white');
-        this.btn.classList.remove('bg-muted', 'hover:bg-primary');
+        this.btn.classList.add('bg-accent', 'text-background');
+        this.btn.classList.remove('bg-muted', 'hover:bg-accent');
         this.text.textContent = 'You Like This Post';
         this.updateIconColor();
       } else {
-        this.btn.classList.remove('bg-primary', 'text-white');
-        this.btn.classList.add('bg-muted', 'hover:bg-primary');
+        this.btn.classList.remove('bg-accent', 'text-background');
+        this.btn.classList.add('bg-muted', 'hover:bg-accent');
         this.text.textContent = 'Like This Post';
         this.updateIconColor();
       }
@@ -126,10 +126,10 @@
       this.message.classList.remove('hidden');
       if (liked) {
         this.message.innerHTML = '💚 Thanks for liking this post!';
-        this.message.classList.add('text-primary');
+        this.message.classList.add('text-accent');
       } else {
         this.message.innerHTML = '点赞已取消';
-        this.message.classList.remove('text-primary');
+        this.message.classList.remove('text-accent');
       }
 
       // 3秒后隐藏消息
@@ -155,10 +155,10 @@
 
 <style>
   .post-like-container button {
-    @apply bg-muted text-foreground hover:bg-primary hover:text-white;
+    @apply bg-muted text-foreground hover:bg-accent hover:text-background;
   }
 
-  .post-like-container button.bg-primary {
+  .post-like-container button.bg-accent {
     animation: scaleIn 0.3s ease-out;
   }
 

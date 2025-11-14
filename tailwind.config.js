@@ -7,11 +7,9 @@ export default {
       colors: {
         background: "var(--color-background)",
         foreground: "var(--color-foreground)",
-        accent: "rgb(var(--color-accent) / <alpha-value>)",
-        "accent-2": "rgb(var(--color-accent-2) / <alpha-value>)",
+        accent: "var(--color-accent)",
         muted: "var(--color-muted)",
         border: "var(--color-border)",
-        quote: "rgb(var(--color-quote) / <alpha-value>)",
       },
       fontFamily: {
         mono: [

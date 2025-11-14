@@ -3,7 +3,7 @@
 <!-- Tag Header -->
 <div class="mb-12">
   <h1 class="text-4xl md:text-5xl font-bold mb-4">
-    Tag: <span class="gradient-text">#{{ .Title }}</span>
+    Tag: <span class="text-accent font-semibold">#{{ .Title }}</span>
   </h1>
   <p class="text-lg text-muted">
     {{ .Pages | len }} articles with this tag
@@ -32,7 +32,7 @@
     {{ range first 20 $relatedTags }}
     <a
       href="{{ .Page.RelPermalink }}"
-      class="px-3 py-1 rounded-full text-sm bg-secondary/10 text-secondary hover:bg-secondary hover:text-white transition-colors duration-200"
+      class="px-3 py-1 rounded-full text-sm bg-muted/10 text-muted hover:bg-muted hover:text-background transition-colors duration-200"
     >
       #{{ .Page.Title }} ({{ .Count }})
     </a>
@@ -48,7 +48,7 @@
     {{ range .Site.Taxonomies.tags }}
     <a
       href="{{ .Page.RelPermalink }}"
-      class="px-3 py-1 rounded-full text-sm bg-muted/20 hover:bg-primary hover:text-white transition-colors duration-200"
+      class="px-3 py-1 rounded-full text-sm bg-muted/20 hover:bg-accent hover:text-background transition-colors duration-200"
     >
       #{{ .Page.Title }}
     </a>
