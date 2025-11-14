@@ -6,11 +6,9 @@ languageName = "English"
 languageCode = "en"
 weight = 1
 title = "HugoPaper"
-contentDir = "exampleSite/content/en"
 
 [zh]
 languageName = "中文"
 languageCode = "zh"
 weight = 2
 title = "HugoPaper"
-contentDir = "exampleSite/content/zh"

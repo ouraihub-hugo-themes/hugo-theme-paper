@@ -1,0 +1,196 @@
+{{- define "main" -}}
+  
+  {{- /* Back Button (optional) */ -}}
+  {{- if .Site.Params.showBackButton }}
+    {{ partial "back-button.html" . }}
+  {{- end }}
+  
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-app px-4 pb-12{{ if not .Site.Params.showBackButton }} mt-8{{ end }}"
+    data-pagefind-body
+  >
+    {{- /* Article Title */ -}}
+    <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">
+      {{ .Title }}
+    </h1>
+    
+    {{- /* Datetime and Edit Post */ -}}
+    <div class="my-2 flex items-center gap-2">
+      {{- /* Datetime */ -}}
+      {{ partial "datetime.html" (dict "page" . "size" "lg") }}
+      
+      {{- /* Edit Post - Desktop */ -}}
+      {{- if and .Site.Params.editPost.enabled (not .Params.hideEditPost) }}
+        <span aria-hidden="true" class="max-sm:hidden">|</span>
+        <div class="max-sm:hidden">
+          {{ partial "edit-post.html" . }}
+        </div>
+      {{- end }}
+    </div>
+    
+    {{- /* Article Content */ -}}
+    <article id="article" class="app-prose mx-auto mt-8 max-w-app">
+      {{ .Content }}
+    </article>
+
+    <hr class="my-8 border-dashed border-border" />
+
+    {{- /* Edit Post - Mobile */ -}}
+    {{- if and .Site.Params.editPost.enabled (not .Params.hideEditPost) }}
+      <div class="sm:hidden">
+        {{ partial "edit-post.html" . }}
+      </div>
+    {{- end }}
+
+    {{- /* Tags */ -}}
+    {{- if .Params.tags }}
+      <ul class="mt-4 mb-8 sm:my-8">
+        {{- range .Params.tags }}
+          {{ partial "tag.html" . }}
+        {{- end }}
+      </ul>
+    {{- end }}
+
+    {{- /* Back to Top Button */ -}}
+    {{ partial "back-to-top.html" . }}
+
+    {{- /* Share Links */ -}}
+    {{ partial "share-links.html" . }}
+
+    <hr class="my-6 border-dashed border-border" />
+
+    {{- /* Previous/Next Post Navigation */ -}}
+    <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {{- with .PrevInSection }}
+        <a href="{{ .Permalink }}" class="flex w-full gap-1 hover:opacity-75">
+          <svg 
+            class="inline-block flex-none rtl:rotate-180" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <div>
+            <span>Previous Post</span>
+            <div class="text-sm text-accent/85">{{ .Title }}</div>
+          </div>
+        </a>
+      {{- end }}
+      
+      {{- with .NextInSection }}
+        <a href="{{ .Permalink }}" class="flex w-full justify-end gap-1 text-end hover:opacity-75 sm:col-start-2">
+          <div>
+            <span>Next Post</span>
+            <div class="text-sm text-accent/85">{{ .Title }}</div>
+          </div>
+          <svg 
+            class="inline-block flex-none rtl:rotate-180" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+      {{- end }}
+    </div>
+  </main>
+  
+  {{- /* Reading Progress Bar Script */ -}}
+  <script>
+    (function() {
+      // Create progress bar
+      function createProgressBar() {
+        const progressContainer = document.createElement("div");
+        progressContainer.className = "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+
+        const progressBar = document.createElement("div");
+        progressBar.className = "progress-bar h-1 w-0 bg-accent";
+        progressBar.id = "myBar";
+
+        progressContainer.appendChild(progressBar);
+        document.body.appendChild(progressContainer);
+      }
+      createProgressBar();
+
+      // Update progress bar on scroll
+      function updateScrollProgress() {
+        document.addEventListener("scroll", () => {
+          const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+          const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scrolled = (winScroll / height) * 100;
+          const myBar = document.getElementById("myBar");
+          if (myBar) {
+            myBar.style.width = scrolled + "%";
+          }
+        });
+      }
+      updateScrollProgress();
+
+      // Add heading links
+      function addHeadingLinks() {
+        const headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+        for (const heading of headings) {
+          heading.classList.add("group");
+          const link = document.createElement("a");
+          link.className = "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
+          link.href = "#" + heading.id;
+
+          const span = document.createElement("span");
+          span.ariaHidden = "true";
+          span.innerText = "#";
+          link.appendChild(span);
+          heading.appendChild(link);
+        }
+      }
+      addHeadingLinks();
+
+      // Attach copy buttons to code blocks
+      function attachCopyButtons() {
+        const copyButtonLabel = "Copy";
+        const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+        for (const codeBlock of codeBlocks) {
+          const wrapper = document.createElement("div");
+          wrapper.style.position = "relative";
+
+          const computedStyle = getComputedStyle(codeBlock);
+          const hasFileNameOffset = computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
+          const topClass = hasFileNameOffset ? "top-(--file-name-offset)" : "-top-3";
+
+          const copyButton = document.createElement("button");
+          copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
+          copyButton.innerHTML = copyButtonLabel;
+          codeBlock.setAttribute("tabindex", "0");
+          codeBlock.appendChild(copyButton);
+
+          codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+          wrapper.appendChild(codeBlock);
+
+          copyButton.addEventListener("click", async () => {
+            const code = codeBlock.querySelector("code");
+            const text = code?.innerText;
+            await navigator.clipboard.writeText(text ?? "");
+            copyButton.innerText = "Copied";
+            setTimeout(() => {
+              copyButton.innerText = copyButtonLabel;
+            }, 700);
+          });
+        }
+      }
+      attachCopyButtons();
+    })();
+  </script>
+{{- end -}}

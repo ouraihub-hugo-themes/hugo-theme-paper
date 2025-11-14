@@ -1,4 +1,5 @@
 @plugin '@tailwindcss/typography';
+@import "./chroma-light.css";
 
 @layer base {
   /* ===== Override default Tailwind Typography styles ===== */
@@ -99,8 +100,6 @@
 
   .highlight pre {
     @apply rounded-lg border border-border p-4 overflow-x-auto;
-    /* Hugo 的 Chroma 已经通过 noClasses=true 生成了内联样式 */
-    /* 这里只需要添加布局相关的样式 */
   }
 
   /* 文件名标签样式 (类似 Shiki 的 transformerFileName) */
@@ -135,120 +134,10 @@
     }
   }
 
-  /* Chroma syntax highlighting - Light theme */
-  .chroma {
-    @apply bg-transparent;
+  /* Chroma syntax highlighting - Dark theme override */
+  html[data-theme="dark"] {
+    @import "./chroma-dark.css";
   }
-
-  /* Light theme colors */
-  :root .chroma .c,
-  :root .chroma .ch,
-  :root .chroma .cm,
-  :root .chroma .c1,
-  :root .chroma .cs { color: #6a737d; } /* Comments - gray */
-  
-  :root .chroma .k,
-  :root .chroma .kc,
-  :root .chroma .kd,
-  :root .chroma .kn,
-  :root .chroma .kp,
-  :root .chroma .kr,
-  :root .chroma .kt { color: #d73a49; } /* Keywords - red */
-  
-  :root .chroma .s,
-  :root .chroma .sa,
-  :root .chroma .sb,
-  :root .chroma .sc,
-  :root .chroma .dl,
-  :root .chroma .sd,
-  :root .chroma .s2,
-  :root .chroma .se,
-  :root .chroma .sh,
-  :root .chroma .si,
-  :root .chroma .sx,
-  :root .chroma .sr,
-  :root .chroma .s1,
-  :root .chroma .ss { color: #032f62; } /* Strings - blue */
-  
-  :root .chroma .m,
-  :root .chroma .mb,
-  :root .chroma .mf,
-  :root .chroma .mh,
-  :root .chroma .mi,
-  :root .chroma .il,
-  :root .chroma .mo { color: #005cc5; } /* Numbers - blue */
-  
-  :root .chroma .n,
-  :root .chroma .na,
-  :root .chroma .nb,
-  :root .chroma .nc,
-  :root .chroma .no,
-  :root .chroma .nd,
-  :root .chroma .ni,
-  :root .chroma .ne,
-  :root .chroma .nf,
-  :root .chroma .nl,
-  :root .chroma .nn,
-  :root .chroma .nt,
-  :root .chroma .nv { color: #24292e; } /* Names - dark */
-  
-  :root .chroma .o,
-  :root .chroma .ow { color: #d73a49; } /* Operators - red */
-
-  /* Dark theme colors */
-  html[data-theme="dark"] .chroma .c,
-  html[data-theme="dark"] .chroma .ch,
-  html[data-theme="dark"] .chroma .cm,
-  html[data-theme="dark"] .chroma .c1,
-  html[data-theme="dark"] .chroma .cs { color: #8b949e; } /* Comments - gray */
-  
-  html[data-theme="dark"] .chroma .k,
-  html[data-theme="dark"] .chroma .kc,
-  html[data-theme="dark"] .chroma .kd,
-  html[data-theme="dark"] .chroma .kn,
-  html[data-theme="dark"] .chroma .kp,
-  html[data-theme="dark"] .chroma .kr,
-  html[data-theme="dark"] .chroma .kt { color: #ff7b72; } /* Keywords - red */
-  
-  html[data-theme="dark"] .chroma .s,
-  html[data-theme="dark"] .chroma .sa,
-  html[data-theme="dark"] .chroma .sb,
-  html[data-theme="dark"] .chroma .sc,
-  html[data-theme="dark"] .chroma .dl,
-  html[data-theme="dark"] .chroma .sd,
-  html[data-theme="dark"] .chroma .s2,
-  html[data-theme="dark"] .chroma .se,
-  html[data-theme="dark"] .chroma .sh,
-  html[data-theme="dark"] .chroma .si,
-  html[data-theme="dark"] .chroma .sx,
-  html[data-theme="dark"] .chroma .sr,
-  html[data-theme="dark"] .chroma .s1,
-  html[data-theme="dark"] .chroma .ss { color: #a5d6ff; } /* Strings - light blue */
-  
-  html[data-theme="dark"] .chroma .m,
-  html[data-theme="dark"] .chroma .mb,
-  html[data-theme="dark"] .chroma .mf,
-  html[data-theme="dark"] .chroma .mh,
-  html[data-theme="dark"] .chroma .mi,
-  html[data-theme="dark"] .chroma .il,
-  html[data-theme="dark"] .chroma .mo { color: #79c0ff; } /* Numbers - blue */
-  
-  html[data-theme="dark"] .chroma .n,
-  html[data-theme="dark"] .chroma .na,
-  html[data-theme="dark"] .chroma .nb,
-  html[data-theme="dark"] .chroma .nc,
-  html[data-theme="dark"] .chroma .no,
-  html[data-theme="dark"] .chroma .nd,
-  html[data-theme="dark"] .chroma .ni,
-  html[data-theme="dark"] .chroma .ne,
-  html[data-theme="dark"] .chroma .nf,
-  html[data-theme="dark"] .chroma .nl,
-  html[data-theme="dark"] .chroma .nn,
-  html[data-theme="dark"] .chroma .nt,
-  html[data-theme="dark"] .chroma .nv { color: #c9d1d9; } /* Names - light */
-  
-  html[data-theme="dark"] .chroma .o,
-  html[data-theme="dark"] .chroma .ow { color: #ff7b72; } /* Operators - red */
 
   html[data-theme="dark"] pre {
     @apply bg-muted/15;

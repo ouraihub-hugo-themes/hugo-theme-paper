@@ -1,0 +1,138 @@
+# Hugo Paper Theme - Development Configuration
+# This file is for theme development only
+
+baseURL = "http://localhost:1313/"
+title = "Hugo Paper - Theme Development"
+defaultContentLanguage = "en"
+
+# For theme development, load content from exampleSite
+contentDir = "exampleSite/content"
+
+# Content Settings
+enableInlineShortcodes = true
+enableEmoji = true
+hasCJKLanguage = true
+summaryLength = 200
+
+# Pagination
+[pagination]
+pagerSize = 4
+
+# Taxonomies
+[taxonomies]
+category = "categories"
+tag = "tags"
+
+# Outputs
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+page = ["HTML"]
+section = ["HTML", "RSS"]
+
+# Output Formats
+[outputFormats.JSON]
+mediaType = "application/json"
+baseName = "index"
+
+# Languages
+[languages.en]
+languageName = "English"
+languageCode = "en"
+weight = 1
+title = "HugoPaper"
+
+[languages.zh]
+languageName = "中文"
+languageCode = "zh"
+weight = 2
+title = "HugoPaper"
+
+# English Menu
+[[languages.en.menu.main]]
+name = "Posts"
+url = "/en/post/"
+weight = 1
+
+[[languages.en.menu.main]]
+name = "Tags"
+url = "/tags/"
+weight = 2
+
+[[languages.en.menu.main]]
+name = "About"
+url = "/en/about/"
+weight = 3
+
+# Chinese Menu
+[[languages.zh.menu.main]]
+name = "文章"
+url = "/zh/post/"
+weight = 1
+
+[[languages.zh.menu.main]]
+name = "标签"
+url = "/tags/"
+weight = 2
+
+[[languages.zh.menu.main]]
+name = "关于"
+url = "/zh/about/"
+weight = 3
+
+# Parameters
+[params]
+description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme. This theme follows best practices and provides accessibility out of the box. Light and dark mode are supported by default. Moreover, additional color schemes can also be configured."
+readmeUrl = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+showArchives = true
+showBackButton = true
+postPerIndex = 4
+
+[params.theme]
+defaultTheme = "light"
+switchTheme = true
+
+[params.header]
+logo = "/logo.svg"
+
+[params.editPost]
+enabled = true
+text = "Edit page"
+url = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/edit/main/exampleSite/content/en/"
+
+[[params.social]]
+name = "GitHub"
+href = "https://github.com/ouraihub-hugo-themes"
+linkTitle = "Follow on GitHub"
+
+[[params.social]]
+name = "X"
+href = "https://x.com/username"
+linkTitle = "Follow on X"
+
+[[params.social]]
+name = "LinkedIn"
+href = "https://www.linkedin.com/in/username/"
+linkTitle = "Connect on LinkedIn"
+
+[[params.social]]
+name = "Mail"
+href = "mailto:contact@example.com"
+linkTitle = "Send an email"
+
+[params.comments]
+enable = false
+provider = "giscus"
+repo = ""
+repoId = ""
+category = ""
+categoryId = ""
+mapping = "pathname"
+strict = "0"
+reactionsEnabled = "1"
+emitMetadata = "0"
+inputPosition = "bottom"
+
+[params.seo]
+description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme."
+author = "OurAIHub"
+ogImage = "/og-image.png"

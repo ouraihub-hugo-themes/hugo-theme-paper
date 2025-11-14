@@ -2,6 +2,14 @@
 # Only contains theme-required settings
 # Project-specific settings (baseURL, title, contentDir, etc.) should be in user's project
 
+# Basic Settings (for theme development)
+baseURL = "http://localhost:1313/"
+title = "Hugo Paper"
+defaultContentLanguage = "en"
+
+# Content Directory (for theme development)
+contentDir = "exampleSite/content"
+
 # Content Settings
 enableInlineShortcodes = true
 enableEmoji = true
