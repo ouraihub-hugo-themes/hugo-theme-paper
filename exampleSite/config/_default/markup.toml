@@ -1,4 +1,5 @@
-# Hugo Paper Example Site - Markup Configuration
+# Hugo Paper Theme - Markup Configuration
+# This file contains Markdown rendering settings
 
 [goldmark.extensions]
 typographer = true
@@ -12,6 +13,7 @@ autoHeadingIDType = "github"
 unsafe = true
 
 [highlight]
+# Use CSS classes instead of inline styles for theme switching
 noClasses = false
 lineNos = false
 lineNumbersInTable = false
