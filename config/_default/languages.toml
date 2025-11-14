@@ -1,0 +1,12 @@
+# Hugo Paper Theme - Default Languages Configuration
+# Users can override this in their project's config/_default/languages.toml
+
+[en]
+languageName = "English"
+languageCode = "en"
+weight = 1
+
+[zh]
+languageName = "中文"
+languageCode = "zh"
+weight = 2
