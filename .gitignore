@@ -2,6 +2,7 @@
 /public
 /resources/_gen
 .hugo_build.lock
+/hugo.toml  # Development config, not for release
 
 # Example Site
 exampleSite/public
