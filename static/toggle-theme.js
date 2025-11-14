@@ -1,1 +1,41 @@
-"use strict";(()=>{var o="",n=localStorage.getItem("theme");function i(){return n||o||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}var t=i();function c(){localStorage.setItem("theme",t),r()}function r(){document.firstElementChild?.setAttribute("data-theme",t),document.querySelector("#theme-btn")?.setAttribute("aria-label",t);let e=document.body;if(e){let d=window.getComputedStyle(e).backgroundColor;document.querySelector("meta[name='theme-color']")?.setAttribute("content",d)}}r();window.onload=()=>{function e(){r(),document.querySelector("#theme-btn")?.addEventListener("click",()=>{t=t==="light"?"dark":"light",c()})}e()};window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",({matches:e})=>{t=e?"dark":"light",c()});})();
+"use strict";
+(() => {
+  // assets/ts/toggle-theme.ts
+  var primaryColorScheme = "";
+  var currentTheme = localStorage.getItem("theme");
+  function getPreferTheme() {
+    if (currentTheme) return currentTheme;
+    if (primaryColorScheme) return primaryColorScheme;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  var themeValue = getPreferTheme();
+  function setPreference() {
+    localStorage.setItem("theme", themeValue);
+    reflectPreference();
+  }
+  function reflectPreference() {
+    document.firstElementChild?.setAttribute("data-theme", themeValue);
+    document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
+    const body = document.body;
+    if (body) {
+      const computedStyles = window.getComputedStyle(body);
+      const bgColor = computedStyles.backgroundColor;
+      document.querySelector("meta[name='theme-color']")?.setAttribute("content", bgColor);
+    }
+  }
+  reflectPreference();
+  window.onload = () => {
+    function setThemeFeature() {
+      reflectPreference();
+      document.querySelector("#theme-btn")?.addEventListener("click", () => {
+        themeValue = themeValue === "light" ? "dark" : "light";
+        setPreference();
+      });
+    }
+    setThemeFeature();
+  };
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches: isDark }) => {
+    themeValue = isDark ? "dark" : "light";
+    setPreference();
+  });
+})();
