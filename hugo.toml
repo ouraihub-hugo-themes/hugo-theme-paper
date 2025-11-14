@@ -1,9 +1,0 @@
-# Hugo Paper Theme - Development Configuration
-# This file is for theme development only and should not be included in releases
-
-baseURL = "http://localhost:1313/"
-title = "Hugo Paper - Theme Development"
-defaultContentLanguage = "en"
-
-# For theme development, load content from exampleSite
-contentDir = "exampleSite/content"

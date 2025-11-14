@@ -1,125 +1,100 @@
-# Hugo Paper Example Site - Configuration
+# Hugo Paper Theme - Configuration Directory
 
-This directory contains the configuration for the Hugo Paper example site.
+This directory contains the default configuration for the Hugo Paper theme development environment.
 
 ## Configuration Structure
 
-The configuration is split into multiple files for better organization:
+Hugo supports splitting configuration into multiple files for better organization. This is the recommended approach for complex themes.
 
-- **hugo.toml** - Core Hugo settings
-- **params.toml** - Theme parameters
-- **languages.toml** - Multilingual configuration
+### Configuration Files
+
+- **hugo.toml** - Core Hugo settings (baseURL, content settings, outputs, taxonomies)
+- **params.toml** - Theme-specific parameters (description, social links, theme settings)
+- **languages.toml** - Multilingual configuration (language definitions)
 - **menus.en.toml** - English navigation menu
 - **menus.zh.toml** - Chinese navigation menu
-- **markup.toml** - Markdown rendering configuration
+- **markup.toml** - Markdown rendering configuration (Goldmark, syntax highlighting)
+
+## File Organization Benefits
+
+1. **Clarity**: Each file has a specific purpose
+2. **Maintainability**: Easier to find and update specific settings
+3. **Modularity**: Can override specific files in different environments
+4. **Version Control**: Smaller, focused commits
+
+## Configuration Priority
+
+Hugo loads configuration in this order (later overrides earlier):
+
+1. `config/_default/` - Default configuration (this directory)
+2. `config/production/` - Production-specific overrides
+3. `config/development/` - Development-specific overrides
+4. `hugo.toml` in project root - Legacy single-file config (deprecated for this theme)
 
 ## Usage
 
-### For Theme Development
+### Theme Development
 
-This example site is used to test and demonstrate the theme features during development.
+The configuration in this directory is used when developing the theme:
 
-### For Users
+```bash
+cd hugo-theme-paper
+hugo server
+```
 
-If you want to use this theme for your own site:
+### User Sites
 
-1. Copy this `exampleSite` directory as a starting point
-2. Modify the configuration files to match your needs
-3. Replace the content in `content/` with your own
-4. Update `theme` in `hugo.toml` to point to your theme installation
+Users should NOT modify these files directly. Instead, they should:
 
-## Configuration Files
+1. Use the `exampleSite/` as a starting point
+2. Create their own `config/_default/` directory
+3. Override only the settings they need to change
 
-### hugo.toml
+## Migration from Root hugo.toml
 
-Core Hugo settings including:
-- Site URL and title
-- Content settings
-- Pagination
+The root `hugo.toml` file is kept for backward compatibility but should be considered deprecated. All new configuration should be added to the appropriate file in this directory.
+
+### What to Put Where
+
+**hugo.toml**:
+- baseURL
+- title
+- languageCode
+- Content directories
+- Pagination settings
 - Taxonomies
 - Output formats
-- Module mounts
 
-### params.toml
-
-Theme-specific parameters including:
-- Site description
-- Theme settings (light/dark mode)
+**params.toml**:
+- Theme-specific settings
 - Social links
-- Edit post links
-- Comments configuration (Giscus)
-- SEO settings
+- Feature toggles
+- Custom parameters
 
-### languages.toml
+**languages.toml**:
+- Language definitions
+- Language-specific titles
+- Content directories per language
 
-Multilingual configuration:
-- English (en)
-- Chinese (zh)
+**menus.{lang}.toml**:
+- Navigation menu items
+- Menu weights and URLs
 
-### menus.{lang}.toml
-
-Navigation menu items for each language.
-
-### markup.toml
-
-Markdown rendering settings:
+**markup.toml**:
+- Markdown rendering options
+- Syntax highlighting settings
 - Goldmark configuration
-- Syntax highlighting
-
-## Customization
-
-### Changing the Theme
-
-Edit `hugo.toml`:
-
-```toml
-theme = "your-theme-name"
-```
-
-### Adding Social Links
-
-Edit `params.toml`:
-
-```toml
-[[social]]
-name = "Platform Name"
-href = "https://your-url.com"
-linkTitle = "Follow us on Platform"
-```
-
-### Enabling Comments
-
-Edit `params.toml`:
-
-```toml
-[comments]
-enable = true
-provider = "giscus"
-repo = "username/repo"
-repoId = "your-repo-id"
-# ... other Giscus settings
-```
-
-### Adding Menu Items
-
-Edit `menus.en.toml` or `menus.zh.toml`:
-
-```toml
-[[main]]
-name = "New Page"
-url = "/new-page/"
-weight = 4
-```
 
 ## Best Practices
 
-1. **Keep configuration DRY** - Don't repeat settings
-2. **Use comments** - Document non-obvious settings
-3. **Test changes** - Always test locally before deploying
-4. **Version control** - Commit configuration changes
+1. **Keep it DRY**: Don't repeat configuration across files
+2. **Use Comments**: Document non-obvious settings
+3. **Group Related Settings**: Keep related configuration together
+4. **Use Defaults**: Only override what you need to change
+5. **Test Changes**: Always test configuration changes locally
 
 ## References
 
-- [Hugo Configuration](https://gohugo.io/getting-started/configuration/)
-- [Hugo Multilingual](https://gohugo.io/content-management/multilingual/)
-- [Hugo Menus](https://gohugo.io/content-management/menus/)
+- [Hugo Configuration Documentation](https://gohugo.io/getting-started/configuration/)
+- [Hugo Configuration Directory](https://gohugo.io/getting-started/configuration/#configuration-directory)
+- [Hugo Multilingual Mode](https://gohugo.io/content-management/multilingual/)
