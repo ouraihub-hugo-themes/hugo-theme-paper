@@ -114,7 +114,7 @@
             {{- end -}}
             
             <a
-              href="{{ "/archives/" | relLangURL }}"
+              href="{{ printf "/%s/archives/" .Site.Language.Lang }}"
               class="focus-outline flex justify-center p-3 sm:p-1 {{ if $isArchivesActive }}active-nav [&>svg]:stroke-accent{{ end }}"
               aria-label="archives"
               title="{{ i18n "nav.archives" | default "Archives" }}"
