@@ -1,18 +1,12 @@
 # Hugo Paper Theme - Core Configuration
-# This file contains core Hugo settings for theme development
-
-baseURL = "http://localhost:1313/"
-title = "Hugo Paper - Theme Development"
+# Only contains theme-required settings
+# Project-specific settings (baseURL, title, contentDir, etc.) should be in user's project
 
 # Content Settings
 enableInlineShortcodes = true
 enableEmoji = true
 hasCJKLanguage = true
 summaryLength = 200
-defaultContentLanguage = "en"
-
-# For theme development, load content from exampleSite
-contentDir = "exampleSite/content"
 
 # Pagination
 [pagination]

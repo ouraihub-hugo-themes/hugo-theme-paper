@@ -1,0 +1,26 @@
+# Hugo Paper Theme - Module Configuration
+# 明确定义主题挂载的目录
+
+[[mounts]]
+source = "layouts"
+target = "layouts"
+
+[[mounts]]
+source = "assets"
+target = "assets"
+
+[[mounts]]
+source = "static"
+target = "static"
+
+[[mounts]]
+source = "i18n"
+target = "i18n"
+
+[[mounts]]
+source = "archetypes"
+target = "archetypes"
+
+# 注意：
+# - 不挂载 content 和 data，这些是用户的
+# - config 目录通过配置合并机制处理，不需要在这里挂载
