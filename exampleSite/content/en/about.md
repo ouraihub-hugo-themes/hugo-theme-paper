@@ -2,6 +2,7 @@
 title: "About"
 type: "page"
 draft: false
+translationKey: about-page
 ---
 
 HugoPaper is a minimal, accessible and SEO-friendly blog theme built with [Hugo](https://gohugo.io/) and [Tailwind CSS](https://tailwindcss.com/).

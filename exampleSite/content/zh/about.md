@@ -2,6 +2,7 @@
 title: "关于"
 type: "page"
 draft: false
+translationKey: about-page
 ---
 
 HugoPaper 是一个极简、易访问且 SEO 友好的博客主题，使用 [Hugo](https://gohugo.io/) 和 [Tailwind CSS](https://tailwindcss.com/) 构建。
