@@ -1,17 +1,14 @@
 <!doctype html>
 <html lang="{{ .Site.Language.Lang }}" dir="{{ .Site.Params.direction | default "ltr" }}">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <!-- SEO Meta Tags -->
+    {{- partial "seo-meta.html" . -}}
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ .Permalink }}" />
-    
-    <!-- Generator -->
-    <meta name="generator" content="{{ hugo.Generator }}" />
 
     <!-- General Meta Tags -->
     <title>{{ .Title | default .Site.Title }}</title>
