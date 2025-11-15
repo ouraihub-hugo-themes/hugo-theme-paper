@@ -1,0 +1,24 @@
+{
+  "types": [
+    { "type": "feat", "section": "✨ 新功能" },
+    { "type": "fix", "section": "🐛 Bug 修复" },
+    { "type": "docs", "section": "📝 文档" },
+    { "type": "style", "section": "💄 样式" },
+    { "type": "refactor", "section": "♻️ 重构" },
+    { "type": "perf", "section": "⚡ 性能优化" },
+    { "type": "test", "section": "✅ 测试" },
+    { "type": "build", "section": "📦 构建" },
+    { "type": "ci", "section": "👷 CI/CD" },
+    { "type": "chore", "section": "🔧 其他" }
+  ],
+  "commitUrlFormat": "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/commit/{{hash}}",
+  "compareUrlFormat": "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/issues/{{id}}",
+  "userUrlFormat": "https://github.com/{{user}}",
+  "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
+  "issuePrefixes": ["#"],
+  "header": "# Changelog\n\nAll notable changes to this project will be documented in this file.\n\n",
+  "skip": {
+    "changelog": false
+  }
+}

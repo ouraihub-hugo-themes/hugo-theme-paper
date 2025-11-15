@@ -1,9 +1,14 @@
 {
   "name": "hugo-paper",
-  "version": "1.0.0-final",
+  "version": "0.7.2",
   "description": "A minimal, responsive Hugo theme inspired by Astro Paper with interactive features, full SEO optimization, and comprehensive testing",
   "type": "module",
   "scripts": {
+    "release": "standard-version && git push --follow-tags origin master",
+    "release:minor": "standard-version --release-as minor && git push --follow-tags origin master",
+    "release:major": "standard-version --release-as major && git push --follow-tags origin master",
+    "release:patch": "standard-version --release-as patch && git push --follow-tags origin master",
+    "release:first": "standard-version --first-release && git push --follow-tags origin master",
     "ts:build": "pnpm run ts:build:main && pnpm run ts:build:toggle",
     "ts:build:main": "esbuild assets/ts/main.ts --bundle --minify --outfile=static/js/main.js --target=es2020",
     "ts:build:toggle": "esbuild assets/ts/toggle-theme.ts --bundle --minify --outfile=static/toggle-theme.js --target=es2020",
@@ -30,7 +35,8 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "new-post": "tsx scripts/new-post.ts",
-    "quick-post": "tsx scripts/quick-post.ts"
+    "quick-post": "tsx scripts/quick-post.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "tailwindcss": "^4.0.0"
@@ -40,7 +46,6 @@
     "@tailwindcss/postcss": "^4.0.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^22.0.0",
-    "tsx": "^4.7.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@vitest/ui": "^2.0.0",
@@ -57,8 +62,10 @@
     "postcss-cli": "^11.0.0",
     "postcss-import": "^16.0.0",
     "prettier": "^3.1.0",
+    "standard-version": "^9.5.0",
     "stylelint": "^16.0.0",
     "stylelint-config-standard": "^36.0.0",
+    "tsx": "^4.7.0",
     "typescript": "^5.8.0",
     "vite": "^5.0.0",
     "vitest": "^2.0.0"
