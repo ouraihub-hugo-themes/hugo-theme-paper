@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 
+### [0.7.9](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/v0.7.8...v0.7.9) (2025-11-15)
+
+
+### 🐛 Bug 修复
+
+* **workflow:** 使用 --ignore-scripts 跳过所有安装脚本 ([59e9226](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/commit/59e92262e30270ec118fca59a9bf587cd3b7409e))
+
 ### [0.7.8](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/v0.7.7...v0.7.8) (2025-11-15)
 
 
