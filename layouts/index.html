@@ -62,8 +62,11 @@
     {{ partial "hr.html" . }}
 
     {{- /* Featured Posts Section */ -}}
-    {{- $featuredPosts := where .Site.RegularPages "Params.featured" true }}
-    {{- $recentPosts := where .Site.RegularPages "Params.featured" "!=" true }}
+    {{- /* 在多语言环境下，需要使用 .Site.RegularPages 并确保只获取当前语言的页面 */ -}}
+    {{- /* 使用 where 过滤出 post section 的页面 */ -}}
+    {{- $allPosts := where .Site.RegularPages "Section" "post" }}
+    {{- $featuredPosts := where $allPosts "Params.featured" true }}
+    {{- $recentPosts := where $allPosts "Params.featured" "!=" true }}
     
     {{- if gt (len $featuredPosts) 0 }}
     <section id="featured" class="mx-auto max-w-app px-4 pb-6 pt-12">

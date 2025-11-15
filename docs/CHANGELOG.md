@@ -9,6 +9,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+#### 多语言配置导致中文首页不显示文章列表 (2025-01-15)
+
+**问题描述：**
+- 中文首页（`/zh/`）无法显示 Featured 和 Recent Posts 部分
+- 英文首页（`/`）显示正常
+- 调试信息显示：`Lang=zh, RegularPages=0, PostPages=0, Featured=0, Recent=0`
+
+**根本原因：**
+使用了按目录翻译的方式（`content/en/` 和 `content/zh/`），但 Hugo 配置中没有为每个语言指定 `contentDir`。
+
+在多语言环境下，如果不指定 `contentDir`：
+- Hugo 无法正确识别每个语言的内容目录
+- `.Site.RegularPages` 在非默认语言中返回空集合
+- 导致页面无法获取文章列表
+
+**解决方案：**
+在 `hugo.toml` 中为每个语言添加 `contentDir` 配置：
+
+```toml
+[languages.en]
+languageName = "English"
+languageCode = "en"
+weight = 1
+title = "HugoPaper"
+contentDir = "exampleSite/content/en"  # 添加此行
+
+[languages.zh]
+languageName = "中文"
+languageCode = "zh"
+weight = 2
+title = "HugoPaper"
+contentDir = "exampleSite/content/zh"  # 添加此行
+```
+
+同时移除全局的 `contentDir` 配置（如果存在）。
+
+**技术细节：**
+- Hugo 支持两种多语言翻译方式：
+  1. **按文件名翻译**：`about.en.md`、`about.zh.md`（使用单一内容目录）
+  2. **按目录翻译**：`content/en/about.md`、`content/zh/about.md`（使用独立内容目录）
+- 当使用按目录翻译时，**必须**为每个语言配置 `contentDir`
+- 否则 Hugo 无法正确解析内容目录结构，导致 `.Site.RegularPages` 返回错误结果
+
+**配置要求：**
+- ✅ 使用按目录翻译时，每个语言必须配置 `contentDir`
+- ✅ 内容目录路径必须正确（相对于项目根目录）
+- ✅ 修改 `contentDir` 后需要重启 Hugo 服务器才能生效
+
+**影响文件：**
+- `hugo.toml` - 语言配置
+- `layouts/index.html` - 首页模板
+- `layouts/archives/list.html` - 归档页面模板
+
+**测试结果：**
+- ✅ 中文首页正确显示 Featured Posts（3 篇）
+- ✅ 中文首页正确显示 Recent Posts（4 篇）
+- ✅ 英文首页保持正常显示
+- ✅ `.Site.RegularPages` 正确返回当前语言的页面
+- ✅ 两个语言的首页布局完全一致
+
+**相关文档：**
+- [Hugo 多语言模式文档](https://gohugo.io/content-management/multilingual/)
+- [Hugo 按目录翻译配置](https://gohugo.io/content-management/multilingual/#translation-by-content-directory)
+
+**相关提交：**
+- 待提交 - fix: 修复多语言配置导致中文首页不显示文章列表的问题
+
+---
+
 #### 导航菜单链接无效和多语言菜单显示错误 (2025-01-15)
 
 **问题描述：**

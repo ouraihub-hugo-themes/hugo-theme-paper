@@ -8,13 +8,9 @@
   <p class="mt-2 mb-6 italic">All the articles I've archived.</p>
 
   {{- /* 获取当前语言的 post section 文章 */ -}}
-  {{- /* 构建当前语言的 post section 路径 */ -}}
-  {{ $postPath := printf "/%s/post" .Language.Lang }}
-  {{ $postSection := .Site.GetPage $postPath }}
-  {{ $posts := slice }}
-  {{ if $postSection }}
-    {{ $posts = $postSection.RegularPages }}
-  {{ end }}
+  {{- /* 直接使用 .Site.RegularPages 并过滤 */ -}}
+  {{ $allPages := .Site.RegularPages }}
+  {{ $posts := where $allPages "Section" "post" }}
   {{ $posts = where $posts "Draft" false }}
   {{ $posts = $posts.ByDate.Reverse }}
   

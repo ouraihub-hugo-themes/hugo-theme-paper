@@ -5,9 +5,6 @@ baseURL = "http://localhost:1313/"
 title = "Hugo Paper - Theme Development"
 defaultContentLanguage = "en"
 
-# For theme development, load content from exampleSite
-contentDir = "exampleSite/content"
-
 # Content Settings
 enableInlineShortcodes = true
 enableEmoji = true
@@ -40,12 +37,14 @@ languageName = "English"
 languageCode = "en"
 weight = 1
 title = "HugoPaper"
+contentDir = "exampleSite/content/en"
 
 [languages.zh]
 languageName = "中文"
 languageCode = "zh"
 weight = 2
 title = "HugoPaper"
+contentDir = "exampleSite/content/zh"
 
 # English Menu
 [[languages.en.menus.main]]
