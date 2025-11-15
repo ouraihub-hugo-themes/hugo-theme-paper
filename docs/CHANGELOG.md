@@ -9,6 +9,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+#### 语言切换重复跳转导致 404 (2025-01-15)
+
+**问题描述：**
+- 在 posts、about、archives 页面，从英文切换到中文后，再次点击语言切换按钮会跳转到 `/zh/zh/xxx/` 导致 404
+- 例如：`/en/post/` → `/zh/post/` → `/zh/zh/post/` (404)
+
+**根本原因：**
+- 这些页面的英文和中文版本没有设置 `translationKey`
+- Hugo 不认为它们是翻译关系
+- 语言切换器走的是 `else` 分支（没有翻译版本），使用路径拼接逻辑
+- 路径拼接逻辑在某些情况下会重复添加语言前缀
+
+**解决方案：**
+为所有需要语言切换的页面添加 `translationKey`：
+
+```yaml
+# exampleSite/content/en/post/_index.md
+---
+title: All Posts
+translationKey: post-section
+---
+
+# exampleSite/content/zh/post/_index.md
+---
+title: 所有文章
+translationKey: post-section
+---
+```
+
+同样的方式应用到：
+- `about.md` - `translationKey: about-page`
+- `archives/_index.md` - `translationKey: archives-page`
+
+**技术细节：**
+- 设置 `translationKey` 后，Hugo 会正确识别翻译关系
+- 语言切换器使用 `.IsTranslated` 和 `.Translations` 方法
+- 直接获取翻译页面的 `.Permalink`，避免路径拼接错误
+
+**影响文件：**
+- `exampleSite/content/en/post/_index.md`
+- `exampleSite/content/zh/post/_index.md`
+- `exampleSite/content/en/about.md`
+- `exampleSite/content/zh/about.md`
+- `exampleSite/content/en/archives/_index.md`
+- `exampleSite/content/zh/archives/_index.md`
+
+**测试结果：**
+- ✅ Posts 页面语言切换正常（英文 ↔ 中文）
+- ✅ About 页面语言切换正常（英文 ↔ 中文）
+- ✅ Archives 页面语言切换正常（英文 ↔ 中文）
+- ✅ 多次切换不会导致 404
+
+**相关提交：**
+- `17c5105` - fix: 修复语言切换重复跳转导致 404 的问题
+
+---
+
 #### 归档页面在多语言环境下不显示文章 (2025-01-15)
 
 **问题描述：**
