@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 
+### [0.7.8](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/v0.7.7...v0.7.8) (2025-11-15)
+
+
+### 🐛 Bug 修复
+
+* **workflow:** 跳过 CI 环境中的 husky 安装 ([381bb6b](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/commit/381bb6b162f22bf3f43073799ec8b514f25f05c8))
+
 ### [0.7.7](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/v0.7.6...v0.7.7) (2025-11-15)
 
 
