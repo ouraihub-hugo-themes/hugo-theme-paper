@@ -49,7 +49,7 @@ contentDir = "exampleSite/content/zh"
 # English Menu
 [[languages.en.menus.main]]
 name = "Posts"
-url = "/en/post/"
+url = "/post/"
 weight = 1
 
 [[languages.en.menus.main]]
@@ -59,7 +59,7 @@ weight = 2
 
 [[languages.en.menus.main]]
 name = "About"
-url = "/en/about/"
+url = "/about/"
 weight = 3
 
 # Chinese Menu
