@@ -6,8 +6,8 @@
  * 示例: pnpm quick-post "My New Post" en
  */
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 // 将标题转换为 slug
 function titleToSlug(title: string): string {
@@ -96,6 +96,20 @@ Write your conclusion here...
   };
 }
 
+// 检测项目类型并返回正确的 content 目录
+function getContentDir(language: string): string {
+  const cwd = process.cwd();
+  
+  // 检查是否在主题开发环境（存在 exampleSite 目录）
+  const exampleSiteDir = path.join(cwd, "exampleSite", "content", language, "post");
+  if (fs.existsSync(path.join(cwd, "exampleSite"))) {
+    return exampleSiteDir;
+  }
+  
+  // 否则是用户项目（starter 或普通项目）
+  return path.join(cwd, "content", language, "post");
+}
+
 // 主函数
 function main() {
   const args = process.argv.slice(2);
@@ -113,13 +127,7 @@ function main() {
 
   const { content, slug } = generatePost(title, language);
 
-  const contentDir = path.join(
-    process.cwd(),
-    "exampleSite",
-    "content",
-    language,
-    "post"
-  );
+  const contentDir = getContentDir(language);
   const filePath = path.join(contentDir, `${slug}.md`);
 
   // 检查文件是否已存在

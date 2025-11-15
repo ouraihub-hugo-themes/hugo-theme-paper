@@ -6,9 +6,9 @@
  * 示例: pnpm new-post "Getting Started with Hugo" en
  */
 
-import * as fs from "fs";
-import * as path from "path";
-import * as readline from "readline";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import * as readline from "node:readline";
 
 interface PostMetadata {
   title: string;
@@ -149,16 +149,24 @@ Write your conclusion here...
   }
 }
 
+// 检测项目类型并返回正确的 content 目录
+function getContentDir(language: string): string {
+  const cwd = process.cwd();
+  
+  // 检查是否在主题开发环境（存在 exampleSite 目录）
+  const exampleSiteDir = path.join(cwd, "exampleSite", "content", language, "post");
+  if (fs.existsSync(path.join(cwd, "exampleSite"))) {
+    return exampleSiteDir;
+  }
+  
+  // 否则是用户项目（starter 或普通项目）
+  return path.join(cwd, "content", language, "post");
+}
+
 // 创建文章文件
 function createPostFile(metadata: PostMetadata): void {
   const { slug, language } = metadata;
-  const contentDir = path.join(
-    process.cwd(),
-    "exampleSite",
-    "content",
-    language,
-    "post"
-  );
+  const contentDir = getContentDir(language);
   const filePath = path.join(contentDir, `${slug}.md`);
 
   // 检查文件是否已存在
@@ -192,7 +200,7 @@ function createPostFile(metadata: PostMetadata): void {
 // 主函数
 async function main() {
   console.log("\n🎨 Hugo Paper - 创建新文章\n");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   try {
     // 1. 获取标题
