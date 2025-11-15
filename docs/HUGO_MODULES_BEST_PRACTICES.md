@@ -1,95 +1,21 @@
 # Hugo Modules 最佳实践
 
-## 问题背景
+> **最后更新**: 2025-11-15
 
-在将 hugo-theme-paper 作为 Hugo Module 使用时，发现主题无法正常渲染 HTML 页面。经过深入分析，发现问题根源在于主题的配置文件包含了开发环境专用的配置，这些配置在通过 Hugo Modules 引入时与用户项目配置产生冲突。
+## 概述
 
-## 问题分析
+本文档说明 Hugo Paper 主题如何正确配置为 Hugo Module，以及用户如何使用。
 
-### 问题表现
+## 主题配置
 
-- ✅ Hugo 构建成功，无报错
-- ✅ 生成了 JSON 和 XML 文件
-- ❌ **没有生成任何 HTML 文件**
-- ✅ 复制布局文件到项目后问题解决
+### Module 挂载配置
 
-### 根本原因
-
-主题的配置文件包含了**开发环境专用的配置**：
+主题通过 `config/_default/module.toml` 明确定义挂载目录：
 
 ```toml
-# config/_default/hugo.toml
-contentDir = "exampleSite/content"  # ❌ 指向不存在的目录
-
-# config/_default/languages.toml
-[en]
-contentDir = "exampleSite/content/en"  # ❌ 项目特定配置
-[zh]
-contentDir = "exampleSite/content/zh"  # ❌ 项目特定配置
-```
-
-这些配置在通过 Hugo Modules 引入时会与用户项目配置合并，导致 Hugo 渲染逻辑混乱。
-
-## Hugo 官方最佳实践
-
-根据 [Hugo 官方文档](https://gohugo.io/hugo-modules/configuration/)，主题作为 Hugo Module 应该遵循以下最佳实践：
-
-### 1. 使用 Mounts 明确定义挂载目录
-
-> "If you define one or more mounts to map a file system path to a component path, do not use these legacy configuration settings"
-
-**作用**：
-- 明确定义主题提供哪些目录
-- 避免暴露不必要的文件
-- 提供清晰的模块边界
-
-### 2. 限制主题配置范围
-
-> "There are currently some restrictions to what a theme component can configure:
-> - params (global and per language)
-> - menu (global and per language)
-> - outputformats and mediatypes"
-
-**不应该包含**：
-- ❌ `contentDir`
-- ❌ `baseURL`
-- ❌ 项目特定的语言配置
-
-### 3. 配置文件合并机制
-
-主题的 `config/_default/` 目录中的配置文件会自动与用户项目配置合并。因此主题配置应该：
-- 只包含主题必需的配置
-- 避免包含项目特定配置
-- 提供合理的默认值
-
-## 解决方案
-
-### 方案概述
-
-**最佳实践 = Mounts（方案 2）+ 配置清理（方案 3）**
-
-这个组合方案：
-- ✅ 完全符合 Hugo 官方文档推荐
-- ✅ 解决了当前的所有问题
-- ✅ 提供了清晰的模块边界
-- ✅ 易于维护和扩展
-- ✅ 用户体验好（开箱即用）
-
-### 具体实施步骤
-
-#### 步骤 1：创建 `config/_default/module.toml`
-
-```toml
-# Hugo Paper Theme - Module Configuration
-# 明确定义主题挂载的目录
-
 [[mounts]]
 source = "layouts"
 target = "layouts"
-
-[[mounts]]
-source = "assets"
-target = "assets"
 
 [[mounts]]
 source = "static"
@@ -102,88 +28,81 @@ target = "i18n"
 [[mounts]]
 source = "archetypes"
 target = "archetypes"
-
-# 注意：
-# - 不挂载 content 和 data，这些是用户的
-# - config 目录通过配置合并机制处理，不需要在这里挂载
 ```
 
-#### 步骤 2：清理 `config/_default/hugo.toml`
+**关键点**：
+- ✅ 明确定义主题提供的目录
+- ✅ 不挂载 `content` 和 `data`（用户自己的）
+- ✅ 提供清晰的模块边界
 
-**移除项目特定配置**：
+### 配置文件组织
+
+```
+hugo-theme-paper/
+└── config/
+    └── _default/
+        ├── module.toml      # Module 挂载配置
+        ├── hugo.toml        # 主题核心配置
+        ├── params.toml      # 主题参数
+        └── menus.*.toml     # 菜单配置（示例）
+```
+
+**原则**：
+- ✅ 只包含主题必需的配置
+- ❌ 不包含项目特定配置
+- ✅ 提供合理的默认值
+
+## 用户使用方式
+
+### 方式 1：Hugo Modules（推荐）
+
 ```toml
-# ❌ 移除这些
-baseURL = "http://localhost:1313/"
-title = "Hugo Paper - Theme Development"
-contentDir = "exampleSite/content"
-defaultContentLanguage = "en"
+[[imports]]
+path = "github.com/ouraihub-hugo-themes/hugo-theme-paper-dist"
 ```
-
-**只保留主题必需配置**：
-```toml
-# Hugo Paper Theme - Core Configuration
-# 只包含主题必需的配置
-
-enableInlineShortcodes = true
-enableEmoji = true
-hasCJKLanguage = true
-summaryLength = 200
-
-# Pagination
-[pagination]
-pagerSize = 4
-
-# Taxonomies
-[taxonomies]
-category = "categories"
-tag = "tags"
-
-# Outputs - 主题需要的输出格式
-[outputs]
-home = ["HTML", "RSS", "JSON"]
-page = ["HTML"]
-section = ["HTML", "RSS"]
-
-# Output Formats
-[outputFormats.JSON]
-mediaType = "application/json"
-baseName = "index"
-```
-
-#### 步骤 3：处理 `config/_default/languages.toml`
-
-**推荐做法**：移动到 `exampleSite/config/_default/languages.toml` 作为示例
 
 ```bash
-mv config/_default/languages.toml exampleSite/config/_default/
+hugo mod get -u
+hugo server
 ```
 
-**原因**：
-- 多语言配置是项目特定的
-- 不同用户有不同的语言需求
-- 应该由用户在自己的项目中配置
+### 方式 2：Starter 模板（最简单）
 
-**如果需要提供默认支持**，可以保留最小配置（不包含 contentDir）：
-```toml
-# Hugo Paper Theme - Languages Configuration (Optional)
-# 用户应该在自己的项目中配置语言
-
-[en]
-languageName = "English"
-languageCode = "en"
-weight = 1
-
-[zh]
-languageName = "中文"
-languageCode = "zh"
-weight = 2
+```bash
+git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper-starter.git my-blog
+cd my-blog
+hugo server
 ```
 
-#### 步骤 4：保持 `config/_default/params.toml` 不变
+## 配置合并机制
 
-这个文件可以保留，因为它只包含主题参数，符合官方规定。
+Hugo 会自动合并主题和用户项目的配置：
 
-#### 步骤 5：更新 `config/_default/menus.*.toml`
+1. 主题配置 (`themes/hugo-theme-paper/config/`)
+2. 用户配置 (`config/`)
+3. 合并结果 = 用户配置覆盖主题配置
 
-菜单配置可以保留，但应该提供合理的默认值，用户可以在自己的项目中覆盖。
+## 常见问题
 
+### HTML 页面没有生成
+
+**原因**：主题配置包含了 `contentDir` 等项目特定配置
+
+**解决**：主题不应该包含 `contentDir`, `baseURL`, `title` 等配置
+
+### 多语言配置冲突
+
+**原因**：主题的语言配置与用户项目冲突
+
+**解决**：主题只提供最小的语言配置，用户在自己的项目中完整配置
+
+### 菜单不显示
+
+**原因**：主题的菜单配置不适合用户项目
+
+**解决**：用户在自己的 `config/_default/menus.*.toml` 中定义菜单
+
+## 参考资源
+
+- [Hugo Modules Configuration](https://gohugo.io/hugo-modules/configuration/)
+- [Hugo Mounts](https://gohugo.io/hugo-modules/configuration/#module-config-mounts)

@@ -123,19 +123,25 @@ pnpm build
 
 ### 发布新版本
 
+使用 standard-version 自动化版本管理：
+
 ```bash
-# 1. 更新版本号和 CHANGELOG
-# 编辑 docs/CHANGELOG.md
+# 1. 按规范提交代码
+git commit -m "feat: 添加新功能"
+git commit -m "fix: 修复 bug"
 
-# 2. 提交更改
-git add .
-git commit -m "chore: release v0.x.x"
-git push origin master
+# 2. 发布（自动判断版本号）
+pnpm release
 
-# 3. 创建并推送标签
-git tag v0.x.x
-git push origin v0.x.x
+# 自动完成：
+# - 分析 commits
+# - 更新版本号
+# - 生成 CHANGELOG
+# - 创建 tag
+# - 推送到 GitHub
 ```
+
+详见：[docs/RELEASE.md](./docs/RELEASE.md)
 
 ### 双仓库工作流
 
@@ -158,9 +164,12 @@ git push origin v0.x.x
 
 ## 📚 文档
 
-- [CHANGELOG.md](./docs/CHANGELOG.md) - 更新日志
-- [DIRECTORY_STRUCTURE_ANALYSIS.md](./docs/DIRECTORY_STRUCTURE_ANALYSIS.md) - 目录结构分析
-- [HUGO_MODULES_BEST_PRACTICES.md](./docs/HUGO_MODULES_BEST_PRACTICES.md) - Hugo Modules 最佳实践
+- [docs/README.md](./docs/README.md) - 文档索引
+- [docs/RELEASE.md](./docs/RELEASE.md) - 版本发布指南
+- [docs/SCRIPTS.md](./docs/SCRIPTS.md) - 脚本使用指南
+- [docs/HUGO_MODULES_BEST_PRACTICES.md](./docs/HUGO_MODULES_BEST_PRACTICES.md) - Hugo Modules 最佳实践
+- [docs/DIRECTORY_STRUCTURE_ANALYSIS.md](./docs/DIRECTORY_STRUCTURE_ANALYSIS.md) - 目录结构分析
+- [CHANGELOG.md](./CHANGELOG.md) - 更新日志（自动生成）
 
 ## 🧪 测试
 
@@ -237,9 +246,21 @@ hugo-theme-paper/
 - 遵循 BEM 命名规范（自定义类）
 
 ### 提交规范
-- 使用语义化提交信息
-- 格式：`type: description`
-- 类型：`feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+
+使用 [Conventional Commits](https://www.conventionalcommits.org/)：
+
+```bash
+feat: 新功能      → minor 版本
+fix: 修复 bug     → patch 版本
+feat!: 重大更新   → major 版本
+docs: 文档更新    → 不影响版本
+style: 样式调整   → 不影响版本
+refactor: 重构    → 不影响版本
+test: 测试        → 不影响版本
+chore: 其他       → 不影响版本
+```
+
+详见：[docs/RELEASE.md](./docs/RELEASE.md)
 
 ### 工作流
 1. 创建功能分支
