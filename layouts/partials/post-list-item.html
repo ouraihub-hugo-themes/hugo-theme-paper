@@ -1,48 +1,30 @@
 <!-- Post List Item Component -->
-<a
-  href="{{ .Permalink }}"
-  class="block p-4 md:p-6 rounded-lg border border-border hover:border-accent hover:shadow-md transition-all duration-200 group"
->
-  <div class="flex items-start gap-4">
-    {{ if .Params.image }}
-    <div class="hidden sm:block flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-muted">
-      <img
-        src="{{ .Params.image }}"
-        alt="{{ .Title }}"
-        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        loading="lazy"
-      />
-    </div>
+<article class="mb-8 pb-8 border-b border-skin-line last:border-b-0">
+  <a href="{{ .Permalink }}" class="group inline-block">
+    <h2 class="text-2xl font-semibold text-skin-accent decoration-dashed hover:underline underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0">
+      {{ .Title }}
+    </h2>
+  </a>
+  
+  {{ partial "datetime.html" . }}
+  
+  <p class="mt-3 text-skin-base">
+    {{ if .Description }}
+      {{ .Description }}
+    {{ else if .Summary }}
+      {{ .Summary | plainify | truncate 150 }}
+    {{ else }}
+      {{ .Content | plainify | truncate 150 }}
     {{ end }}
-
-    <div class="flex-1">
-      <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">
-        {{ .Title }}
-      </h3>
-
-      <p class="text-muted text-sm mb-4 line-clamp-2">
-        {{ if .Description }}
-          {{ .Description }}
-        {{ else if .Summary }}
-          {{ .Summary }}
-        {{ else }}
-          {{ truncate 150 .Content }}
-        {{ end }}
-      </p>
-
-      <div class="flex items-center gap-4 text-xs text-muted">
-        <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-          {{ .Date.Format "January 2, 2006" }}
-        </time>
-        {{ if .ReadingTime }}
-        <span>{{ .ReadingTime }} min read</span>
-        {{ end }}
-        {{ if .Params.categories }}
-        <span class="px-2 py-1 rounded bg-accent/10 text-accent">
-          {{ index .Params.categories 0 }}
-        </span>
-        {{ end }}
-      </div>
-    </div>
+  </p>
+  
+  {{ if .Params.tags }}
+  <div class="mt-4 flex flex-wrap gap-2">
+    {{ range .Params.tags }}
+    <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="inline-block text-sm text-skin-accent hover:underline">
+      #{{ . }}
+    </a>
+    {{ end }}
   </div>
-</a>
+  {{ end }}
+</article>
