@@ -9,6 +9,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+#### 导航菜单链接无效和多语言菜单显示错误 (2025-01-15)
+
+**问题描述：**
+1. 首页导航菜单中 "Posts" 和 "About" 链接显示波浪线下划线（浏览器警告）
+2. 点击这些链接跳转到首页 `/` 而不是正确的页面
+3. 中文页面导航菜单显示英文文本（"Posts"、"Tags"、"About"）而不是中文（"文章"、"标签"、"关于"）
+
+**根本原因：**
+1. **菜单配置使用了 `pageRef` 而不是 `url`**
+   - 配置：`pageRef = "/post"` 和 `pageRef = "/about"`
+   - 在多语言环境下，Hugo 无法找到这些页面（实际路径是 `/en/post` 和 `/zh/post`）
+   - 当 `pageRef` 无法解析时，Hugo 返回默认的 `/` 路径
+   - 浏览器检测到链接指向当前页面，显示波浪线警告
+
+2. **菜单配置格式错误**
+   - 使用了 `[languages.xx.menu.main]` 而不是 `[languages.xx.menus.main]`
+   - 虽然 `menu` 是 `menus` 的别名，但在某些情况下可能导致多语言菜单无法正确加载
+
+**解决方案：**
+
+1. **修复菜单链接**：改用 `url` 并使用完整的语言路径
+   ```toml
+   # 英文菜单
+   [[languages.en.menus.main]]
+   name = "Posts"
+   url = "/en/post/"
+   weight = 1
+   
+   # 中文菜单
+   [[languages.zh.menus.main]]
+   name = "文章"
+   url = "/zh/post/"
+   weight = 1
+   ```
+
+2. **修复多语言菜单显示**：
+   - 确保菜单配置在正确的语言键下
+   - 为每个语言单独配置菜单项
+   - 使用 `url` 而不是 `pageRef` 以避免路径解析问题
+
+**技术细节：**
+- `pageRef` 适用于单语言站点或使用文件名语言后缀的多语言配置
+- 对于使用内容目录分离的多语言配置（`content/en/` 和 `content/zh/`），应使用 `url` 并指定完整路径
+- Hugo 的 `.Site.Menus.main` 会自动返回当前语言的菜单，前提是配置正确
+
+**影响文件：**
+- `hugo.toml` - 菜单配置
+- `layouts/partials/header.html` - 菜单渲染模板
+
+**测试结果：**
+- ✅ 首页导航链接正常，无波浪线警告
+- ✅ Posts 链接正确跳转到 `/en/post/`
+- ✅ About 链接正确跳转到 `/en/about/`
+- ✅ 中文页面导航菜单正确显示中文文本
+- ✅ 中文菜单链接正确跳转到 `/zh/post/`、`/zh/about/` 等
+
+**相关提交：**
+- 待提交 - fix: 修复导航菜单链接无效和多语言菜单显示问题
+
+---
+
 #### 语言切换重复跳转导致 404 (2025-01-15)
 
 **问题描述：**

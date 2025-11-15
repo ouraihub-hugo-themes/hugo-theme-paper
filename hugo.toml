@@ -48,33 +48,33 @@ weight = 2
 title = "HugoPaper"
 
 # English Menu
-[[languages.en.menu.main]]
+[[languages.en.menus.main]]
 name = "Posts"
 url = "/en/post/"
 weight = 1
 
-[[languages.en.menu.main]]
+[[languages.en.menus.main]]
 name = "Tags"
 url = "/tags/"
 weight = 2
 
-[[languages.en.menu.main]]
+[[languages.en.menus.main]]
 name = "About"
 url = "/en/about/"
 weight = 3
 
 # Chinese Menu
-[[languages.zh.menu.main]]
+[[languages.zh.menus.main]]
 name = "文章"
 url = "/zh/post/"
 weight = 1
 
-[[languages.zh.menu.main]]
+[[languages.zh.menus.main]]
 name = "标签"
 url = "/tags/"
 weight = 2
 
-[[languages.zh.menu.main]]
+[[languages.zh.menus.main]]
 name = "关于"
 url = "/zh/about/"
 weight = 3
@@ -86,6 +86,7 @@ readmeUrl = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
 showArchives = true
 showBackButton = true
 postPerIndex = 4
+mainSections = ["post"]
 
 [params.theme]
 defaultTheme = "light"
