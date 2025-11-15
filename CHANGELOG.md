@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 
+### [0.7.6](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/v0.7.4...v0.7.6) (2025-11-15)
+
+
+### 🔧 其他
+
+* 更新编译后的资源文件 ([a91b72d](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/commit/a91b72d9542db5f47f55ce5fd8b6367460f581e0))
+* **release:** 0.7.5 ([3cd3c1b](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/commit/3cd3c1b0b93d321dbc03886aeb7d3b00fcedc7a3))
+
 ### [0.7.4](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/v0.7.3...v0.7.4) (2025-11-15)
 
 
