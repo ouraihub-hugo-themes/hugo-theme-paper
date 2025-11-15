@@ -247,23 +247,42 @@ jobs:
         run: |
           VERSION=${{ steps.version.outputs.version }}
           DIST_REPO_DIR="/tmp/hugo-theme-paper-dist"
+          RELEASE_SOURCE="${GITHUB_WORKSPACE}/release/hugo-theme-paper-${VERSION}"
+
+          echo "=== Sync Configuration ==="
+          echo "Version: ${VERSION}"
+          echo "Release source: ${RELEASE_SOURCE}"
+          echo "Dist repo dir: ${DIST_REPO_DIR}"
+          
+          # Verify release package exists
+          if [ ! -d "${RELEASE_SOURCE}" ]; then
+            echo "ERROR: Release package not found at ${RELEASE_SOURCE}"
+            ls -la "${GITHUB_WORKSPACE}/release/"
+            exit 1
+          fi
+          
+          echo "Release package contents:"
+          ls -la "${RELEASE_SOURCE}/"
 
           mkdir -p "$DIST_REPO_DIR"
           cd "$DIST_REPO_DIR"
 
           # Clone the distribution repository using Personal Access Token
+          echo "=== Cloning distribution repository ==="
           git clone --depth 1 https://x-access-token:${{ secrets.RELEASE_REPO_TOKEN }}@github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git . 2>&1 || {
-            echo "Distribution repository does not exist yet"
+            echo "Distribution repository does not exist yet, initializing..."
             git init
             git remote add origin https://x-access-token:${{ secrets.RELEASE_REPO_TOKEN }}@github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git
           }
 
           # Clean old files (except .git)
+          echo "=== Cleaning old files ==="
           find . -maxdepth 1 -not -name '.git*' -type f -delete
           find . -maxdepth 1 -not -name '.git*' -type d -exec rm -rf {} + 2>/dev/null || true
 
           # Copy the pre-compiled theme files
-          cp -r "$GITHUB_WORKSPACE/release/hugo-theme-paper-${VERSION}"/* .
+          echo "=== Copying release files ==="
+          cp -rv "${RELEASE_SOURCE}"/* .
 
           # Create/update README for distribution repo
           cat > README.md << 'DIST_README_EOF'
@@ -357,17 +376,28 @@ jobs:
           DIST_README_EOF
 
           # Git configuration
+          echo "=== Configuring Git ==="
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
+          # Show what will be committed
+          echo "=== Files to be committed ==="
+          git status
+          
           # Create tag in distribution repo
+          echo "=== Committing changes ==="
           git add -A
           git commit -m "chore: sync theme v${VERSION}" || echo "No changes to commit"
+          
+          echo "=== Creating tag v${VERSION} ==="
           git tag -a "v${VERSION}" -m "Hugo Paper Theme v${VERSION}" || echo "Tag already exists"
 
           # Push to distribution repo
+          echo "=== Pushing to distribution repository ==="
           git branch -M main
           git push -u origin main --force
           git push -u origin "v${VERSION}" || true
+          
+          echo "=== Sync completed successfully ==="
         env:
           RELEASE_REPO_TOKEN: ${{ secrets.RELEASE_REPO_TOKEN }}
