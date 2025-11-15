@@ -1,33 +1,31 @@
-# Hugo Paper Theme
+# Hugo Paper Theme - Development Repository
 
-[![GitHub License](https://img.shields.io/github/license/ouraihub-hugo-themes/hugo-paper)](https://github.com/ouraihub-hugo-themes/hugo-paper/blob/main/LICENSE)
+[![GitHub License](https://img.shields.io/github/license/ouraihub-hugo-themes/hugo-theme-paper)](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/blob/master/LICENSE)
 [![Hugo Version](https://img.shields.io/badge/Hugo-0.120%2B-blue)](https://gohugo.io/)
-[![Theme Version](https://img.shields.io/badge/Theme-v1.0.0-success)](https://github.com/ouraihub-hugo-themes/hugo-paper/releases)
+[![Node Version](https://img.shields.io/badge/Node-18%2B-green)](https://nodejs.org/)
+[![pnpm Version](https://img.shields.io/badge/pnpm-8%2B-orange)](https://pnpm.io/)
 
-一个受 [Astro Paper](https://astro-paper.pages.dev/) 启发的最小化、响应式的 Hugo 主题，具有完整的交互功能、SEO 优化和无障碍支持。
-
-[English](./README.md) | [中文](#)
+一个受 [Astro Paper](https://astro-paper.pages.dev/) 启发的最小化、响应式 Hugo 主题。本仓库包含主题的源代码和开发工具。
 
 ---
 
-## ⚠️ 重要提示
+## ⚠️ 你是用户还是开发者？
 
-**这是开发仓库，包含源代码和构建工具。**
+### 👤 如果你想使用这个主题
 
-### 如果你是用户（想使用这个主题）
+**请不要使用这个仓库！** 这是开发仓库，包含源代码和构建工具。
 
-**请使用以下方式之一：**
+**请使用以下方式：**
 
-1. **推荐：使用 Starter 模板**
+1. **🚀 推荐：Starter 模板（最简单）**
    ```bash
    git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper-starter.git my-blog
    cd my-blog
-   hugo mod get -u
    hugo server
    ```
    👉 [hugo-theme-paper-starter](https://github.com/ouraihub-hugo-themes/hugo-theme-paper-starter)
 
-2. **使用分发仓库（预编译版本）**
+2. **📦 使用预编译版本（Hugo Modules）**
    ```toml
    [module]
      [[module.imports]]
@@ -35,49 +33,37 @@
    ```
    👉 [hugo-theme-paper-dist](https://github.com/ouraihub-hugo-themes/hugo-theme-paper-dist)
 
-### 如果你是开发者（想贡献代码）
+### 👨‍💻 如果你想贡献代码
 
-继续阅读下面的开发指南。
+欢迎！继续阅读下面的开发指南。
 
 ---
 
-## ✨ 功能特性
+## ✨ 主要特性
 
-- 🎨 **响应式设计** - 完美适配所有设备
-- 🌙 **深色模式** - 系统自动检测和手动切换
-- 💬 **Giscus 评论** - GitHub Discussions 作为评论后端
-- 🔍 **搜索功能** - 快速搜索所有内容
-- 📖 **阅读进度** - 实时显示阅读进度
-- 📋 **代码复制** - 一键复制代码块
-- 📱 **文章分享** - 支持 5 个平台分享
-- ⌨️ **快捷键** - 7 个内置快捷键
-- 🔍 **SEO 优化** - Schema.org 结构化数据
-- ♿ **无障碍** - WCAG 2.1 AA 级支持
-- 📊 **性能** - 核心操作 < 10ms
-- 🧪 **完整测试** - 176 个测试用例
+- 🎨 响应式设计 + 深色模式
+- 🔍 搜索功能 + 阅读进度
+- 💬 Giscus 评论集成
+- � 代码复制 + *文章分享
+- ♿ WCAG 2.1 AA 无障碍支持
+- � SE代O 优化（Schema.org）
+- 🧪 176 个测试用例，85%+ 覆盖率
 
-## 📦 安装
+## � ️ 开发环境设置
 
-### 方法 1: 作为 Git Submodule（推荐）
+### 前置要求
+
+- **Hugo**: v0.120+ (Extended 版本)
+- **Go**: 1.24+ (Hugo Modules 依赖)
+- **Node.js**: v18.0+
+- **pnpm**: v8.15+
+
+### 克隆和安装
 
 ```bash
-# 创建新 Hugo 站点
-hugo new site my-site
-cd my-site
-
-# 初始化 Git
-git init
-
-# 添加主题作为 submodule
-git submodule add https://github.com/ouraihub-hugo-themes/hugo-paper.git themes/hugo-paper
-
-# 复制示例配置
-cp themes/hugo-paper/exampleSite/config.toml .
-cp themes/hugo-paper/exampleSite/params.toml .
-cp themes/hugo-paper/exampleSite/package.json .
-cp themes/hugo-paper/exampleSite/tailwind.config.js .
-cp themes/hugo-paper/exampleSite/postcss.config.js .
-cp themes/hugo-paper/exampleSite/tsconfig.json .
+# 克隆仓库
+git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper.git
+cd hugo-theme-paper
 
 # 安装依赖
 pnpm install
@@ -86,247 +72,205 @@ pnpm install
 pnpm dev
 ```
 
-### 方法 2: 使用 Hugo Modules
+### 开发命令速查
 
 ```bash
-# 初始化 Hugo 模块（如果还没有的话）
-hugo mod init github.com/yourusername/my-site
+# 开发
+pnpm dev              # 启动完整开发环境（TypeScript + CSS + Hugo）
+pnpm dev:fast         # 快速启动（仅 Hugo，不编译资源）
 
-# 添加 hugo-paper 作为模块依赖
-hugo mod get github.com/ouraihub-hugo-themes/hugo-paper
+# 构建
+pnpm build            # 生产构建（完整优化）
+pnpm build:dev        # 开发构建（包含 sourcemap）
 
-# 获取依赖
-hugo mod get -u
+# 资源编译
+pnpm ts:build         # 编译 TypeScript
+pnpm ts:watch         # 监听 TypeScript 变化
+pnpm css:build        # 编译 CSS
+pnpm css:watch        # 监听 CSS 变化
 
-# 启动开发服务器
-hugo server
+# 代码质量
+pnpm type-check       # TypeScript 类型检查
+pnpm lint:ts          # TypeScript 代码检查
+pnpm lint:css         # CSS 代码检查
+pnpm format           # 代码格式化
+
+# 测试
+pnpm test             # 运行测试（监听模式）
+pnpm test:run         # 单次运行测试
+pnpm test:ui          # 测试 UI 界面
+pnpm test:coverage    # 生成覆盖率报告
 ```
 
-### 方法 3: 从源代码开发
+## � 构建和发布
+
+### 构建流程
 
 ```bash
-# 克隆主题源码
-git clone https://github.com/ouraihub-hugo-themes/hugo-paper.git
-cd hugo-paper
+# 1. 类型检查
+pnpm type-check
 
-# 安装依赖
-pnpm install
+# 2. 运行测试
+pnpm test:run
 
-# 进入示例网站目录
-cd exampleSite
+# 3. 代码检查
+pnpm lint:ts
+pnpm lint:css
 
-# 启动开发服务器
-pnpm dev
+# 4. 构建
+pnpm build
 ```
 
-## 🚀 快速开始
-
-### 1. 基本配置
-
-编辑 `config.toml`：
-
-```toml
-baseURL = "https://yourdomain.com/"
-languageCode = "en-us"
-title = "My Blog"
-theme = "hugo-paper"
-
-# 其他配置...
-```
-
-### 2. 主题参数
-
-编辑 `params.toml`：
-
-```toml
-[params]
-  author = "Your Name"
-  description = "Your site description"
-  
-  # 显示选项
-  showReadingTime = true
-  showTableOfContents = true
-  
-  # 交互功能
-  [params.post]
-    showLikeButton = true
-    showShare = true
-  
-  # 评论系统 (Giscus)
-  [params.comments]
-    enable = true
-    provider = "giscus"
-    repo = "yourusername/your-repo"
-    repoId = "R_..."
-    category = "Announcements"
-    categoryId = "DIC_..."
-```
-
-详细配置见 [CONFIG.md](./CONFIG.md)
-
-### 3. 创建内容
+### 发布新版本
 
 ```bash
-# 创建新文章
-hugo new post/my-first-post.md
+# 1. 更新版本号和 CHANGELOG
+# 编辑 docs/CHANGELOG.md
 
-# 启动开发服务器
-pnpm dev
+# 2. 提交更改
+git add .
+git commit -m "chore: release v0.x.x"
+git push origin master
+
+# 3. 创建并推送标签
+git tag v0.x.x
+git push origin v0.x.x
 ```
 
-### 4. 部署
+### 双仓库工作流
 
-支持以下平台的一键部署：
+本项目使用双仓库架构：
 
-- **Vercel** - 最推荐（自动部署）
-- **Netlify** - 支持自定义域名
-- **GitHub Pages** - 完全免费
-- **任何支持 Hugo 的平台**
+1. **开发仓库**（本仓库）
+   - 包含源代码（TypeScript、Tailwind CSS）
+   - 包含开发工具和测试
+   - 开发者在这里工作
+
+2. **分发仓库** ([hugo-theme-paper-dist](https://github.com/ouraihub-hugo-themes/hugo-theme-paper-dist))
+   - 只包含预编译文件
+   - 用户通过 Hugo Modules 使用
+   - 由 GitHub Actions 自动更新
+
+**工作流程：**
+- 推送标签到开发仓库 → GitHub Actions 自动编译 → 推送到分发仓库
+
+详见：[docs/HUGO_MODULES_BEST_PRACTICES.md](./docs/HUGO_MODULES_BEST_PRACTICES.md)
 
 ## 📚 文档
 
-- [README.md](./README.md) - 本文件
-- [CONFIG.md](./CONFIG.md) - 完整配置指南
-- [DESIGN.md](./DESIGN.md) - 架构和设计
-- [exampleSite/README.md](./exampleSite/README.md) - 示例网站使用说明
-- [CONTRIBUTING.md](./CONTRIBUTING.md) - 贡献指南
+- [CHANGELOG.md](./docs/CHANGELOG.md) - 更新日志
+- [DIRECTORY_STRUCTURE_ANALYSIS.md](./docs/DIRECTORY_STRUCTURE_ANALYSIS.md) - 目录结构分析
+- [HUGO_MODULES_BEST_PRACTICES.md](./docs/HUGO_MODULES_BEST_PRACTICES.md) - Hugo Modules 最佳实践
 
 ## 🧪 测试
 
-本主题包含 **176 个完整测试用例**，覆盖以下方面：
+本主题包含 **176 个测试用例**，覆盖率 **85%+**。
 
 ```bash
-# 运行所有测试
-pnpm test
-
-# 生成覆盖率报告
-pnpm test:coverage
-
-# 使用 UI 运行测试
-pnpm test:ui
-
-# 单次运行测试
-pnpm test:run
+# 运行测试
+pnpm test              # 监听模式
+pnpm test:run          # 单次运行
+pnpm test:ui           # UI 界面
+pnpm test:coverage     # 覆盖率报告
 ```
 
-### 测试覆盖范围
+### 测试覆盖
 
-- ✅ 单元测试 (7 个)
-- ✅ 交互功能测试 (15 个)
-- ✅ 集成测试 (21 个)
-- ✅ 性能基准测试 (23 个)
-- ✅ 浏览器兼容性测试 (35 个)
-- ✅ SEO 审核 (30 个)
-- ✅ 安全审计 (45 个)
+- 单元测试 (7)
+- 交互功能测试 (15)
+- 集成测试 (21)
+- 性能基准测试 (23)
+- 浏览器兼容性测试 (35)
+- SEO 审核 (30)
+- 安全审计 (45)
 
 ## 🏗️ 项目结构
 
 ```
-hugo-paper/
-├── layouts/              # 主题模板
-├── assets/               # 样式和脚本
-│   ├── css/
-│   ├── ts/
-│   │   └── main.ts      # 核心脚本
-│   └── images/
-├── archetypes/           # 内容原型
-├── i18n/                 # 多语言支持
-├── data/                 # 数据文件
-├── static/               # 静态资源
-├── exampleSite/          # 示例网站
-│   ├── content/         # 示例内容
-│   ├── config.toml      # 示例配置
-│   ├── params.toml
-│   └── package.json
+hugo-theme-paper/
+├── assets/               # 源文件（开发）
+│   ├── css/             # Tailwind CSS 源文件
+│   └── ts/              # TypeScript 源文件
+├── static/               # 编译后的文件（分发）
+│   ├── css/main.css     # 编译后的 CSS
+│   ├── js/main.js       # 编译后的 JS
+│   └── toggle-theme.js  # 主题切换脚本
+├── layouts/              # Hugo 模板
+├── i18n/                 # 国际化文件
+├── archetypes/           # 内容模板
 ├── tests/                # 测试文件
-├── theme.toml            # 主题元数据
-└── README.md
+├── docs/                 # 文档
+├── .github/workflows/    # GitHub Actions
+└── exampleSite/          # 示例网站
 ```
 
-## ⚙️ 主题参数
+详见：[docs/DIRECTORY_STRUCTURE_ANALYSIS.md](./docs/DIRECTORY_STRUCTURE_ANALYSIS.md)
 
-### 核心参数
+## 🔧 技术栈
 
-```toml
-[params]
-  author = "Your Name"
-  description = "Site description"
-  showReadingTime = true
-  showTableOfContents = true
-  showCopyCodeButton = true
-```
+### 核心技术
+- **Hugo**: v0.120+ (Extended)
+- **Tailwind CSS**: v4.0.0
+- **TypeScript**: v5.8+
+- **esbuild**: v0.23+ (打包工具)
 
-### 交互功能
+### 开发工具
+- **Vitest**: v2.0+ (测试框架)
+- **ESLint**: v9.0+ (代码检查)
+- **Stylelint**: v16.0+ (CSS 检查)
+- **Prettier**: v3.1+ (代码格式化)
 
-```toml
-[params.post]
-  showLikeButton = true
-  showShare = true
+### 包管理
+- **pnpm**: v8.15+ (推荐)
+- **Node.js**: v18.0+
 
-[params.comments]
-  enable = true
-  provider = "giscus"
-  repo = "..."
-  repoId = "..."
-```
+## 📝 代码规范
 
-完整参数列表见 [CONFIG.md](./CONFIG.md)
+### TypeScript
+- 使用 ESLint 进行代码检查
+- 严格的类型检查（`strict: true`）
+- 所有 JavaScript 必须从 TypeScript 编译而来
 
-## 🌐 浏览器支持
+### CSS
+- 使用 Tailwind CSS 实用类
+- 使用 Stylelint 进行代码检查
+- 遵循 BEM 命名规范（自定义类）
 
-| 浏览器 | 版本 | 支持 |
-|--------|------|------|
-| Chrome | 90+ | ✅ |
-| Firefox | 88+ | ✅ |
-| Safari | 14+ | ✅ |
-| Edge | 90+ | ✅ |
-| iOS Safari | 14+ | ✅ |
-| Android Chrome | 90+ | ✅ |
+### 提交规范
+- 使用语义化提交信息
+- 格式：`type: description`
+- 类型：`feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-## 🎯 性能指标
+### 工作流
+1. 创建功能分支
+2. 编写代码和测试
+3. 运行 `pnpm type-check` 和 `pnpm test:run`
+4. 提交并创建 Pull Request
 
-| 指标 | 值 | 状态 |
-|------|-----|------|
-| 首屏加载 | < 1.5s | ✅ |
-| 交互延迟 | < 100ms | ✅ |
-| Lighthouse | 95+ | ✅ |
-| 代码覆盖率 | 85%+ | ✅ |
+## 🤝 贡献
 
-## 🔐 安全
+欢迎贡献！请遵循以下步骤：
 
-- ✅ XSS 防护
-- ✅ CSRF 防护
-- ✅ 数据验证
-- ✅ HTTPS 强制
-- ✅ CSP 政策
-- ✅ 安全 Headers
+1. Fork 本仓库
+2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
+3. 提交更改 (`git commit -m 'feat: add amazing feature'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 创建 Pull Request
 
-## ♿ 无障碍
-
-符合 **WCAG 2.1 AA** 级标准：
-
-- ✅ 语义化 HTML
-- ✅ ARIA 标签
-- ✅ 键盘导航
-- ✅ 屏幕阅读器支持
-- ✅ 颜色对比度
+### 贡献前请确保：
+- ✅ 所有测试通过 (`pnpm test:run`)
+- ✅ 类型检查通过 (`pnpm type-check`)
+- ✅ 代码检查通过 (`pnpm lint:ts && pnpm lint:css`)
+- ✅ 代码已格式化 (`pnpm format`)
 
 ## 📄 许可
 
 MIT License - 详见 [LICENSE](./LICENSE)
 
-## 👥 贡献
-
-欢迎贡献！请阅读 [CONTRIBUTING.md](./CONTRIBUTING.md)
-
 ## 🐛 问题反馈
 
-遇到问题？提交 Issue：https://github.com/ouraihub-hugo-themes/hugo-paper/issues
-
-## 📞 联系
-
-- 主页: https://github.com/ouraihub-hugo-themes/hugo-paper
-- 讨论: https://github.com/ouraihub-hugo-themes/hugo-paper/discussions
+- Issues: https://github.com/ouraihub-hugo-themes/hugo-theme-paper/issues
+- Discussions: https://github.com/ouraihub-hugo-themes/hugo-theme-paper/discussions
 
 ## 🙏 致谢
 
@@ -336,6 +280,4 @@ MIT License - 详见 [LICENSE](./LICENSE)
 
 ---
 
-**Ready to get started?** 查看 [exampleSite/README.md](./exampleSite/README.md) 了解详细使用说明。
-
-Made with ❤️ by [OurAIHub](https://github.com/ouraihub)
+Made with ❤️ by [OurAIHub](https://github.com/ouraihub-hugo-themes)
