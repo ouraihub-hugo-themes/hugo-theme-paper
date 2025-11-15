@@ -28,7 +28,9 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "new-post": "tsx scripts/new-post.ts",
+    "quick-post": "tsx scripts/quick-post.ts"
   },
   "dependencies": {
     "tailwindcss": "^4.0.0"
@@ -38,6 +40,7 @@
     "@tailwindcss/postcss": "^4.0.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^22.0.0",
+    "tsx": "^4.7.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@vitest/ui": "^2.0.0",

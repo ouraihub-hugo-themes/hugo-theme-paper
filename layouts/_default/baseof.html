@@ -24,11 +24,7 @@
     <meta property="og:title" content="{{ .Title | default .Site.Title }}" />
     <meta property="og:description" content="{{ .Description | default .Site.Params.description }}" />
     <meta property="og:url" content="{{ .Permalink }}" />
-    {{- if .Params.image }}
-      <meta property="og:image" content="{{ .Params.image | absURL }}" />
-    {{- else if .Site.Params.ogImage }}
-      <meta property="og:image" content="{{ .Site.Params.ogImage | absURL }}" />
-    {{- end }}
+    {{- partial "head/og-image.html" . -}}
 
     <!-- Article Published/Modified time -->
     {{- if .PublishDate }}
