@@ -51,9 +51,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Install dependencies
-        run: pnpm install
-        env:
-          HUSKY: 0
+        run: pnpm install --ignore-scripts
 
       - name: Create release package structure
         run: |
