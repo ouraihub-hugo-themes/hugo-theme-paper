@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 
+### [0.7.7](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/v0.7.6...v0.7.7) (2025-11-15)
+
+
+### 🐛 Bug 修复
+
+* **workflow:** 改进发布工作流的调试输出和错误处理 ([6c12e3b](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/commit/6c12e3bf5714e3d99ce4580e6a63765ec10b8011))
+
 ### [0.7.6](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/compare/v0.7.4...v0.7.6) (2025-11-15)
 
 
