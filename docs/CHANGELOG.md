@@ -9,6 +9,87 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+#### 默认语言菜单链接包含错误语言前缀 (2025-01-15)
+
+**问题描述：**
+- About 等页面的导航菜单与首页显示不一致
+- About 页面显示错误的站点标题 "Hugo Paper - Theme Development" 而不是 "HugoPaper"
+- 菜单链接包含 `/en/` 前缀（如 `/en/post/`、`/en/about/`），但实际页面 URL 没有前缀（如 `/post/`、`/about/`）
+- 导致菜单链接与实际页面 URL 不匹配
+
+**根本原因：**
+Hugo 默认不为**默认语言**（`defaultContentLanguage`）添加 URL 语言前缀。
+
+在多语言配置中：
+- 默认语言（英文）的页面 URL：`/about/`、`/post/` (无 `/en/` 前缀)
+- 非默认语言（中文）的页面 URL：`/zh/about/`、`/zh/post/` (有 `/zh/` 前缀)
+
+但菜单配置中错误地为英文菜单添加了 `/en/` 前缀：
+```toml
+[[languages.en.menus.main]]
+name = "Posts"
+url = "/en/post/"  # ❌ 错误：实际 URL 是 /post/
+```
+
+这导致：
+1. 菜单链接指向不存在的 `/en/post/` 路径
+2. Hugo 无法正确识别当前页面的语言上下文
+3. 页面显示错误的站点标题和配置
+
+**解决方案：**
+1. **修改英文菜单配置**，移除 `/en/` 前缀：
+   ```toml
+   [[languages.en.menus.main]]
+   name = "Posts"
+   url = "/post/"  # ✅ 正确：匹配实际 URL
+   
+   [[languages.en.menus.main]]
+   name = "About"
+   url = "/about/"  # ✅ 正确：匹配实际 URL
+   ```
+
+2. **使用 `relLangURL` 函数**处理动态链接（如 archives）：
+   ```html
+   <!-- ❌ 错误：硬编码语言前缀 -->
+   <a href="{{ printf "/%s/archives/" .Site.Language.Lang }}">
+   
+   <!-- ✅ 正确：自动处理语言前缀 -->
+   <a href="{{ "/archives/" | relLangURL }}">
+   ```
+
+3. **优化 header.html 中的上下文引用**：
+   ```html
+   <!-- 使用 $.Site 而不是 .Site 确保获取正确的站点上下文 -->
+   {{- $currentLang := $.Site.Language.Lang -}}
+   {{- $menu := index $.Site.Menus "main" -}}
+   ```
+
+**技术细节：**
+- Hugo 的 `defaultContentLanguage` 配置决定了哪个语言不添加 URL 前缀
+- `relLangURL` 函数会根据当前语言自动添加或不添加前缀
+- 菜单 URL 应该与实际页面 URL 完全匹配，否则会导致语言上下文识别错误
+
+**影响文件：**
+- `hugo.toml` - 英文菜单配置
+- `layouts/partials/header.html` - 导航菜单模板
+
+**测试结果：**
+- ✅ About 页面导航菜单与首页一致
+- ✅ 站点标题在所有页面都显示 "HugoPaper"
+- ✅ 英文菜单链接正确（无 `/en/` 前缀）
+- ✅ 中文菜单链接正确（有 `/zh/` 前缀）
+- ✅ 语言切换功能正常工作
+- ✅ Archives 链接自动适配当前语言
+
+**相关文档：**
+- [Hugo URL 管理](https://gohugo.io/content-management/urls/)
+- [Hugo 多语言配置](https://gohugo.io/content-management/multilingual/)
+
+**相关提交：**
+- `cc74960` - fix: 修复默认语言菜单链接包含错误语言前缀的问题
+
+---
+
 #### 多语言配置导致中文首页不显示文章列表 (2025-01-15)
 
 **问题描述：**
