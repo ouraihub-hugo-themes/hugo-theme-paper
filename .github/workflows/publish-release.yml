@@ -81,8 +81,8 @@ jobs:
 
       - name: Copy theme files to release package
         run: |
-          # Copy theme directories
-          for dir in layouts assets i18n data archetypes; do
+          # Copy theme directories (exclude assets - we only need compiled files in static/)
+          for dir in layouts i18n data archetypes; do
             if [ -d "$dir" ]; then
               cp -r "$dir" "$RELEASE_PATH/"
             fi
@@ -117,10 +117,55 @@ jobs:
             echo "**Version**: ${{ steps.version.outputs.version }}"
             echo "**Release Date**: $(date -u '+%Y-%m-%d %H:%M:%S')"
             echo ""
-            echo "This release package contains pre-compiled CSS and JavaScript."
-            echo "No build step required - ready to use immediately!"
+            echo "## What's Included"
             echo ""
-            echo "See [README.md](README.md) for installation and usage instructions."
+            echo "This release package contains:"
+            echo "- ✅ Pre-compiled CSS (Tailwind CSS v4) in \`static/css/\`"
+            echo "- ✅ Pre-compiled JavaScript (from TypeScript) in \`static/js/\`"
+            echo "- ✅ Complete theme templates in \`layouts/\`"
+            echo "- ✅ Internationalization files in \`i18n/\`"
+            echo "- ✅ Content archetypes in \`archetypes/\`"
+            echo ""
+            echo "**No build step required - ready to use immediately!**"
+            echo ""
+            echo "## What's NOT Included"
+            echo ""
+            echo "- ❌ Source files (TypeScript, Tailwind CSS source)"
+            echo "- ❌ Development tools (package.json, tsconfig.json)"
+            echo "- ❌ Build scripts and configuration"
+            echo "- ❌ \`assets/\` directory (not needed for pre-compiled theme)"
+            echo ""
+            echo "**Why?** This keeps the package small and focused on what users need."
+            echo ""
+            echo "## Directory Structure"
+            echo ""
+            echo "\`\`\`"
+            echo "hugo-theme-paper-dist/"
+            echo "├── static/"
+            echo "│   ├── css/"
+            echo "│   │   └── main.css          # Pre-compiled CSS"
+            echo "│   ├── js/"
+            echo "│   │   └── main.js           # Pre-compiled JS"
+            echo "│   └── toggle-theme.js       # Theme switcher"
+            echo "├── layouts/                  # Theme templates"
+            echo "├── i18n/                     # Translations"
+            echo "├── archetypes/               # Content templates"
+            echo "├── go.mod                    # Hugo Modules config"
+            echo "└── README.md"
+            echo "\`\`\`"
+            echo ""
+            echo "## For Customization"
+            echo ""
+            echo "If you need to customize the theme's CSS or JavaScript:"
+            echo ""
+            echo "1. Fork the development repository: https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+            echo "2. Make your changes to the source files"
+            echo "3. Build using \`pnpm install && pnpm build\`"
+            echo "4. Use your custom version"
+            echo ""
+            echo "## Installation & Usage"
+            echo ""
+            echo "See [README.md](README.md) for detailed installation and usage instructions."
           } > "$RELEASE_PATH/RELEASE-INFO.md"
 
           # Clean up unnecessary files from release
@@ -134,9 +179,6 @@ jobs:
           for file in package.json pnpm-lock.yaml tailwind.config.js tsconfig.json vitest.config.ts netlify.toml vercel.json params.toml hugo.toml; do
             rm -f "$RELEASE_PATH/$file"
           done
-
-          # Remove TypeScript source files (keep only compiled JS)
-          find "$RELEASE_PATH/assets" -name "*.ts" -delete
 
           echo "RELEASE_PATH=$RELEASE_PATH" >> $GITHUB_ENV
 
@@ -231,6 +273,22 @@ jobs:
 
           **All CSS and JavaScript are pre-compiled. No build step needed!**
 
+          ## What's Included
+
+          - ✅ Pre-compiled CSS (Tailwind CSS v4) in `static/css/`
+          - ✅ Pre-compiled JavaScript (from TypeScript) in `static/js/`
+          - ✅ Complete theme templates in `layouts/`
+          - ✅ Internationalization files in `i18n/`
+          - ✅ Ready to use immediately - no build tools required!
+
+          ## What's NOT Included
+
+          - ❌ Source files (TypeScript, Tailwind CSS source)
+          - ❌ Development tools (package.json, tsconfig.json, etc.)
+          - ❌ Build scripts and configuration
+
+          **Why?** This keeps the distribution package small and focused on what users need.
+
           ## Installation
 
           ### Option 1: Hugo Modules (Recommended)
@@ -250,19 +308,52 @@ jobs:
           git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper-dist.git themes/hugo-theme-paper
           ```
 
+          ### Option 3: Use Starter Template (Easiest)
+          ```bash
+          git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper-starter.git my-blog
+          cd my-blog
+          hugo mod get -u
+          hugo server
+          ```
+
+          ## For Customization
+
+          If you need to customize the theme's CSS or JavaScript:
+
+          1. **Fork the development repository**: https://github.com/ouraihub-hugo-themes/hugo-theme-paper
+          2. **Make your changes** to the source files
+          3. **Build** using `pnpm install && pnpm build`
+          4. **Use your custom version**
+
           ## For Development
 
-          If you want to contribute to the theme, visit the main repository:
+          Want to contribute to the theme? Visit the development repository:
           https://github.com/ouraihub-hugo-themes/hugo-theme-paper
 
           ## Features
-          - Minimal and responsive design
-          - Dark mode support
-          - SEO optimized
-          - Fast performance
-          - Pre-compiled CSS (Tailwind CSS v4)
+
+          - 🎨 Minimal and responsive design
+          - 🌓 Dark mode support
+          - 🔍 Built-in search functionality
+          - 🌐 Multi-language support (English/Chinese)
+          - ⚡️ Fast performance
+          - ♿️ Accessibility support (WCAG 2.1 AA)
+          - 🎯 SEO optimized
+          - 📱 Mobile-first design
+
+          ## Documentation
+
+          - [User Guide](https://github.com/ouraihub-hugo-themes/hugo-theme-paper-starter/blob/master/docs/USER_GUIDE.md)
+          - [Changelog](https://github.com/ouraihub-hugo-themes/hugo-theme-paper/blob/master/docs/CHANGELOG.md)
+          - [Theme Documentation](https://github.com/ouraihub-hugo-themes/hugo-theme-paper)
+
+          ## Version
 
           See [RELEASE-INFO.md](RELEASE-INFO.md) for version details.
+
+          ## License
+
+          MIT License - see [LICENSE](LICENSE) for details.
           DIST_README_EOF
 
           # Git configuration

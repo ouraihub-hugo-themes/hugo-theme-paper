@@ -8,6 +8,39 @@
 
 [English](./README.md) | [中文](#)
 
+---
+
+## ⚠️ 重要提示
+
+**这是开发仓库，包含源代码和构建工具。**
+
+### 如果你是用户（想使用这个主题）
+
+**请使用以下方式之一：**
+
+1. **推荐：使用 Starter 模板**
+   ```bash
+   git clone https://github.com/ouraihub-hugo-themes/hugo-theme-paper-starter.git my-blog
+   cd my-blog
+   hugo mod get -u
+   hugo server
+   ```
+   👉 [hugo-theme-paper-starter](https://github.com/ouraihub-hugo-themes/hugo-theme-paper-starter)
+
+2. **使用分发仓库（预编译版本）**
+   ```toml
+   [module]
+     [[module.imports]]
+       path = "github.com/ouraihub-hugo-themes/hugo-theme-paper-dist"
+   ```
+   👉 [hugo-theme-paper-dist](https://github.com/ouraihub-hugo-themes/hugo-theme-paper-dist)
+
+### 如果你是开发者（想贡献代码）
+
+继续阅读下面的开发指南。
+
+---
+
 ## ✨ 功能特性
 
 - 🎨 **响应式设计** - 完美适配所有设备

@@ -1,5 +1,23 @@
+# ============================================================================
 # Hugo Paper Theme - Development Configuration
-# This file is for theme development only
+# ============================================================================
+# 
+# ⚠️  IMPORTANT: This file is ONLY for theme development
+# 
+# If you are a USER of this theme:
+#   - DO NOT modify this file
+#   - Use the hugo-theme-paper-starter project instead
+#   - This configuration will NOT affect your site
+# 
+# If you are a DEVELOPER of this theme:
+#   - This file allows you to run `hugo server` in the theme root directory
+#   - It points to exampleSite content for development and testing
+# 
+# Technical Note:
+#   When users import this theme via Hugo Modules, only params, menu,
+#   outputformats, and mediatypes from this file can be inherited.
+#   Core settings like baseURL, title, contentDir are NOT inherited.
+# ============================================================================
 
 baseURL = "http://localhost:1313/"
 title = "Hugo Paper - Theme Development"
