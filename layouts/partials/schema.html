@@ -37,13 +37,14 @@
     "@type": "WebSite",
     "name": "{{ .Site.Title }}",
     "description": "{{ .Site.Params.seo.description }}",
-    "url": "{{ .Site.BaseURL }}",
-    "logo": "{{ .Site.Params.header.logo | absURL }}",
+    "url": "{{ .Site.BaseURL }}"{{ if .Site.Params.header.logo }},
+    "logo": "{{ .Site.Params.header.logo | absURL }}"{{ end }}{{ if .Site.Params.social }},
     "sameAs": [
-      {{ range .Site.Params.social }}
-        "{{ .url }}"{{ if not (eq .url (index .Site.Params.social -1).url) }},{{ end }}
-      {{ end }}
-    ]
+      {{- $social := .Site.Params.social -}}
+      {{- range $index, $item := $social -}}
+        "{{ $item.href }}"{{ if ne $index (sub (len $social) 1) }},{{ end }}
+      {{- end -}}
+    ]{{ end }}
   }
 </script>
 {{ else if .IsSection }}
