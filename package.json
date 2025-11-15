@@ -1,6 +1,6 @@
 {
   "name": "hugo-paper",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "A minimal, responsive Hugo theme inspired by Astro Paper with interactive features, full SEO optimization, and comprehensive testing",
   "type": "module",
   "scripts": {
