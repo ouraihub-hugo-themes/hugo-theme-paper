@@ -1,63 +1,30 @@
 {{ define "main" }}
 {{ partial "breadcrumb.html" . }}
-<!-- Tag Header -->
-<div class="mb-12">
-  <h1 class="text-4xl md:text-5xl font-bold mb-4">
-    Tag: <span class="text-accent font-semibold">#{{ .Title }}</span>
-  </h1>
-  <p class="text-lg text-muted">
-    {{ .Pages | len }} articles with this tag
-  </p>
-</div>
 
-<!-- Articles with Tag -->
-{{ if .Pages }}
-<div class="space-y-4 mb-12">
-  {{ range .Pages }}
-  {{ partial "post-list-item.html" . }}
+<main id="main-content" class="mx-auto w-full max-w-app px-4 pb-4">
+  <!-- Tag Header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold sm:text-3xl">
+      Tag: <span class="text-skin-accent">#{{ .Title }}</span>
+    </h1>
+    <p class="mt-2 italic">
+      {{ .Pages | len }} {{ if eq (.Pages | len) 1 }}article{{ else }}articles{{ end }} with this tag
+    </p>
+  </div>
+
+  <!-- Articles with Tag -->
+  {{ if .Pages }}
+  <ul>
+    {{ range .Pages }}
+    {{ partial "card.html" . }}
+    {{ end }}
+  </ul>
+  {{ else }}
+  <div class="py-12 text-center">
+    <p class="italic">No articles found with this tag.</p>
+  </div>
   {{ end }}
-</div>
-{{ else }}
-<div class="py-12 text-center">
-  <p class="text-muted text-lg">No articles found with this tag.</p>
-</div>
-{{ end }}
-
-<!-- Related Tags -->
-{{ $currentTag := .Title }}
-{{ $allTags := .Site.Taxonomies.tags }}
-{{ if gt (len $allTags) 1 }}
-<section class="mt-12 pt-12 border-t border-border">
-  <h3 class="text-2xl font-bold mb-6">Related Tags</h3>
-  <div class="flex flex-wrap gap-2">
-    {{ range $allTags }}
-      {{ if ne .Page.Title $currentTag }}
-        <a
-          href="{{ .Page.RelPermalink }}"
-          class="px-3 py-1 rounded-full text-sm bg-muted/10 text-muted hover:bg-muted hover:text-background transition-colors duration-200"
-        >
-          #{{ .Page.Title }} ({{ .Count }})
-        </a>
-      {{ end }}
-    {{ end }}
-  </div>
-</section>
-{{ end }}
-
-<!-- All Tags Cloud -->
-<section class="mt-12 pt-12 border-t border-border">
-  <h3 class="text-2xl font-bold mb-6">All Tags</h3>
-  <div class="flex flex-wrap gap-2">
-    {{ range .Site.Taxonomies.tags }}
-    <a
-      href="{{ .Page.RelPermalink }}"
-      class="px-3 py-1 rounded-full text-sm bg-muted/20 hover:bg-accent hover:text-background transition-colors duration-200"
-    >
-      #{{ .Page.Title }}
-    </a>
-    {{ end }}
-  </div>
-</section>
+</main>
 
 <!-- Pagination -->
 {{ partial "pagination.html" . }}

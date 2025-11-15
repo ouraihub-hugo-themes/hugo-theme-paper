@@ -1,46 +1,30 @@
 {{ define "main" }}
 {{ partial "breadcrumb.html" . }}
-<!-- Category Header -->
-<div class="mb-12">
-  <h1 class="text-4xl md:text-5xl font-bold mb-4">
-    Category: <span class="text-accent font-semibold">{{ .Title }}</span>
-  </h1>
-  <p class="text-lg text-muted">
-    {{ .Pages | len }} articles in this category
-  </p>
-</div>
 
-<!-- Articles in Category -->
-{{ if .Pages }}
-<div class="space-y-4 mb-12">
-  {{ range .Pages }}
-  {{ partial "post-list-item.html" . }}
-  {{ end }}
-</div>
-{{ else }}
-<div class="py-12 text-center">
-  <p class="text-muted text-lg">No articles found in this category.</p>
-</div>
-{{ end }}
-
-<!-- Related Categories -->
-{{ $relatedCategories := where .Site.Taxonomies.categories "Page.Title" "!=" .Title }}
-{{ if gt (len $relatedCategories) 0 }}
-<section class="mt-12 pt-12 border-t border-border">
-  <h3 class="text-2xl font-bold mb-6">Other Categories</h3>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    {{ range first 8 $relatedCategories }}
-    <a
-      href="{{ .Page.RelPermalink }}"
-      class="p-4 rounded-lg border border-border hover:border-accent hover:bg-accent/5 transition-all duration-200 text-center"
-    >
-      <div class="font-semibold">{{ .Page.Title }}</div>
-      <div class="text-sm text-muted">{{ .Count }} posts</div>
-    </a>
-    {{ end }}
+<main id="main-content" class="mx-auto w-full max-w-app px-4 pb-4">
+  <!-- Category Header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold sm:text-3xl">
+      Category: <span class="text-skin-accent">{{ .Title }}</span>
+    </h1>
+    <p class="mt-2 italic">
+      {{ .Pages | len }} {{ if eq (.Pages | len) 1 }}article{{ else }}articles{{ end }} in this category
+    </p>
   </div>
-</section>
-{{ end }}
+
+  <!-- Articles in Category -->
+  {{ if .Pages }}
+  <ul>
+    {{ range .Pages }}
+    {{ partial "card.html" . }}
+    {{ end }}
+  </ul>
+  {{ else }}
+  <div class="py-12 text-center">
+    <p class="italic">No articles found in this category.</p>
+  </div>
+  {{ end }}
+</main>
 
 <!-- Pagination -->
 {{ partial "pagination.html" . }}
