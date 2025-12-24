@@ -36,7 +36,7 @@
     "test:coverage": "vitest run --coverage",
     "new-post": "tsx scripts/new-post.ts",
     "quick-post": "tsx scripts/quick-post.ts",
-    "prepare": "husky"
+    "prepare": "node node_modules/husky/bin.mjs"
   },
   "dependencies": {
     "tailwindcss": "^4.0.0"
@@ -55,6 +55,7 @@
     "esbuild": "^0.23.0",
     "eslint": "^9.0.0",
     "happy-dom": "^12.10.0",
+    "husky": "^9.1.7",
     "jsdom": "^23.0.0",
     "lint-staged": "^15.2.0",
     "pagefind": "^1.4.0",
@@ -72,9 +73,9 @@
   },
   "engines": {
     "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
+    "pnpm": ">=10.0.0"
   },
-  "packageManager": "pnpm@8.15.0",
+  "packageManager": "pnpm@10.26.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/ouraihub-hugo-themes/hugo-paper.git"
