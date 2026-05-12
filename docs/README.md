@@ -29,6 +29,11 @@
 - 资源加载策略
 - 开发仓库 vs 分发仓库
 
+#### [🔐 依赖漏洞修复记录](./DEPENDENCY_VULNERABILITY_FIX.md)
+- `pnpm audit` 漏洞定位流程
+- `vite` / `esbuild` / `vitest` 修复思路
+- `pnpm-workspace.yaml` override 和 `allowBuilds` 注意事项
+
 ## 🔗 相关资源
 
 ### 主仓库
