@@ -29,6 +29,21 @@
 - 资源加载策略
 - 开发仓库 vs 分发仓库
 
+#### [🎨 Markdown 代码渲染方案](./MARKDOWN_CODE_RENDERING_PLAN.md)
+- 代码块外壳与语法高亮分层
+- daisyUI 与 Chroma / Shiki 的职责划分
+- 主题切换和复制按钮的统一实现
+
+#### [📱 daisyUI 移动端布局方案](./MOBILE_LAYOUT_WITH_DAISYUI.md)
+- 导航、抽屉、菜单的响应式复用
+- 保留文章正文和代码渲染自定义
+- 先导航、再卡片、最后正文
+
+#### [🧭 daisyUI 采用执行清单](./DAISYUI_ADOPTION_EXECUTION_PLAN.md)
+- 先改 `hugo-theme-paper`
+- `ui-library` 只做支撑层
+- 哪些文件改、哪些不动
+
 #### [🔐 依赖漏洞修复记录](./DEPENDENCY_VULNERABILITY_FIX.md)
 - `pnpm audit` 漏洞定位流程
 - `vite` / `esbuild` / `vitest` 修复思路
