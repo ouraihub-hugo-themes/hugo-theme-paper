@@ -1,19 +1,27 @@
-# Hugo Paper Example Site - Core Configuration
-# 示例站点核心配置
+# Hugo Paper Theme - Core Configuration
+# 核心 Hugo 配置文件
+# 文档: https://gohugo.io/getting-started/configuration/
 
 # ===== 基本设置 =====
-baseURL = "https://example.com/"
-title = "Hugo Paper Example"
-theme = "hugo-theme-paper"
+baseURL = "http://localhost:1313/"
 languageCode = "en-us"
+title = "Hugo Paper"
 defaultContentLanguage = "en"
 
+# 主题开发时注释掉，用户使用时取消注释
+# theme = "hugo-theme-paper"
+
 # ===== 内容设置 =====
+# 主题开发时使用 exampleSite 内容
+contentDir = "exampleSite/content"
 summaryLength = 200
 hasCJKLanguage = true
-enableEmoji = true
+
+# ===== 功能开关 =====
 enableInlineShortcodes = true
+enableEmoji = true
 enableRobotsTXT = true
+enableGitInfo = false
 
 # ===== 分页设置 =====
 [pagination]
@@ -35,7 +43,7 @@ enableRobotsTXT = true
   mediaType = "application/json"
   baseName = "index"
 
-# ===== Markdown 配置 =====
+# ===== Markdown 渲染配置 =====
 [markup]
   [markup.goldmark]
     [markup.goldmark.extensions]
@@ -48,7 +56,25 @@ enableRobotsTXT = true
       unsafe = true
   
   [markup.highlight]
+    # 使用 CSS 类而不是内联样式（支持主题切换）
     noClasses = false
     codeFences = true
     lineNos = false
+    lineNumbersInTable = false
+    # 浅色模式主题（对应 AstroPaper 的 min-light）
     style = "github"
+    guessSyntax = false
+    hl_Lines = ""
+    lineNoStart = 1
+    anchorLineNos = false
+    lineAnchors = ""
+
+# ===== 隐私设置 =====
+[privacy]
+  [privacy.youtube]
+    privacyEnhanced = true
+
+# ===== 服务设置 =====
+[services]
+  [services.rss]
+    limit = 20

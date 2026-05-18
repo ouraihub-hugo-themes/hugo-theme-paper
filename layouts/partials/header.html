@@ -86,34 +86,15 @@
           <li class="col-span-2">
             {{- $isArchivesActive := false -}}
             {{- $currentPath := $.Page.RelPermalink -}}
-            {{- if and (strings.HasSuffix $currentPath "/") (ne $currentPath "/") -}}
-              {{- $currentPath = strings.TrimSuffix "/" $currentPath -}}
-            {{- end -}}
+            {{- $archivesURL := "/archives/" | relLangURL -}}
             
-            {{- $archivesPath := "/archives" -}}
-            {{- $currentPathParts := split $currentPath "/" -}}
-            {{- $archivesPathParts := split $archivesPath "/" -}}
+            {{- /* 移除尾部斜杠进行比较 */ -}}
+            {{- $currentPathClean := strings.TrimSuffix "/" $currentPath -}}
+            {{- $archivesURLClean := strings.TrimSuffix "/" $archivesURL -}}
             
-            {{- $currentPathArray := slice -}}
-            {{- range $currentPathParts -}}
-              {{- if ne . "" -}}
-                {{- $currentPathArray = $currentPathArray | append . -}}
-              {{- end -}}
-            {{- end -}}
-            
-            {{- $archivesPathArray := slice -}}
-            {{- range $archivesPathParts -}}
-              {{- if ne . "" -}}
-                {{- $archivesPathArray = $archivesPathArray | append . -}}
-              {{- end -}}
-            {{- end -}}
-            
-            {{- if eq $currentPath $archivesPath -}}
+            {{- /* 完全匹配或前缀匹配 */ -}}
+            {{- if or (eq $currentPathClean $archivesURLClean) (hasPrefix $currentPathClean $archivesURLClean) -}}
               {{- $isArchivesActive = true -}}
-            {{- else if and (gt (len $currentPathArray) 0) (gt (len $archivesPathArray) 0) -}}
-              {{- if eq (index $currentPathArray 0) (index $archivesPathArray 0) -}}
-                {{- $isArchivesActive = true -}}
-              {{- end -}}
             {{- end -}}
             
             <a

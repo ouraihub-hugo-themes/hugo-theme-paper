@@ -1,0 +1,146 @@
+# Hugo Paper Theme - Parameters Configuration
+# 主题参数配置文件
+# 这些参数可以在模板中通过 .Site.Params 访问
+
+# ===== 站点基本信息 =====
+description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme"
+author = "OurAIHub"
+readmeUrl = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+
+# ===== 功能开关 =====
+showArchives = true
+showBackButton = true
+
+# ===== 主题设置 =====
+[theme]
+  defaultTheme = "light"  # light or dark
+  switchTheme = true
+  switchThemeIcon = "sun"  # sun or toggle
+
+# ===== 头部设置 =====
+[header]
+  enable = true
+  logo = "/logo.svg"
+  logoText = "Hugo Paper"
+  logoWidth = 40
+  logoHeight = 40
+
+# ===== 底部设置 =====
+[footer]
+  enable = true
+  copyright = "Copyright © 2024 Hugo Paper. All rights reserved."
+  since = 2024
+  customText = ""
+
+# ===== 文章设置 =====
+[post]
+  showReadingTime = true
+  showTableOfContents = true
+  showCopyCodeButton = true
+  showRelatedPosts = true
+  relatedPostCount = 3
+  showLikeButton = true
+  showShare = true
+
+# ===== 编辑链接 =====
+[editPost]
+  enabled = true
+  text = "Edit this post"
+  url = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/edit/main/exampleSite/content/"
+
+# ===== 导航设置 =====
+[navigation]
+  enable = true
+
+# ===== 面包屑导航 =====
+[breadcrumb]
+  enable = true
+  showOnHome = false
+
+# ===== 分页设置 =====
+[pagination]
+  pageSize = 10
+  showFirstPage = false
+  showLastPage = true
+
+# ===== 代码高亮 =====
+# 参考: AstroPaper 的 Shiki 配置
+[highlight]
+  enable = true
+  # Chroma 主题（浅色模式）- 对应 AstroPaper 的 min-light
+  style = "github"
+  # Chroma 主题（深色模式）- 对应 AstroPaper 的 night-owl
+  styleDark = "monokai"
+  lineNumbers = false
+
+# ===== 代码增强（客户端）=====
+# 参考: AstroPaper 的 Shiki transformers
+[codeHighlight]
+  showCopyButton = true
+  showFileName = true
+  enableDiff = true
+  enableHighlight = true
+
+# ===== 搜索功能 =====
+[search]
+  enable = false
+  provider = "pagefind"  # pagefind or lunr
+
+# ===== 评论系统 =====
+[comments]
+  enable = false
+  provider = "giscus"  # giscus or disqus
+
+# ===== 数学公式 =====
+[math]
+  enable = false
+  provider = "katex"  # katex or mathjax
+
+# ===== 分析统计 =====
+[analytics]
+  enable = false
+  provider = "umami"  # umami or google
+
+# ===== 图片优化 =====
+[imageOptimization]
+  enable = true
+  maxWidth = 1200
+  format = "webp"  # webp or original
+
+# ===== 性能优化 =====
+[performance]
+  minifyCSS = true
+  minifyJS = true
+  minifyHTML = true
+  lazyLoadImages = true
+
+# ===== SEO 设置 =====
+[seo]
+  keywords = "Hugo, blog, theme, minimal"
+  description = "A minimal, responsive Hugo theme inspired by Astro Paper"
+  author = "OurAIHub"
+  twitterHandle = "@ouraihub"
+  ogImage = "/og-image.png"
+
+# ===== 社交链接 =====
+# 参考: astro-paper/src/constants.ts 的 SOCIALS 配置
+# 支持的平台: github, twitter, x, linkedin, email, mail, facebook, telegram, mastodon, reddit
+[[social]]
+  name = "GitHub"
+  href = "https://github.com/ouraihub-hugo-themes"
+  linkTitle = "Follow on GitHub"
+
+[[social]]
+  name = "X"
+  href = "https://x.com/username"
+  linkTitle = "Follow on X"
+
+[[social]]
+  name = "LinkedIn"
+  href = "https://www.linkedin.com/in/username/"
+  linkTitle = "Connect on LinkedIn"
+
+[[social]]
+  name = "Mail"
+  href = "mailto:contact@example.com"
+  linkTitle = "Send an email"

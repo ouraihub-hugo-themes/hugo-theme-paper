@@ -1,84 +1,91 @@
-# 📝 创建新文章脚本
+# Scripts 目录
 
-两个 TypeScript 脚本帮助你快速创建包含完整 SEO 优化 frontmatter 的文章。
+此目录包含用于自动化任务的 TypeScript 脚本。
 
-## 🚀 命令速查
+## generate-chroma-themed.ts
+
+自动生成带主题前缀的 Chroma 深色模式样式。
+
+### 功能
+
+1. 读取 `assets/css/chroma-dark.css`（Hugo 生成的原始文件）
+2. 为所有 CSS 选择器添加 `html[data-theme="dark"]` 前缀
+3. 生成 `assets/css/chroma-dark-themed.css`（自动生成的文件）
+
+### 使用方法
 
 ```bash
-# 交互式创建（推荐）- 完整 SEO 字段
-pnpm new-post
-pnpm new-post "Getting Started"
-pnpm new-post "Hugo 入门" zh
+# 手动运行
+pnpm chroma:generate
 
-# 快速创建 - 使用默认值
-pnpm quick-post "Article Title"
-pnpm quick-post "文章标题" zh
+# 自动运行（在 css:build 时）
+pnpm css:build
 ```
 
-## ✅ SEO 检查清单
+### 工作流程
 
-- [ ] **标题** - 50-60字符，包含主要关键词
-- [ ] **描述** - 150-160字符，吸引人的摘要
-- [ ] **关键词** - 5-7个相关关键词
-- [ ] **分类** - 1-2个主要分类
-- [ ] **标签** - 3-5个相关标签
-- [ ] **草稿** - 发布前改为 `false`
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 1. 使用 Hugo 生成原始 Chroma 样式                            │
+└─────────────────────────────────────────────────────────────┘
+   hugo gen chromastyles --style=github > chroma-light.css
+   hugo gen chromastyles --style=monokai > chroma-dark.css
 
-## 📋 Frontmatter 模板
+┌─────────────────────────────────────────────────────────────┐
+│ 2. 运行脚本自动添加主题前缀                                  │
+└─────────────────────────────────────────────────────────────┘
+   pnpm chroma:generate
+   
+   输入: chroma-dark.css
+   输出: chroma-dark-themed.css (带 html[data-theme="dark"] 前缀)
 
-```yaml
----
-title: "文章标题"
-slug: "article-slug"
-description: "文章描述（150-160字符）"
-date: 2024-11-15T10:00:00Z
-lastmod: 2024-11-15T10:00:00Z
-author: "作者名"
-keywords:
-  - 关键词1
-  - 关键词2
-categories:
-  - 分类
-tags:
-  - 标签1
-  - 标签2
-featured: false
-draft: true
----
+┌─────────────────────────────────────────────────────────────┐
+│ 3. Tailwind 编译所有 CSS                                     │
+└─────────────────────────────────────────────────────────────┘
+   pnpm css:build
+   
+   main.css 导入:
+   - chroma-light.css (浅色模式)
+   - chroma-dark-themed.css (深色模式)
+   - 其他样式文件
 ```
 
----
+### 文件说明
 
-## 📄 两种方式
+| 文件 | 类型 | 说明 |
+|------|------|------|
+| `chroma-light.css` | 源文件 | Hugo 生成的浅色模式样式 |
+| `chroma-dark.css` | 源文件 | Hugo 生成的深色模式样式 |
+| `chroma-dark-themed.css` | 生成文件 | 自动生成，带主题前缀 |
 
-**交互式创建（推荐）** - `new-post.ts`
-- 逐步引导，完整 SEO 字段，输入验证
+### 更新 Chroma 主题
 
-**快速创建** - `quick-post.ts`
-- 一行命令，使用默认值，需手动编辑
+如果需要更换 Chroma 主题：
 
----
+```bash
+# 1. 重新生成原始文件
+hugo gen chromastyles --style=dracula > assets/css/chroma-dark.css
 
-## 💡 SEO 优化示例
+# 2. 运行脚本生成带前缀的版本
+pnpm chroma:generate
 
-### ✅ 好的示例
+# 3. 构建 CSS
+pnpm css:build
+```
 
-**标题：** "Getting Started with Hugo Paper - Complete Guide 2024"  
-**描述：** "Learn how to set up Hugo Paper theme in 5 minutes. Step-by-step guide with examples."  
-**关键词：** hugo static site generator, blog setup tutorial, hugo theme customization
+### 注意事项
 
-### ❌ 不好的示例
+⚠️ **不要手动编辑 `chroma-dark-themed.css`！**
 
-**标题：** "Hugo Tutorial"  
-**描述：** "This is a tutorial."  
-**关键词：** hugo, blog, tutorial
+此文件由脚本自动生成。如需修改：
+1. 编辑 `chroma-dark.css`
+2. 运行 `pnpm chroma:generate`
 
----
+### 技术细节
 
-## 🐛 常见问题
+- **语言**: TypeScript
+- **编译器**: esbuild
+- **输出格式**: ESM
+- **目标**: Node.js 18+
 
-**文件已存在？** 脚本会提示错误，不会覆盖。使用不同标题或 slug。
-
-**添加 OG 图片？** 在 frontmatter 添加 `image: "/images/og.jpg"`
-
-**自定义默认值？** 编辑 `new-post.ts` 或 `quick-post.ts` 中的默认值。
+脚本在 CSS 构建前自动运行，确保始终使用最新的主题样式。

@@ -1,3 +1,13 @@
+/**
+ * Themed Chroma Dark Styles
+ * 
+ * 此文件由 scripts/generate-chroma-themed.ts 自动生成
+ * 源文件: assets/css/chroma-dark.css
+ * 
+ * ⚠️ 不要手动编辑此文件！
+ * 如需修改，请编辑 chroma-dark.css 然后运行: pnpm chroma:generate
+ */
+
 /* Generated using: hugo gen chromastyles --style=monokai */
 
 /* Background */ .bg { color:#f8f8f2; }

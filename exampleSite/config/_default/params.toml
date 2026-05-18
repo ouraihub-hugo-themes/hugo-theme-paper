@@ -1,67 +1,72 @@
-# Hugo Paper Theme - Parameters Configuration
-# This file contains theme-specific parameters that are actually used in templates
+# Hugo Paper Example Site - Parameters
+# 示例站点主题参数配置
 
-# 基础配置
-description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme. This theme follows best practices and provides accessibility out of the box. Light and dark mode are supported by default. Moreover, additional color schemes can also be configured."
-readmeUrl = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+# ===== 站点信息 =====
+description = "A minimal, responsive Hugo theme inspired by Astro Paper"
+author = "Your Name"
 showArchives = true
 showBackButton = true
 
-# 首页配置
-postPerIndex = 4  # 首页显示的文章数量
-
-# 主题配置
+# ===== 主题设置 =====
 [theme]
-defaultTheme = "light"  # light or dark
-switchTheme = true      # 是否显示主题切换按钮
+  defaultTheme = "light"  # light or dark
+  switchTheme = true
 
-# Header 配置
-[header]
-logo = "/logo.svg"  # 网站 logo（用于 Schema.org）
+# ===== 文章设置 =====
+[post]
+  showReadingTime = true
+  showTableOfContents = true
+  showCopyCodeButton = true
+  showRelatedPosts = true
+  relatedPostCount = 3
 
-# 编辑链接配置
+# ===== 代码高亮 =====
+[highlight]
+  enable = true
+  style = "github"      # 浅色模式
+  styleDark = "monokai" # 深色模式
+
+[codeHighlight]
+  showCopyButton = true
+  showFileName = true
+  enableDiff = true
+  enableHighlight = true
+
+# ===== 编辑链接 =====
 [editPost]
-enabled = true
-text = "Edit page"
-url = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/edit/main/exampleSite/content/en/"
+  enabled = true
+  text = "Edit this post"
+  url = "https://github.com/username/repo/edit/main/content/"
 
-# 社交链接配置
-[[social]]
-name = "GitHub"
-href = "https://github.com/ouraihub-hugo-themes"
-linkTitle = "Follow on GitHub"
+# ===== 搜索功能 =====
+[search]
+  enable = false
+  provider = "pagefind"
 
-[[social]]
-name = "X"
-href = "https://x.com/username"
-linkTitle = "Follow on X"
-
-[[social]]
-name = "LinkedIn"
-href = "https://www.linkedin.com/in/username/"
-linkTitle = "Connect on LinkedIn"
-
-[[social]]
-name = "Mail"
-href = "mailto:contact@example.com"
-linkTitle = "Send an email"
-
-# 评论配置（Giscus）
+# ===== 评论系统 =====
 [comments]
-enable = false           # 是否启用评论
-provider = "giscus"      # 评论提供商：giscus
-repo = ""                # GitHub 仓库（格式：username/repo）
-repoId = ""              # GitHub 仓库 ID
-category = ""            # Discussion 分类
-categoryId = ""          # Discussion 分类 ID
-mapping = "pathname"     # 页面与 Discussion 的映射方式
-strict = "0"             # 严格匹配
-reactionsEnabled = "1"   # 启用反应
-emitMetadata = "0"       # 发送元数据
-inputPosition = "bottom" # 输入框位置：top 或 bottom
+  enable = false
+  provider = "giscus"
 
-# SEO 配置
+# ===== SEO 设置 =====
 [seo]
-description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme."
-author = "OurAIHub"
-ogImage = "/og-image.png"  # Open Graph 图片
+  keywords = "Hugo, blog, theme, minimal"
+  description = "A minimal, responsive Hugo theme inspired by Astro Paper"
+  author = "Your Name"
+  ogImage = "/og-image.png"
+
+# ===== 社交链接 =====
+[[social]]
+  name = "GitHub"
+  href = "https://github.com/username"
+  linkTitle = "Follow on GitHub"
+
+[[social]]
+  name = "X"
+  href = "https://x.com/username"
+  linkTitle = "Follow on X"
+
+[[social]]
+  name = "Mail"
+  href = "mailto:contact@example.com"
+  linkTitle = "Send an email"

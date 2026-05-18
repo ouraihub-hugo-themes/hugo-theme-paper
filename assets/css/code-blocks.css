@@ -1,0 +1,459 @@
+/**
+ * Code Block Enhancement Styles
+ * 完全复刻 AstroPaper 的代码块样式
+ * 
+ * 参考: astro-paper/src/styles/typography.css
+ * 
+ * 功能:
+ * - 代码块容器样式
+ * - 文件名标签显示
+ * - 复制按钮样式
+ * - 差异标记 (diff markers)
+ * - 行高亮 (line highlighting)
+ * - 深色模式支持
+ */
+
+@layer base {
+  /* ===== Code Block Container ===== */
+
+  .code-block-wrapper {
+    @apply relative my-6;
+  }
+
+  /* 文件名标签 - 精确复刻 AstroPaper */
+  .code-file-name {
+    @apply absolute left-2 -top-3 z-10 inline-flex items-center gap-2 rounded-md border border-border bg-background px-3 py-1 text-xs font-mono;
+  }
+
+  .file-indicator {
+    @apply inline-block h-1 w-1 rounded-full bg-green-500;
+  }
+
+  .file-path {
+    @apply text-foreground;
+  }
+
+  /* 代码块容器 */
+  .code-block {
+    @apply relative overflow-hidden rounded-lg border border-border;
+  }
+
+  /* Hugo Chroma 生成的 highlight 容器 */
+  .code-block .highlight {
+    @apply m-0;
+  }
+
+  .code-block pre {
+    @apply m-0 overflow-x-auto p-4;
+  }
+
+  /* 代码块背景色 - 复刻 AstroPaper */
+  /* 浅色模式：白色背景 */
+  .code-block .chroma,
+  .code-block pre,
+  .chroma {
+    background-color: #ffffff !important;
+  }
+
+  /* 深色模式：深色背景 */
+  html[data-theme="dark"] .code-block .chroma,
+  html[data-theme="dark"] .code-block pre,
+  html[data-theme="dark"] .chroma {
+    background-color: #272822 !important;
+  }
+
+  /* 浅色模式：深色文本（确保可读性） */
+  .chroma,
+  .chroma code {
+    color: #24292e !important;
+  }
+
+  /* 深色模式：浅色文本 */
+  html[data-theme="dark"] .chroma,
+  html[data-theme="dark"] .chroma code {
+    color: #f8f8f2 !important;
+  }
+
+  .code-block code {
+    @apply block font-mono text-sm leading-relaxed;
+  }
+
+  /* ===== Copy Button ===== */
+
+  .code-copy-button {
+    @apply absolute right-2 top-2 z-10 flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs text-foreground opacity-0 transition-all hover:bg-accent hover:text-white focus-visible:opacity-100;
+  }
+
+  .code-block-wrapper:hover .code-copy-button {
+    @apply opacity-100;
+  }
+
+  .code-copy-button.copied {
+    @apply bg-green-500 text-white;
+  }
+
+  .code-copy-button .copy-icon {
+    @apply h-4 w-4;
+  }
+
+  /* ===== Diff Markers (Client-side Enhancement) ===== */
+
+  /* 差异标记 - 添加行 
+   * 精确复刻 AstroPaper: bg-green-400/20, before:-left-3, text-green-500
+   */
+  .code-line.diff-add {
+    @apply relative inline-block w-full bg-green-400/20;
+  }
+
+  .code-line.diff-add::before {
+    @apply absolute -left-3 text-green-500;
+
+    content: '+';
+  }
+
+  /* 差异标记 - 删除行
+   * 精确复刻 AstroPaper: bg-red-500/20, before:-left-3, text-red-500
+   */
+  .code-line.diff-remove {
+    @apply relative inline-block w-full bg-red-500/20;
+  }
+
+  .code-line.diff-remove::before {
+    @apply absolute -left-3 text-red-500;
+
+    content: '-';
+  }
+
+  /* ===== Line Highlighting ===== */
+
+  /* 行高亮
+   * 精确复刻 AstroPaper: bg-slate-400/20
+   */
+  .code-line.highlighted {
+    @apply inline-block w-full bg-slate-400/20;
+  }
+
+  /* 隐藏标记注释 */
+  .code-marker {
+    @apply hidden;
+  }
+
+  /* ===== Dark Mode Support ===== */
+
+  /* 
+   * 深色模式实现说明（遵循 AstroPaper 的做法）：
+   * 
+   * AstroPaper 的深色模式策略：
+   * 1. 使用 CSS 变量系统（--background, --foreground, --border 等）
+   * 2. 这些变量在 html[data-theme="dark"] 下自动切换
+   * 3. 差异标记和行高亮使用相同的颜色类（bg-green-400/20, bg-red-500/20, bg-slate-400/20）
+   * 4. 半透明颜色在深色背景下自动保持良好对比度
+   * 
+   * 参考: astro-paper/src/styles/typography.css (line 95-115)
+   * 参考: astro-paper/src/styles/global.css (line 7-21)
+   * 
+   * 结论：
+   * - 文件名标签、代码块背景、复制按钮已使用 CSS 变量（bg-background, border-border 等）
+   * - 这些变量会自动响应主题切换，无需额外的深色模式样式
+   * - 差异标记和行高亮的颜色在深色模式下无需调整
+   * - 这种方法确保了与 AstroPaper 完全一致的视觉效果
+   */
+
+  /* 
+   * 注意：以下样式已通过 CSS 变量自动支持深色模式，无需显式定义：
+   * - .code-file-name: 使用 bg-background, border-border, text-foreground
+   * - .code-block pre: 使用 bg-muted/10（浅色）和 bg-muted/20（深色）
+   * - .code-copy-button: 使用 bg-background, border-border, text-foreground
+   * - 差异标记: bg-green-400/20, bg-red-500/20（半透明，自动适配）
+   * - 行高亮: bg-slate-400/20（半透明，自动适配）
+   */
+
+  /* ===== Chroma Syntax Highlighting Themes ===== */
+
+  /* 
+   * Chroma 主题选择说明：
+   * 
+   * AstroPaper 使用的 Shiki 主题：
+   * - 浅色模式: min-light
+   * - 深色模式: night-owl
+   * 
+   * Hugo Chroma 对应主题：
+   * - 浅色模式: github (与 min-light 相近的简洁风格)
+   * - 深色模式: monokai (与 night-owl 相近的深色风格)
+   * 
+   * 生成命令：
+   * - hugo gen chromastyles --style=github > assets/css/chroma-light.css
+   * - hugo gen chromastyles --style=monokai > assets/css/chroma-dark.css
+   */
+
+  /* 浅色模式 - GitHub 主题 */
+  /* 关键字 (红色) */
+  .chroma .k,
+  .chroma .kc,
+  .chroma .kd,
+  .chroma .kn,
+  .chroma .kp,
+  .chroma .kr,
+  .chroma .kt {
+    color: #cf222e;
+  }
+
+  /* 字符串 (深蓝色) */
+  .chroma .s,
+  .chroma .sa,
+  .chroma .sb,
+  .chroma .sc,
+  .chroma .dl,
+  .chroma .sd,
+  .chroma .s2,
+  .chroma .se,
+  .chroma .sh,
+  .chroma .si,
+  .chroma .sx,
+  .chroma .sr,
+  .chroma .s1 {
+    color: #0a3069;
+  }
+
+  /* 字符串符号 */
+  .chroma .ss {
+    color: #032f62;
+  }
+
+  /* 数字 (蓝色) */
+  .chroma .m,
+  .chroma .mb,
+  .chroma .mf,
+  .chroma .mh,
+  .chroma .mi,
+  .chroma .il,
+  .chroma .mo {
+    color: #0550ae;
+  }
+
+  /* 函数名 (紫色) */
+  .chroma .nf,
+  .chroma .fm,
+  .chroma .nb {
+    color: #6639ba;
+  }
+
+  /* 类名 */
+  .chroma .nc,
+  .chroma .na,
+  .chroma .nx {
+    color: #1f2328;
+  }
+
+  /* 常量 */
+  .chroma .no,
+  .chroma .nd,
+  .chroma .nt {
+    color: #0550ae;
+  }
+
+  /* 变量 */
+  .chroma .nv,
+  .chroma .vc,
+  .chroma .vg,
+  .chroma .vi,
+  .chroma .vm {
+    color: #953800;
+  }
+
+  /* 注释 (灰色) */
+  .chroma .c,
+  .chroma .ch,
+  .chroma .cm,
+  .chroma .c1,
+  .chroma .cs,
+  .chroma .cp,
+  .chroma .cpf {
+    color: #57606a;
+  }
+
+  /* 操作符 */
+  .chroma .o,
+  .chroma .ow {
+    color: #0550ae;
+  }
+
+  /* 标点符号 */
+  .chroma .p {
+    color: #1f2328;
+  }
+
+  /* 实体 */
+  .chroma .ni {
+    color: #6639ba;
+  }
+
+  /* 命名空间 */
+  .chroma .nn {
+    color: #24292e;
+  }
+
+  /* 内置伪类 */
+  .chroma .bp {
+    color: #6a737d;
+  }
+
+  /* 深色模式 - Monokai 主题 */
+  html[data-theme="dark"] .chroma .k,
+  html[data-theme="dark"] .chroma .kc,
+  html[data-theme="dark"] .chroma .kd,
+  html[data-theme="dark"] .chroma .kp,
+  html[data-theme="dark"] .chroma .kr,
+  html[data-theme="dark"] .chroma .kt {
+    color: #66d9ef;
+  }
+
+  html[data-theme="dark"] .chroma .kn {
+    color: #f92672;
+  }
+
+  html[data-theme="dark"] .chroma .na,
+  html[data-theme="dark"] .chroma .nc,
+  html[data-theme="dark"] .chroma .nd,
+  html[data-theme="dark"] .chroma .ne,
+  html[data-theme="dark"] .chroma .nx,
+  html[data-theme="dark"] .chroma .nf,
+  html[data-theme="dark"] .chroma .fm {
+    color: #a6e22e;
+  }
+
+  html[data-theme="dark"] .chroma .no {
+    color: #66d9ef;
+  }
+
+  html[data-theme="dark"] .chroma .nt {
+    color: #f92672;
+  }
+
+  html[data-theme="dark"] .chroma .s,
+  html[data-theme="dark"] .chroma .sa,
+  html[data-theme="dark"] .chroma .sb,
+  html[data-theme="dark"] .chroma .sc,
+  html[data-theme="dark"] .chroma .dl,
+  html[data-theme="dark"] .chroma .sd,
+  html[data-theme="dark"] .chroma .s2,
+  html[data-theme="dark"] .chroma .sh,
+  html[data-theme="dark"] .chroma .si,
+  html[data-theme="dark"] .chroma .sx,
+  html[data-theme="dark"] .chroma .sr,
+  html[data-theme="dark"] .chroma .s1,
+  html[data-theme="dark"] .chroma .ss {
+    color: #e6db74;
+  }
+
+  html[data-theme="dark"] .chroma .ld {
+    color: #e6db74;
+  }
+
+  html[data-theme="dark"] .chroma .se {
+    color: #ae81ff;
+  }
+
+  html[data-theme="dark"] .chroma .l,
+  html[data-theme="dark"] .chroma .m,
+  html[data-theme="dark"] .chroma .mb,
+  html[data-theme="dark"] .chroma .mf,
+  html[data-theme="dark"] .chroma .mh,
+  html[data-theme="dark"] .chroma .mi,
+  html[data-theme="dark"] .chroma .il,
+  html[data-theme="dark"] .chroma .mo {
+    color: #ae81ff;
+  }
+
+  html[data-theme="dark"] .chroma .o,
+  html[data-theme="dark"] .chroma .ow {
+    color: #f92672;
+  }
+
+  html[data-theme="dark"] .chroma .c,
+  html[data-theme="dark"] .chroma .ch,
+  html[data-theme="dark"] .chroma .cm,
+  html[data-theme="dark"] .chroma .c1,
+  html[data-theme="dark"] .chroma .cs,
+  html[data-theme="dark"] .chroma .cp,
+  html[data-theme="dark"] .chroma .cpf {
+    color: #75715e;
+  }
+
+  html[data-theme="dark"] .chroma .gd {
+    color: #f92672;
+  }
+
+  html[data-theme="dark"] .chroma .gi {
+    color: #a6e22e;
+  }
+
+  html[data-theme="dark"] .chroma .gu {
+    color: #75715e;
+  }
+
+  html[data-theme="dark"] .chroma .ge {
+    font-style: italic;
+  }
+
+  html[data-theme="dark"] .chroma .gs {
+    font-weight: bold;
+  }
+
+  /* 错误样式 */
+  .chroma .err {
+    color: #f6f8fa;
+    background-color: #82071e;
+  }
+
+  html[data-theme="dark"] .chroma .err {
+    color: #960050;
+    background-color: #1e0010;
+  }
+
+  /* 行高亮背景 */
+  .chroma .hl {
+    background-color: #e5e5e5;
+  }
+
+  html[data-theme="dark"] .chroma .hl {
+    background-color: #3c3d38;
+  }
+
+  /* 行号样式 */
+  .chroma .lnt,
+  .chroma .ln {
+    white-space: pre;
+    user-select: none;
+    margin-right: 0.4em;
+    padding: 0 0.4em;
+    color: #7f7f7f;
+  }
+
+  /* 行容器 */
+  .chroma .line {
+    display: flex;
+  }
+
+  /* 链接样式 */
+  .chroma .lnlinks {
+    outline: none;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* 表格样式 */
+  .chroma .lntd {
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+
+  .chroma .lntable {
+    border-spacing: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+}

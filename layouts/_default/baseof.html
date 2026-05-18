@@ -110,10 +110,9 @@
     {{ partial "footer.html" . }}
 
     <!-- Scripts -->
-    {{- $ts := resources.Get "ts/main.ts" }}
-    {{- if $ts }}
-      {{- /* Development mode: compile from TypeScript */ -}}
-      {{- $js := $ts | js.Build (dict "minify" true) }}
+    {{- /* 使用 esbuild 预编译的 bundle.js */ -}}
+    {{- $js := resources.Get "js/bundle.js" }}
+    {{- if $js }}
       <script defer src="{{ $js.RelPermalink }}"></script>
     {{- else }}
       {{- /* Production mode: use pre-compiled JS from dist repo */ -}}

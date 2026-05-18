@@ -1,0 +1,24 @@
+{{- /* 
+  Universal Code Block Render Hook
+  
+  支持所有语言的代码块，并提取文件名属性
+  
+  用法：
+  ```javascript {file="example.js"}
+  code here
+  ```
+*/ -}}
+
+{{- $file := .Attributes.file | default "" -}}
+{{- $code := .Inner -}}
+{{- $lang := .Type -}}
+
+<div class="code-block-wrapper" data-lang="{{ $lang }}"{{ if $file }} data-file="{{ $file }}"{{ end }}>
+  {{- if $file -}}
+  <div class="code-file-name">
+    <span class="file-indicator"></span>
+    <span class="file-path">{{ $file }}</span>
+  </div>
+  {{- end -}}
+  {{ highlight $code $lang "" }}
+</div>

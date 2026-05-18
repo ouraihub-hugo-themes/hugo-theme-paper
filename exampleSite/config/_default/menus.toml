@@ -1,0 +1,23 @@
+# Hugo Paper Example Site - Menus
+# 示例站点菜单配置
+
+# ===== 主菜单 =====
+[[main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[main]]
+  name = "Posts"
+  url = "/post/"
+  weight = 2
+
+[[main]]
+  name = "Tags"
+  url = "/tags/"
+  weight = 3
+
+[[main]]
+  name = "About"
+  url = "/about/"
+  weight = 4
