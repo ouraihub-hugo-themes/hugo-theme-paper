@@ -39,6 +39,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@ouraihub/core": "workspace:*",
+    "@ouraihub/tokens": "workspace:*",
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {

@@ -44,6 +44,11 @@
 - `ui-library` 只做支撑层
 - 哪些文件改、哪些不动
 
+#### [🔀 ouraihub-ui-library 冲突图](./OURAIHUB_UI_LIBRARY_CONFLICT_MAP.md)
+- 当前分支是否会冲突
+- 未来适配的高风险文件
+- 建议的合并顺序
+
 #### [🔐 依赖漏洞修复记录](./DEPENDENCY_VULNERABILITY_FIX.md)
 - `pnpm audit` 漏洞定位流程
 - `vite` / `esbuild` / `vitest` 修复思路

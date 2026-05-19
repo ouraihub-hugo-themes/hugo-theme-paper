@@ -1,79 +1,65 @@
 /**
- * Theme Toggle Script
- * This script must run before the page renders to prevent theme flashing
- * Based on AstroPaper's toggle-theme.js
+ * Theme Toggle Script - 使用 @ouraihub/core 的 ThemeManager
+ * 
+ * 此脚本必须在页面渲染前运行以防止主题闪烁
+ * 使用 @ouraihub/core 的 ThemeManager 替代原有的主题切换逻辑
+ * 
+ * API 保持兼容：
+ * - localStorage key: "theme"
+ * - data-theme 属性: "light" | "dark"
  */
 
-const primaryColorScheme = ""; // "light" | "dark"
+import { ThemeManager } from '@ouraihub/core';
 
-// Get theme data from local storage
-const currentTheme = localStorage.getItem("theme");
+// 初始化 ThemeManager
+// 使用与原脚本相同的配置保持向后兼容
+const themeManager = new ThemeManager(document.documentElement, {
+  storageKey: 'theme',
+  attribute: 'data-theme',
+  defaultTheme: 'system',
+});
 
-function getPreferTheme(): string {
-  // return theme value in local storage if it is set
-  if (currentTheme) return currentTheme;
+// 防闪烁：立即应用主题
+themeManager.setTheme(themeManager.getTheme());
 
-  // return primary color scheme if it is set
-  if (primaryColorScheme) return primaryColorScheme;
-
-  // return user device's prefer color scheme
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
-
-let themeValue = getPreferTheme();
-
-function setPreference(): void {
-  localStorage.setItem("theme", themeValue);
-  reflectPreference();
-}
-
-function reflectPreference(): void {
-  document.firstElementChild?.setAttribute("data-theme", themeValue);
-
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
-
-  // Get a reference to the body element
-  const body = document.body;
-
-  // Check if the body element exists before using getComputedStyle
-  if (body) {
-    // Get the computed styles for the body element
-    const computedStyles = window.getComputedStyle(body);
-
-    // Get the background color property
-    const bgColor = computedStyles.backgroundColor;
-
-    // Set the background color in <meta theme-color ... />
-    document
-      .querySelector("meta[name='theme-color']")
-      ?.setAttribute("content", bgColor);
-  }
-}
-
-// set early so no page flashes / CSS is made aware
-reflectPreference();
-
-window.onload = () => {
-  function setThemeFeature(): void {
-    // set on load so screen readers can get the latest value on the button
-    reflectPreference();
-
-    // now this script can find and listen for clicks on the control
-    document.querySelector("#theme-btn")?.addEventListener("click", () => {
-      themeValue = themeValue === "light" ? "dark" : "light";
-      setPreference();
+// 页面加载完成后设置交互
+window.addEventListener('load', () => {
+  const themeBtn = document.querySelector('#theme-btn');
+  
+  if (themeBtn) {
+    // 设置初始 aria-label
+    const currentTheme = themeManager.getTheme();
+    themeBtn.setAttribute('aria-label', currentTheme);
+    
+    // 监听主题按钮点击
+    themeBtn.addEventListener('click', () => {
+      themeManager.toggle();
+    });
+    
+    // 监听主题变化，更新 aria-label 和 meta theme-color
+    themeManager.onThemeChange((theme) => {
+      themeBtn.setAttribute('aria-label', theme);
+      updateThemeColor(theme);
     });
   }
+});
 
-  setThemeFeature();
-};
+// 监听系统主题变化
+themeManager.onThemeChange((theme) => {
+  updateThemeColor(theme);
+});
 
-// sync with system changes
-window
-  .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", ({ matches: isDark }) => {
-    themeValue = isDark ? "dark" : "light";
-    setPreference();
-  });
+/**
+ * 更新 meta theme-color 标签
+ */
+function updateThemeColor(theme: 'light' | 'dark'): void {
+  const body = document.body;
+  if (!body) return;
+  
+  const computedStyles = window.getComputedStyle(body);
+  const bgColor = computedStyles.backgroundColor;
+  
+  document
+    .querySelector("meta[name='theme-color']")
+    ?.setAttribute('content', bgColor);
+}

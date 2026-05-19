@@ -1,0 +1,58 @@
+/* ============================================================================
+   @ouraihub/tokens 映射层
+   将 @ouraihub/tokens 的 CSS 变量映射到 hugo-theme-paper 的颜色系统
+   ============================================================================ */
+
+/* 导入 @ouraihub/tokens 的设计令牌 */
+@import '@ouraihub/tokens/css';
+
+/* ============================================================================
+   Light Theme - 映射 hugo-theme-paper 的浅色主题
+   ============================================================================ */
+
+:root,
+html[data-theme="light"] {
+  /* 覆盖 @ouraihub/tokens 的默认颜色，使用 hugo-theme-paper 的配色 */
+  
+  /* 背景和文本 */
+  --ui-background: #fdfdfd;
+  --ui-text: #282728;
+  
+  /* 强调色 */
+  --ui-accent: #006cac;
+  
+  /* 中性色 */
+  --ui-muted: #e6e6e6;
+  --ui-border: #ece9e9;
+  
+  /* 保留原有的 hugo-theme-paper 变量（向后兼容） */
+  --background: #fdfdfd;
+  --foreground: #282728;
+  --accent: #006cac;
+  --muted: #e6e6e6;
+  --border: #ece9e9;
+}
+
+/* ============================================================================
+   Dark Theme - 映射 hugo-theme-paper 的深色主题
+   ============================================================================ */
+
+html[data-theme="dark"] {
+  /* 背景和文本 */
+  --ui-background: #212737;
+  --ui-text: #eaedf3;
+  
+  /* 强调色 */
+  --ui-accent: #ff6b01;
+  
+  /* 中性色 */
+  --ui-muted: #343f60;
+  --ui-border: #ab4b08;
+  
+  /* 保留原有的 hugo-theme-paper 变量（向后兼容） */
+  --background: #212737;
+  --foreground: #eaedf3;
+  --accent: #ff6b01;
+  --muted: #343f60;
+  --border: #ab4b08;
+}
