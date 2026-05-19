@@ -1,0 +1,66 @@
+/* Hugo Paper Theme - Custom CSS Example
+ * 
+ * This file shows all available CSS variables you can customize.
+ * To use this file:
+ * 1. Copy this file to static/css/custom.css
+ * 2. Uncomment and modify the variables you want to change
+ * 3. Add to config/_default/params.toml:
+ *    customCSS = ["css/custom.css"]
+ */
+
+:root {
+  /* ===== Color System (RGB format) ===== */
+  /* Main background color */
+  /* --color-fill: 251, 254, 251; */
+  
+  /* Primary accent color (links, buttons) */
+  /* --color-accent: 0, 108, 172; */
+  
+  /* Secondary accent color */
+  /* --color-accent-2: 13, 148, 136; */
+  
+  /* Text colors */
+  /* --color-text-base: 1, 44, 86; */
+  
+  /* Border colors */
+  /* --color-border: 229, 231, 235; */
+  
+  /* Card background */
+  /* --color-card: 255, 255, 255; */
+  
+  /* Code block background */
+  /* --color-card-muted: 244, 244, 245; */
+  
+  /* Quote background */
+  /* --color-quote: 245, 245, 245; */
+}
+
+[data-theme="dark"] {
+  /* ===== Dark Theme Colors ===== */
+  /* --color-fill: 33, 39, 55; */
+  /* --color-accent: 255, 107, 1; */
+  /* --color-accent-2: 255, 168, 1; */
+  /* --color-text-base: 234, 237, 243; */
+  /* --color-border: 63, 75, 90; */
+  /* --color-card: 52, 63, 96; */
+  /* --color-card-muted: 138, 51, 2; */
+  /* --color-quote: 45, 55, 72; */
+}
+
+/* ===== Custom Styles ===== */
+/* Add your custom styles below */
+
+/* Example: Custom font size */
+/* body {
+  font-size: 16px;
+} */
+
+/* Example: Custom link hover effect */
+/* a:hover {
+  text-decoration: underline;
+} */
+
+/* Example: Custom heading colors */
+/* h1, h2, h3, h4, h5, h6 {
+  color: rgb(var(--color-accent));
+} */

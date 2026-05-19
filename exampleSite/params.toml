@@ -1,0 +1,10 @@
+# Site Params
+[params]
+  # Enable/disable light & dark mode toggle (aligned with AstroPaper)
+  lightAndDarkMode = true
+  
+  # Show Archives menu and page
+  showArchives = true
+
+  # Note: Most configuration is inherited from config/_default/params.toml
+  # Only override specific settings here for the example site

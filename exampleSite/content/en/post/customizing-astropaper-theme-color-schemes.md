@@ -4,6 +4,13 @@ description: "How you can enable/disable light & dark mode; and customize color 
 date: 2022-09-25T15:20:35Z
 lastmod: 2025-06-13T16:46:34.155Z
 author: "Sat Naing"
+keywords:
+  - astropaper
+  - color scheme
+  - dark mode
+  - light mode
+  - theme customization
+  - css variables
 draft: false
 featured: false
 tags:

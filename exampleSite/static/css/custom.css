@@ -1,0 +1,17 @@
+/* Custom CSS Example */
+/* This file demonstrates how to customize Hugo Paper theme colors */
+
+:root {
+  /* Custom light theme colors */
+  --color-fill: 251, 254, 251;
+  --color-accent: 0, 108, 172;
+  --color-accent-2: 13, 148, 136;
+}
+
+[data-theme="dark"] {
+  /* Custom dark theme colors */
+  --color-fill: 33, 39, 55;
+  --color-accent: 255, 107, 1;
+}
+
+/* You can add more custom styles here */

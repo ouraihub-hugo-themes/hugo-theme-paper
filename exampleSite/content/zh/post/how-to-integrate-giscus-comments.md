@@ -5,6 +5,13 @@ description: "在托管于 GitHub Pages 的静态博客上使用 Giscus 实现�
 date: 2024-07-25T11:11:53Z
 lastmod: 2025-03-12T12:28:53Z
 author: "FjellOverflow"
+keywords:
+  - giscus
+  - 评论系统
+  - github discussions
+  - 静态博客
+  - github pages
+  - astro
 draft: false
 featured: false
 tags:

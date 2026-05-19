@@ -1,237 +1,91 @@
-# Hugo Paper 配置指南
+# 配置文件说明
 
-## 配置文件结构
+Hugo Paper 使用分离的配置文件结构，使配置更清晰易维护。
 
-本主题采用 Hugo 推荐的配置目录结构：
+## 📁 配置文件结构
 
 ```
 config/
 └── _default/
-    ├── hugo.toml        # 核心 Hugo 配置
-    ├── params.toml      # 主题参数配置
-    ├── languages.toml   # 多语言配置
-    ├── menus.en.toml    # 英文菜单
-    └── menus.zh.toml    # 中文菜单
+    ├── hugo.toml       # 基础配置
+    ├── params.toml     # 主题参数
+    ├── languages.toml  # 多语言设置
+    ├── menus.en.toml   # 英文菜单
+    └── menus.zh.toml   # 中文菜单
 ```
 
-## 快速开始
+## 📝 各文件说明
 
-### 1. 站点基本信息
-
-```toml
-# config/_default/hugo.toml
-baseURL = "https://example.com/"
-title = "My Blog"
-languageCode = "en-us"
-defaultContentLanguage = "en"
-```
-
-### 2. 分页设置
-
-```toml
-# config/_default/hugo.toml
-[pagination]
-  pagerSize = 10  # 每页显示的文章数量
-```
-
-### 3. 主题切换
-
-```toml
-# config/_default/params.toml
-[theme]
-  defaultTheme = "light"  # light, dark, or auto
-  switchTheme = true      # 显示主题切换按钮
-```
-
-### 4. 社交链接
-
-```toml
-# config/_default/params.toml
-[[social]]
-  name = "GitHub"
-  href = "https://github.com/username"
-  linkTitle = "Follow on GitHub"
-```
-
-### 5. 菜单配置
-
-```toml
-# config/_default/menus.en.toml
-[[main]]
-  identifier = "posts"
-  name = "Posts"
-  pageRef = "/post/"
-  weight = 1
-```
-
-## 配置文件说明
-
-### hugo.toml - 核心配置
-
-- 站点基本信息：baseURL, title, languageCode
-- 内容设置：contentDir, summaryLength, hasCJKLanguage
-- 功能开关：enableEmoji, enableRobotsTXT
-- 分页设置：pagination.pagerSize
-- 分类系统：taxonomies
-- 输出格式：outputs
-- Markdown 配置：markup.goldmark
-- 代码高亮：markup.highlight
+### hugo.toml - 基础配置
+包含 Hugo 核心设置：
+- 站点基本信息（baseURL, title, languageCode）
+- 内容设置（enableEmoji, hasCJKLanguage, summaryLength）
+- 分页设置
+- 分类系统（taxonomies）
+- 输出格式（outputs）
+- Markdown 渲染配置（markup）
 
 ### params.toml - 主题参数
+包含主题特定的参数：
+- 站点描述
+- 主题开关设置
+- 社交链接
+- 编辑文章链接
+- 其他主题功能开关
 
-- 站点信息：description, author, keywords
-- 主题设置：theme.defaultTheme, theme.switchTheme
-- 显示选项：showReadingTime, showTableOfContents
-- 代码高亮：highlight.style, highlight.styleDark
-- 搜索功能：search.enabled
-- 评论系统：comments (Giscus)
-- 编辑链接：editPost
-- SEO 设置：seo
-- 社交链接：social
+### languages.toml - 多语言配置
+定义支持的语言：
+- 语言名称和代码
+- 每个语言的标题
+- 内容目录路径
+- 权重（显示顺序）
 
-### languages.toml - 多语言
+### menus.en.toml / menus.zh.toml - 菜单配置
+分别定义英文和中文的导航菜单：
+- 菜单项名称
+- URL 路径
+- 显示顺序
 
+## 🎯 优势
+
+1. **清晰分离** - 每个文件职责单一，易于理解
+2. **易于维护** - 修改某项配置不用翻整个文件
+3. **多人协作** - 不同人可以修改不同配置文件，减少冲突
+4. **版本控制** - Git diff 更清晰，易于追踪变更
+
+## 🔧 如何修改配置
+
+### 修改站点标题
+编辑 `config/_default/hugo.toml`:
 ```toml
-[en]
-  languageName = "English"
+title = "我的博客"
+```
+
+### 添加社交链接
+编辑 `config/_default/params.toml`:
+```toml
+[[social]]
+  name = "GitHub"
+  href = "https://github.com/yourusername"
+  linkTitle = "在 GitHub 上关注"
+```
+
+### 修改菜单
+编辑 `config/_default/menus.zh.toml`:
+```toml
+[[main]]
+  name = "首页"
+  url = "/"
   weight = 1
-  title = "Hugo Paper"
-  contentDir = "content/en"
-
-[zh]
-  languageName = "中文"
-  weight = 2
-  title = "Hugo Paper"
-  contentDir = "content/zh"
 ```
 
-## 常用配置示例
+### 添加新语言
+1. 在 `languages.toml` 中添加语言定义
+2. 创建对应的 `menus.{lang}.toml` 文件
+3. 创建 `content/{lang}/` 目录
 
-### 代码高亮
+## 📚 参考文档
 
-```toml
-# config/_default/hugo.toml
-[markup.highlight]
-  noClasses = false
-  codeFences = true
-  style = "github"
-
-# config/_default/params.toml
-[highlight]
-  style = "github"
-  styleDark = "monokai"
-```
-
-### 文章显示选项
-
-```toml
-# config/_default/params.toml
-[post]
-  showReadingTime = true
-  showTableOfContents = true
-  showBreadcrumbs = true
-  showCopyCodeButton = true
-```
-
-### 评论系统
-
-```toml
-# config/_default/params.toml
-[comments]
-  enabled = true
-  provider = "giscus"
-
-[comments.giscus]
-  repo = "username/repo"
-  repoId = "R_xxx"
-  category = "Announcements"
-  categoryId = "DIC_xxx"
-```
-
-## 环境配置
-
-### 开发环境
-
-创建 `config/development/hugo.toml`：
-```toml
-baseURL = "http://localhost:1313/"
-```
-
-运行：`hugo server --environment development`
-
-### 生产环境
-
-创建 `config/production/hugo.toml`：
-```toml
-baseURL = "https://example.com/"
-```
-
-构建：`hugo --environment production --minify`
-
-## 配置优先级
-
-```
-命令行参数 > 环境配置 > 默认配置
-```
-
-## 常用命令
-
-```bash
-# 查看最终配置
-hugo config
-
-# 开发服务器
-hugo server -D
-
-# 生产构建
-hugo --minify
-
-# 指定环境
-hugo --environment production
-
-# 清理构建目录
-hugo --cleanDestinationDir
-```
-
-## 最佳实践
-
-1. 使用配置目录 `config/_default/` 而不是单个配置文件
-2. 将不同类型的配置放在不同文件中
-3. 为生产和开发环境创建不同的配置
-4. 在配置文件中添加清晰的注释
-5. 使用语言特定的菜单文件（menus.en.toml, menus.zh.toml）
-
-## 用户自定义配置
-
-用户可以在站点根目录创建 `config/_default/` 目录来覆盖主题的默认配置：
-
-```
-my-site/
-├── config/
-│   ├── _default/
-│   │   ├── hugo.toml
-│   │   └── params.toml
-│   └── production/
-│       └── hugo.toml
-├── content/
-└── themes/
-    └── hugo-theme-paper/
-```
-
-## 常见问题
-
-**Q: 为什么我的配置没有生效？**
-A: 检查配置优先级。主题根目录的配置会覆盖 exampleSite 的配置。
-
-**Q: 如何修改每页显示的文章数量？**
-A: 在 `hugo.toml` 中设置 `[pagination] pagerSize = 10`
-
-**Q: 如何禁用某个功能？**
-A: 在 `params.toml` 中设置对应的 `enabled = false`
-
-## 参考文档
-
-- [Hugo Configuration](https://gohugo.io/getting-started/configuration/)
-- [Hugo Configuration Directory](https://gohugo.io/getting-started/configuration/#configuration-directory)
-- [Hugo Multilingual](https://gohugo.io/content-management/multilingual/)
-- [Hugo Menus](https://gohugo.io/content-management/menus/)
+- [Hugo 配置目录文档](https://gohugo.io/getting-started/configuration/#configuration-directory)
+- [Hugo 多语言文档](https://gohugo.io/content-management/multilingual/)
+- [Hugo 菜单文档](https://gohugo.io/content-management/menus/)

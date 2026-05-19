@@ -5,6 +5,13 @@ date: 2022-09-23T15:22:00Z
 lastmod: 2025-06-13T16:52:45Z
 author: "Sat Naing"
 description: "使用 HugoPaper 主题创建或添加新文章的一些规则和建议。"
+keywords:
+  - hugo
+  - hugopaper
+  - 博客文章
+  - markdown
+  - frontmatter
+  - 内容创建
 tags:
   - docs
 categories:
@@ -44,7 +51,7 @@ content/post/docs/how-to.md              -> mysite.com/post/docs/how-to
 
 > 💡 提示：你可以在 frontmatter 中使用 `slug` 参数覆盖博客文章的 slug。
 
-## Front Matter
+## 前置元数据
 
 Front Matter 是存储博客文章（文章）重要信息的主要位置。Front Matter 位于文章顶部，以 YAML 格式编写。在 [Hugo 文档](https://gohugo.io/content-management/front-matter/)中了解更多关于 frontmatter 及其用法的信息。
 

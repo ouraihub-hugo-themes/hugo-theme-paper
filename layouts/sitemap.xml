@@ -1,6 +1,8 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" | safeHTML }}
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   {{ range .Site.Pages }}
+  {{- if not .Params.noindex }}
   <url>
     <loc>{{ .Permalink }}</loc>
     {{ if not .Lastmod.IsZero }}
@@ -11,13 +13,37 @@
     {{ with .Params.changefreq }}
     <changefreq>{{ . }}</changefreq>
     {{ else }}
+      {{ if .IsHome }}
+    <changefreq>daily</changefreq>
+      {{ else if .IsPage }}
+    <changefreq>monthly</changefreq>
+      {{ else if .IsSection }}
     <changefreq>weekly</changefreq>
+      {{ else }}
+    <changefreq>monthly</changefreq>
+      {{ end }}
     {{ end }}
     {{ with .Params.priority }}
     <priority>{{ . }}</priority>
     {{ else }}
+      {{ if .IsHome }}
+    <priority>1.0</priority>
+      {{ else if and .IsPage .Params.featured }}
+    <priority>0.9</priority>
+      {{ else if .IsPage }}
+    <priority>0.8</priority>
+      {{ else if .IsSection }}
+    <priority>0.7</priority>
+      {{ else }}
     <priority>0.5</priority>
+      {{ end }}
     {{ end }}
+    {{- if .IsTranslated }}
+      {{- range .AllTranslations }}
+    <xhtml:link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" />
+      {{- end }}
+    {{- end }}
   </url>
+  {{- end }}
   {{ end }}
 </urlset>

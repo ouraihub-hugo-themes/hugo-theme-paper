@@ -1,6 +1,5 @@
 @plugin '@tailwindcss/typography';
 
-/* Light mode Chroma styles */
 @layer base {
 
   /* ===== Override default Tailwind Typography styles ===== */
@@ -73,14 +72,16 @@
       @apply rounded bg-muted/75 p-1 wrap-break-word text-foreground before:content-none after:content-none;
     }
 
-
+    .astro-code code {
+      @apply flex-[1_0_100%] bg-inherit p-0;
+    }
 
     blockquote {
       @apply border-s-accent/80 wrap-break-word opacity-80;
     }
 
     details {
-      @apply inline-block cursor-pointer text-foreground select-none [&_p]:hidden [&_ul]:my-0!;
+      @apply inline-block cursor-pointer text-foreground select-none [&_p]:hidden [&_ul]:!my-0;
     }
 
     summary {
@@ -93,40 +94,41 @@
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
+
+  /* Hugo Chroma 生成的代码块样式 */
   .highlight {
     @apply my-6 relative;
   }
 
   .highlight pre {
     @apply rounded-lg border border-border p-4 overflow-x-auto;
-    background-color: #ffffff;
+
+    /* Hugo 的 Chroma 已经通过 noClasses=true 生成了内联样式 */
+
+    /* 这里只需要添加布局相关的样式 */
   }
 
-  html[data-theme="light"] pre {
-    background-color: #ffffff;
-  }
-
+  /* 文件名标签样式 (类似 Shiki 的 transformerFileName) */
   .highlight[data-filename]::before {
     content: attr(data-filename);
+
     @apply absolute -top-3 left-3 z-10 rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium;
   }
 
+  /* ===== Shiki Code Blocks (完全复刻 AstroPaper) ===== */
 
+  /* 参考: astro-paper/src/styles/typography.css */
 
-  /* Dark theme Chroma styles override - Monokai (high contrast) */
-  html[data-theme="dark"] .bg {
-    color: #f8f8f2;
-    background-color: #272822;
-  }
-  
-  html[data-theme="dark"] .chroma {
-    color: #f8f8f2;
-    background-color: #272822;
-  }
-
-  /* Styles for Shiki transformers */
-  /* https://shiki.style/packages/transformers */
+  /* Shiki 容器样式 - 对应 AstroPaper 的 flex, border, bg */
   .astro-code {
+    @apply flex border outline-border;
+
+    background-color: var(--shiki-light-bg);
+    color: var(--shiki-light);
+
+    /* Styles for Shiki transformers */
+
+    /* https://shiki.style/packages/transformers */
     .line.diff.add {
       @apply relative inline-block w-full bg-green-400/20 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
     }
@@ -142,6 +144,21 @@
     .highlighted-word {
       @apply rounded-sm border border-border px-0.5 py-px;
     }
+  }
+
+  /* Shiki span 元素颜色 */
+  .astro-code span {
+    color: var(--shiki-light);
+  }
+
+  /* 深色模式 - 使用 Shiki 的 CSS 变量 */
+  html[data-theme="dark"] .astro-code {
+    background-color: var(--shiki-dark-bg);
+    color: var(--shiki-dark);
+  }
+
+  html[data-theme="dark"] .astro-code span {
+    color: var(--shiki-dark);
   }
 
   /* Chroma syntax highlighting - Light theme */
@@ -308,6 +325,6 @@
   /* Operators - red */
 
   html[data-theme="dark"] pre {
-    background-color: #272822;
+    @apply bg-muted/15;
   }
 }

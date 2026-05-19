@@ -2,7 +2,15 @@
 title: "How to update dependencies of AstroPaper"
 description: "How to update project dependencies and AstroPaper template."
 date: 2023-07-20T15:33:05.569Z
+lastmod: 2024-01-15T10:00:00Z
 author: "Sat Naing"
+keywords:
+  - npm
+  - dependencies
+  - update
+  - npm-check-updates
+  - package management
+  - maintenance
 draft: false
 featured: false
 tags:

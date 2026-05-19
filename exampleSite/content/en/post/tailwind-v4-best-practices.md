@@ -2,10 +2,18 @@
 title: "Tailwind CSS v4 Best Practices"
 description: "Discover best practices for working with Tailwind CSS v4 in Hugo Paper"
 date: 2024-11-10
+lastmod: 2024-11-12
 draft: false
 featured: true
 author: "Hugo Paper Team"
 image: "/images/tailwind-v4.jpg"
+keywords:
+  - tailwind css
+  - tailwind v4
+  - css framework
+  - best practices
+  - utility-first
+  - responsive design
 categories:
   - "Development"
 tags:

@@ -1,146 +1,172 @@
 # Hugo Paper Theme - Parameters Configuration
-# 主题参数配置文件
-# 这些参数可以在模板中通过 .Site.Params 访问
+# Inspired by AstroPaper's config.ts structure
+# See: https://github.com/satnaing/astro-paper/blob/main/src/config.ts
 
-# ===== 站点基本信息 =====
-description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme"
-author = "OurAIHub"
-readmeUrl = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper"
+# ===== SITE Configuration =====
+# Core site settings (equivalent to AstroPaper's SITE object)
 
-# ===== 功能开关 =====
+author = "Hugo Paper Team"
+profile = "https://github.com/ouraihub-hugo-themes"  # Your personal/portfolio website URL (for SEO)
+description = "A minimal, responsive, accessible and SEO-friendly Hugo blog theme. This theme follows best practices and provides accessibility out of the box. Light and dark mode are supported by default. Moreover, additional color schemes can also be configured."
+
+# Default OG Image for social media sharing (deprecated, use ogImage.fallback)
+# Place image in static/ directory or use external URL
+# ogImage = "astropaper-og.jpg"
+
+# Enable/disable light & dark mode toggle
+lightAndDarkMode = true
+
+# Number of posts to display on home page (Recent Posts section)
+postPerIndex = 4
+
+# Show Archives menu and page
 showArchives = true
+
+# Show back button in post detail pages
 showBackButton = true
 
-# ===== 主题设置 =====
-[theme]
-  defaultTheme = "light"  # light or dark
-  switchTheme = true
-  switchThemeIcon = "sun"  # sun or toggle
+# Timezone (IANA format) - ensures consistent timestamps
+# See: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone = "UTC"
 
-# ===== 头部设置 =====
-[header]
-  enable = true
-  logo = "/logo.svg"
-  logoText = "Hugo Paper"
-  logoWidth = 40
-  logoHeight = 40
+# Text direction: "ltr" | "rtl" | "auto"
+direction = "ltr"
 
-# ===== 底部设置 =====
-[footer]
-  enable = true
-  copyright = "Copyright © 2024 Hugo Paper. All rights reserved."
-  since = 2024
-  customText = ""
+# ===== Dynamic OG Image Configuration =====
+# Automatically generate OG images from free image APIs
+[ogImage]
+  # Mode: "manual" (default), "unsplash", "generated"
+  mode = "unsplash"
+  
+  # Fallback image when all methods fail
+  fallback = "/images/og-default.jpg"
+  
+  # Unsplash configuration
+  [ogImage.unsplash]
+    # Keyword source: "keywords", "tags", "categories", "title"
+    keywordSource = "keywords"
+    
+    # Number of keywords to use (1-5)
+    keywordCount = 2
+    
+    # Image dimensions (recommended: 1200x630 for social media)
+    width = 1200
+    height = 630
+    
+    # Image quality (1-100)
+    quality = 80
+    
+    # Use random image when no keywords available
+    useRandomOnEmpty = true
 
-# ===== 文章设置 =====
-[post]
-  showReadingTime = true
-  showTableOfContents = true
-  showCopyCodeButton = true
-  showRelatedPosts = true
-  relatedPostCount = 3
-  showLikeButton = true
-  showShare = true
-
-# ===== 编辑链接 =====
+# ===== Edit Post Configuration =====
+# Allow users to suggest changes to blog posts
 [editPost]
   enabled = true
-  text = "Edit this post"
-  url = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/edit/main/exampleSite/content/"
+  text = "Edit page"  # or "Suggest Changes"
+  url = "https://github.com/ouraihub-hugo-themes/hugo-theme-paper/edit/main/exampleSite/content/en/"
 
-# ===== 导航设置 =====
-[navigation]
-  enable = true
+# ===== SOCIALS Configuration =====
+# Social links displayed in header and footer
+# Equivalent to AstroPaper's SOCIALS array in constants.ts
 
-# ===== 面包屑导航 =====
-[breadcrumb]
-  enable = true
-  showOnHome = false
-
-# ===== 分页设置 =====
-[pagination]
-  pageSize = 10
-  showFirstPage = false
-  showLastPage = true
-
-# ===== 代码高亮 =====
-# 参考: AstroPaper 的 Shiki 配置
-[highlight]
-  enable = true
-  # Chroma 主题（浅色模式）- 对应 AstroPaper 的 min-light
-  style = "github"
-  # Chroma 主题（深色模式）- 对应 AstroPaper 的 night-owl
-  styleDark = "monokai"
-  lineNumbers = false
-
-# ===== 代码增强（客户端）=====
-# 参考: AstroPaper 的 Shiki transformers
-[codeHighlight]
-  showCopyButton = true
-  showFileName = true
-  enableDiff = true
-  enableHighlight = true
-
-# ===== 搜索功能 =====
-[search]
-  enable = false
-  provider = "pagefind"  # pagefind or lunr
-
-# ===== 评论系统 =====
-[comments]
-  enable = false
-  provider = "giscus"  # giscus or disqus
-
-# ===== 数学公式 =====
-[math]
-  enable = false
-  provider = "katex"  # katex or mathjax
-
-# ===== 分析统计 =====
-[analytics]
-  enable = false
-  provider = "umami"  # umami or google
-
-# ===== 图片优化 =====
-[imageOptimization]
-  enable = true
-  maxWidth = 1200
-  format = "webp"  # webp or original
-
-# ===== 性能优化 =====
-[performance]
-  minifyCSS = true
-  minifyJS = true
-  minifyHTML = true
-  lazyLoadImages = true
-
-# ===== SEO 设置 =====
-[seo]
-  keywords = "Hugo, blog, theme, minimal"
-  description = "A minimal, responsive Hugo theme inspired by Astro Paper"
-  author = "OurAIHub"
-  twitterHandle = "@ouraihub"
-  ogImage = "/og-image.png"
-
-# ===== 社交链接 =====
-# 参考: astro-paper/src/constants.ts 的 SOCIALS 配置
-# 支持的平台: github, twitter, x, linkedin, email, mail, facebook, telegram, mastodon, reddit
 [[social]]
   name = "GitHub"
-  href = "https://github.com/ouraihub-hugo-themes"
-  linkTitle = "Follow on GitHub"
+  href = "https://github.com/satnaing/astro-paper"
+  linkTitle = "Hugo Paper on GitHub"
 
 [[social]]
   name = "X"
   href = "https://x.com/username"
-  linkTitle = "Follow on X"
+  linkTitle = "Hugo Paper on X"
 
 [[social]]
   name = "LinkedIn"
   href = "https://www.linkedin.com/in/username/"
-  linkTitle = "Connect on LinkedIn"
+  linkTitle = "Hugo Paper on LinkedIn"
 
 [[social]]
   name = "Mail"
-  href = "mailto:contact@example.com"
-  linkTitle = "Send an email"
+  href = "mailto:yourmail@gmail.com"
+  linkTitle = "Send an email to Hugo Paper"
+
+# ===== SHARE_LINKS Configuration =====
+# Share buttons displayed on post pages
+# Equivalent to AstroPaper's SHARE_LINKS array in constants.ts
+
+[[shareLinks]]
+  name = "WhatsApp"
+  href = "https://wa.me/?text="
+  linkTitle = "Share this post via WhatsApp"
+
+[[shareLinks]]
+  name = "Facebook"
+  href = "https://www.facebook.com/sharer.php?u="
+  linkTitle = "Share this post on Facebook"
+
+[[shareLinks]]
+  name = "X"
+  href = "https://x.com/intent/post?url="
+  linkTitle = "Share this post on X"
+
+[[shareLinks]]
+  name = "Telegram"
+  href = "https://t.me/share/url?url="
+  linkTitle = "Share this post via Telegram"
+
+[[shareLinks]]
+  name = "Pinterest"
+  href = "https://pinterest.com/pin/create/button/?url="
+  linkTitle = "Share this post on Pinterest"
+
+[[shareLinks]]
+  name = "Mail"
+  href = "mailto:?subject=See%20this%20post&body="
+  linkTitle = "Share this post via email"
+
+# ===== Code Highlight Configuration =====
+# Code highlighting system (aligned with AstroPaper's markdown.shikiConfig)
+[codeHighlight]
+  # Engine: "basic" (Hugo Chroma) | "shiki" (Shiki pre-processing)
+  # Note: Shiki mode requires pre-processing, basic mode works out of the box
+  engine = "basic"
+  
+  # Show copy button on code blocks
+  showCopyButton = true
+  
+  # Show line numbers
+  showLineNumbers = false
+  
+  # Basic mode configuration (Hugo Chroma)
+  [codeHighlight.basic]
+    showFileName = true
+    showDiff = true
+    theme = "github"
+  
+  # Shiki mode configuration (aligned with AstroPaper)
+  [codeHighlight.shiki]
+    showFileName = true
+    showDiff = true
+    defaultColor = false  # AstroPaper: defaultColor: false
+    wrap = false          # AstroPaper: wrap: false
+    
+    # Shiki themes (aligned with AstroPaper)
+    [codeHighlight.shiki.themes]
+      light = "min-light"   # AstroPaper: themes.light
+      dark = "night-owl"    # AstroPaper: themes.dark
+    
+    # Shiki Transformers (aligned with AstroPaper)
+    [codeHighlight.shiki.transformers]
+      fileName = true           # transformerFileName
+      diff = true              # transformerNotationDiff
+      highlight = true         # transformerNotationHighlight
+      wordHighlight = false    # transformerNotationWordHighlight
+    
+    # fileName transformer options (aligned with AstroPaper)
+    [codeHighlight.shiki.fileNameOptions]
+      style = "v2"        # AstroPaper: style: "v2"
+      hideDot = false     # AstroPaper: hideDot: false
+    
+    # diff transformer options (aligned with AstroPaper)
+    [codeHighlight.shiki.diffOptions]
+      matchAlgorithm = "v3"  # AstroPaper: matchAlgorithm: "v3"

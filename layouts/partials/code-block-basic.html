@@ -1,0 +1,76 @@
+{{- /*
+  Basic Code Block Partial
+  
+  This partial renders code blocks using Hugo's built-in Chroma highlighter.
+  It supports:
+  - File name display
+  - Copy button
+  - Syntax highlighting via Chroma
+  - Data attributes for client-side enhancement
+  
+  Parameters:
+  - code: The code content
+  - lang: The language identifier
+  - attributes: Code block attributes (e.g., file name)
+  - page: The current page context
+  
+  Requirements: 2.1, 9.1, 9.2
+*/ -}}
+
+{{- $code := .code -}}
+{{- $lang := .lang -}}
+{{- $attributes := .attributes -}}
+{{- $page := .page -}}
+
+{{- /* Get configuration */ -}}
+{{- $showFileName := $page.Site.Params.codeHighlight.basic.showFileName | default true -}}
+{{- $showCopyButton := $page.Site.Params.codeHighlight.showCopyButton | default true -}}
+{{- $showLineNumbers := $page.Site.Params.codeHighlight.showLineNumbers | default false -}}
+{{- $chromaTheme := $page.Site.Params.codeHighlight.basic.theme | default "github" -}}
+
+{{- /* Extract file name from attributes */ -}}
+{{- $fileName := "" -}}
+{{- with $attributes -}}
+  {{- $fileName = .file | default "" -}}
+{{- end -}}
+
+{{- /* Build Chroma options */ -}}
+{{- $chromaOptions := "" -}}
+{{- if $showLineNumbers -}}
+  {{- $chromaOptions = printf "linenos=table,style=%s" $chromaTheme -}}
+{{- else -}}
+  {{- $chromaOptions = printf "linenos=false,style=%s" $chromaTheme -}}
+{{- end -}}
+
+<div class="code-block-wrapper relative my-6" data-lang="{{ $lang }}" data-file="{{ $fileName }}">
+  {{- /* File name display */ -}}
+  {{- if and $fileName $showFileName -}}
+  <div class="code-file-name absolute left-2 -top-3 z-10 inline-flex items-center gap-2 rounded-md border border-border bg-background px-3 py-1 text-xs font-mono">
+    <span class="file-indicator inline-block h-1 w-1 rounded-full bg-green-500"></span>
+    <span class="file-path text-foreground">{{ $fileName }}</span>
+  </div>
+  {{- end -}}
+  
+  {{- /* Code block with Chroma highlighting */ -}}
+  <div class="code-block relative overflow-hidden rounded-lg border border-border bg-muted/10">
+    {{- /* Copy button */ -}}
+    {{- if $showCopyButton -}}
+    <button 
+      class="code-copy-button absolute right-2 top-2 z-10 flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs text-foreground opacity-0 transition-all hover:bg-accent hover:text-white focus-visible:opacity-100 group-hover:opacity-100"
+      aria-label="Copy code to clipboard"
+      data-code-copy
+    >
+      <svg class="copy-icon h-4 w-4" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span class="copy-text">Copy</span>
+    </button>
+    {{- end -}}
+    
+    {{- /* Highlighted code */ -}}
+    <div class="code-content overflow-x-auto">
+      {{- highlight $code $lang $chromaOptions -}}
+    </div>
+  </div>
+</div>

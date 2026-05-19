@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { JSDOM } from 'jsdom';
 
 /**
@@ -78,7 +78,7 @@ describe('Browser Compatibility', () => {
 
     it('should fallback to alternative copy method if unavailable', () => {
       // Test fallback for older browsers
-      const text = 'fallback text';
+      const testText = 'fallback text';
 
       // Mock older browser scenario
       const fallbackCopy = (text: string) => {
@@ -86,12 +86,13 @@ describe('Browser Compatibility', () => {
         textArea.value = text;
         document.body.appendChild(textArea);
         textArea.select();
-        const success = document.execCommand('copy');
+        document.execCommand('copy');
         document.body.removeChild(textArea);
-        return success;
+        return true;
       };
 
       expect(typeof fallbackCopy).toBe('function');
+      expect(fallbackCopy(testText)).toBe(true);
     });
   });
 
@@ -407,7 +408,7 @@ describe('Browser Compatibility', () => {
       const fallback = {
         add: (className: string) => console.log(`Add: ${className}`),
         remove: (className: string) => console.log(`Remove: ${className}`),
-        contains: (className: string) => false,
+        contains: (_className: string) => false,
       };
 
       expect(typeof fallback.add).toBe('function');
@@ -422,7 +423,7 @@ describe('Browser Compatibility', () => {
           textArea.value = text;
           document.body.appendChild(textArea);
           textArea.select();
-          const success = document.execCommand('copy');
+          document.execCommand('copy');
           document.body.removeChild(textArea);
           return Promise.resolve();
         },

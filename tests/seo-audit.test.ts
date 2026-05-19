@@ -152,7 +152,7 @@ describe('SEO Audit', () => {
 
       schemas.forEach((schema: Element) => {
         try {
-          const data = JSON.parse(schema.textContent || '{}');
+          const data = JSON.parse((schema as HTMLElement).textContent || '{}');
           if (data['@type'] === 'WebSite') {
             hasWebSiteSchema = true;
             expect(data.name).toBeTruthy();
@@ -205,7 +205,7 @@ describe('SEO Audit', () => {
       const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
       headings.forEach((heading: Element) => {
-        const level = parseInt(heading.tagName[1]);
+        const level = parseInt((heading as HTMLElement).tagName[1]);
         // Allow any valid progression (may skip levels)
         expect(level).toBeGreaterThanOrEqual(1);
         expect(level).toBeLessThanOrEqual(6);
@@ -240,7 +240,7 @@ describe('SEO Audit', () => {
     it('should have alt text for images', () => {
       const images = document.querySelectorAll('img');
       images.forEach((img: Element) => {
-        expect(img.hasAttribute('alt')).toBe(true);
+        expect((img as HTMLImageElement).hasAttribute('alt')).toBe(true);
       });
     });
   });
@@ -405,7 +405,7 @@ describe('SEO Audit', () => {
       const links = document.querySelectorAll('a');
       links.forEach((link: Element) => {
         // Links should have meaningful text (not just generic "click here")
-        const text = link.textContent?.trim();
+        const text = (link as HTMLElement).textContent?.trim();
         expect(text).toBeTruthy();
         expect(text).not.toMatch(/^click here$/i);
       });

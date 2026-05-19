@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { performance } from 'perf_hooks';
 
 /**
@@ -38,7 +38,7 @@ describe('Performance Benchmarks', () => {
       for (let i = 0; i < ITERATIONS; i++) {
         const start = performance.now();
 
-        const theme = localStorage.getItem('hugo-paper-theme');
+        localStorage.getItem('hugo-paper-theme');
 
         const end = performance.now();
         totalTime += (end - start);
@@ -113,7 +113,7 @@ describe('Performance Benchmarks', () => {
       for (let i = 0; i < ITERATIONS; i++) {
         const start = performance.now();
 
-        const data = JSON.parse(localStorage.getItem('post-like-1') || '{}');
+        JSON.parse(localStorage.getItem('post-like-1') || '{}');
 
         const end = performance.now();
         totalTime += (end - start);
@@ -140,7 +140,7 @@ describe('Performance Benchmarks', () => {
         const scrollHeight = 10000;
         const windowHeight = 800;
         const docHeight = scrollHeight - windowHeight;
-        const progress = (scrollY / docHeight) * 100;
+        (scrollY / docHeight) * 100; // Calculate progress
 
         const end = performance.now();
         totalTime += (end - start);
@@ -200,7 +200,7 @@ describe('Performance Benchmarks', () => {
         if (i % 5 === 0) keys.push('shift');
         keys.push('k');
         const combination = keys.join('_');
-        const found = shortcuts.has(combination);
+        shortcuts.has(combination); // Check if shortcut exists
 
         const end = performance.now();
         totalTime += (end - start);
@@ -225,7 +225,7 @@ describe('Performance Benchmarks', () => {
 
         // Simulate shortcut lookup in large map
         const key = `shortcut_${i % 100}`;
-        const shortcut = shortcuts.get(key);
+        shortcuts.get(key); // Lookup shortcut
 
         const end = performance.now();
         totalTime += (end - start);
@@ -287,7 +287,7 @@ describe('Performance Benchmarks', () => {
         const start = performance.now();
 
         const json = JSON.stringify(testData);
-        const parsed = JSON.parse(json);
+        JSON.parse(json); // Parse JSON
 
         const end = performance.now();
         totalTime += (end - start);
@@ -310,7 +310,7 @@ describe('Performance Benchmarks', () => {
         const start = performance.now();
 
         const keys = ['ctrl', 'shift', 'k'];
-        const combined = keys.join('_');
+        keys.join('_'); // Combine keys
 
         const end = performance.now();
         totalTime += (end - start);
@@ -328,7 +328,7 @@ describe('Performance Benchmarks', () => {
       for (let i = 0; i < ITERATIONS; i++) {
         const start = performance.now();
 
-        const active = items.filter(item => item.active);
+        items.filter(item => item.active); // Filter active items
 
         const end = performance.now();
         totalTime += (end - start);

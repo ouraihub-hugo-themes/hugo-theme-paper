@@ -415,7 +415,8 @@ describe('Accessibility Integration', () => {
     expect(buttons.length).toBeGreaterThan(0);
 
     buttons.forEach((button: Element) => {
-      expect(button.textContent || (button as HTMLButtonElement).title).toBeTruthy();
+      const el = button as HTMLElement;
+      expect(el.textContent || el.title).toBeTruthy();
     });
   });
 });

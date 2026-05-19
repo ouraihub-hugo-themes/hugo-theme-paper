@@ -4,6 +4,13 @@ description: "Some of the well-crafted, predefined color schemes for AstroPaper 
 date: 2022-09-26T12:13:24Z
 lastmod: 2024-01-04T09:09:06Z
 author: "Sat Naing"
+keywords:
+  - color schemes
+  - themes
+  - design
+  - css
+  - customization
+  - astropaper
 draft: false
 featured: false
 tags:

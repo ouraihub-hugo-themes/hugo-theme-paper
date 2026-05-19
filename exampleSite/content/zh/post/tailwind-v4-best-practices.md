@@ -3,10 +3,18 @@ title: "Tailwind CSS v4 最佳实践"
 slug: "tailwind-v4-best-practices"
 description: "探索在 Hugo Paper 中使用 Tailwind CSS v4 的最佳实践"
 date: 2024-11-10
+lastmod: 2024-11-12
 draft: false
 featured: true
 author: "Hugo Paper Team"
 image: "/images/tailwind-v4.jpg"
+keywords:
+  - tailwind css
+  - tailwind v4
+  - css框架
+  - 最佳实践
+  - 实用优先
+  - 响应式设计
 categories:
   - "Development"
 tags:
@@ -15,28 +23,28 @@ tags:
   - "tips"
 ---
 
-## Introduction
+## 简介
 
-Tailwind CSS v4 brings powerful new features and improvements. Let's explore some best practices for using it effectively in your Hugo Paper projects.
+Tailwind CSS v4 带来了强大的新功能和改进。让我们探索在 Hugo Paper 项目中有效使用它的最佳实践。
 
-## Utility-First Approach
+## 实用优先方法
 
-The core philosophy of Tailwind CSS is utility-first. Instead of writing custom CSS, you compose styles using utility classes.
+Tailwind CSS 的核心理念是实用优先。不是编写自定义 CSS，而是使用实用类组合样式。
 
-### Good Example
+### 好的示例
 
 ```html
 <div class="flex items-center justify-between p-4 bg-primary text-white rounded-lg">
-  <h2 class="text-lg font-bold">Title</h2>
+  <h2 class="text-lg font-bold">标题</h2>
   <button class="px-4 py-2 bg-white text-primary rounded hover:bg-gray-100 transition-colors">
-    Action
+    操作
   </button>
 </div>
 ```
 
-### Avoid Custom CSS for Simple Styles
+### 避免为简单样式编写自定义 CSS
 
-❌ **Don't do this:**
+❌ **不要这样做：**
 
 ```css
 .card {
@@ -46,15 +54,15 @@ The core philosophy of Tailwind CSS is utility-first. Instead of writing custom 
 }
 ```
 
-✅ **Do this instead:**
+✅ **应该这样做：**
 
 ```html
 <div class="p-4 rounded-lg shadow-sm">...</div>
 ```
 
-## Component Extraction
+## 组件提取
 
-When styles are repeated, extract them into components or use `@apply`.
+当样式重复时，将它们提取到组件中或使用 `@apply`。
 
 ```css
 @layer components {
@@ -65,44 +73,44 @@ When styles are repeated, extract them into components or use `@apply`.
 }
 ```
 
-Then use it:
+然后使用它：
 
 ```html
-<button class="btn-primary">Click me</button>
+<button class="btn-primary">点击我</button>
 ```
 
-## Responsive Design
+## 响应式设计
 
-Tailwind makes responsive design simple with breakpoint prefixes:
+Tailwind 通过断点前缀使响应式设计变得简单：
 
 ```html
-<!-- Mobile: 1 column, Tablet: 2 columns, Desktop: 3 columns -->
+<!-- 移动端：1列，平板：2列，桌面：3列 -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  <!-- content -->
+  <!-- 内容 -->
 </div>
 ```
 
-## Dark Mode
+## 深色模式
 
-Hugo Paper includes dark mode support using CSS variables:
+Hugo Paper 使用 CSS 变量支持深色模式：
 
 ```html
-<!-- This will automatically adjust for dark mode -->
+<!-- 这将根据主题自动调整 -->
 <div class="bg-background text-foreground">
-  <p class="text-muted">This text adjusts based on theme</p>
+  <p class="text-muted">此文本根据主题调整</p>
 </div>
 ```
 
-## Performance Tips
+## 性能技巧
 
-### 1. Avoid Arbitrary Values When Possible
+### 1. 尽可能避免任意值
 
-❌ Avoid: `class="w-[347px]"`  
-✅ Prefer: `class="w-full max-w-md"`
+❌ 避免：`class="w-[347px]"`  
+✅ 推荐：`class="w-full max-w-md"`
 
-### 2. Use Content Configuration
+### 2. 使用内容配置
 
-Make sure your `tailwind.config.js` has the correct content paths:
+确保你的 `tailwind.config.js` 有正确的内容路径：
 
 ```js
 module.exports = {
@@ -113,31 +121,31 @@ module.exports = {
 }
 ```
 
-### 3. Purge Unused Styles
+### 3. 清除未使用的样式
 
-Production builds automatically remove unused CSS:
+生产构建会自动删除未使用的 CSS：
 
 ```bash
 hugo --minify
 ```
 
-## Animation and Transitions
+## 动画和过渡
 
-Tailwind includes built-in animations:
+Tailwind 包含内置动画：
 
 ```html
-<!-- Fade in animation -->
-<div class="animate-fade-in">Fading in...</div>
+<!-- 淡入动画 -->
+<div class="animate-fade-in">淡入中...</div>
 
-<!-- Smooth color transition -->
+<!-- 平滑颜色过渡 -->
 <button class="bg-primary hover:bg-accent transition-colors duration-200">
-  Hover me
+  悬停我
 </button>
 ```
 
-## Customization
+## 自定义
 
-Extend Tailwind with custom utilities:
+使用自定义实用类扩展 Tailwind：
 
 ```js
 // tailwind.config.js
@@ -153,17 +161,17 @@ theme: {
 }
 ```
 
-## Common Mistakes to Avoid
+## 常见错误避免
 
-1. **Mixing utility and custom CSS** - Stick to utilities
-2. **Not using component extraction** - Use `@apply` for repeated patterns
-3. **Ignoring responsive design** - Always design mobile-first
-4. **Overusing arbitrary values** - Extend config instead
+1. **混合实用类和自定义 CSS** - 坚持使用实用类
+2. **不使用组件提取** - 对重复模式使用 `@apply`
+3. **忽略响应式设计** - 始终移动优先设计
+4. **过度使用任意值** - 改为扩展配置
 
-## Resources
+## 资源
 
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Hugo Paper Customization Guide](/config/)
-- [Tailwind UI Components](https://tailwindui.com)
+- [Tailwind CSS 文档](https://tailwindcss.com/docs)
+- [Hugo Paper 自定义指南](/config/)
+- [Tailwind UI 组件](https://tailwindui.com)
 
-Happy styling!
+祝你样式愉快！
